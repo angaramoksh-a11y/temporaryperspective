@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(impeccable)",
+      "Skill(impeccable:*)",
+      "Bash(node /Users/angara/.claude/skills/impeccable/scripts/load-context.mjs)",
+      "Bash(npm -v)",
+      "Read(//Users/angara/**)",
+      "Bash(npx --yes create-next-app@latest v12 --typescript --tailwind --app --eslint --no-src-dir --import-alias \"@/*\" --use-npm --turbopack --yes)"
+    ]
+  }
+}
