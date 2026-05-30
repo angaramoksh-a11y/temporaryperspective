@@ -31,7 +31,16 @@
       "Bash(node -e \"const p=require\\('ogl/package.json'\\);console.log\\('ogl',p.version,'types:',p.types||p.typings||'none'\\)\")",
       "Bash(grep -rn --include=\"*.tsx\" -E \"z-\\\\[?[0-9]{2,}\" components app)",
       "Bash(sort -t'[' -k2)",
-      "Bash(grep -rn --include=\"*.tsx\" -A2 -E \"<\\(Link|ArrowLink\\)$\" components app)"
+      "Bash(grep -rn --include=\"*.tsx\" -A2 -E \"<\\(Link|ArrowLink\\)$\" components app)",
+      "Bash(npx netlify *)",
+      "Bash(netlify status *)",
+      "Bash(npx --no-install netlify status)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\); console.log\\('next:', p.dependencies.next\\)\")",
+      "Bash(npx --no-install netlify api listAccountsForUser)",
+      "Bash(node -e \"let s='';process.stdin.on\\('data',d=>s+=d\\).on\\('end',\\(\\)=>{const a=JSON.parse\\(s\\);console.log\\(a.map\\(x=>\\({name:x.name,slug:x.slug,type:x.type_name}\\)\\)\\)}\\)\")",
+      "Bash(npx --no-install netlify sites:create --name temporaryperspectivev2 --account-slug temporaryperspective)",
+      "Bash(npx --no-install netlify deploy --build --prod --site 58791cba-38a3-4e64-8d3a-99e2e807ac29)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://temporaryperspectivev2.netlify.app)"
     ]
   }
 }
