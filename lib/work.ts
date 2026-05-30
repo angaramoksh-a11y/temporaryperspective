@@ -291,7 +291,22 @@ export const phases: Phase[] = [
   },
 ];
 
-export const newsletterPosts = [
+export type PostSection = { heading?: string; paragraphs: string[] };
+
+export type NewsletterPost = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  readingTime: string;
+  date: string; // short, for cards: "May 2026"
+  dateLong: string; // full, for the post header: "May 30, 2026"
+  author: string;
+  videoId?: string; // youtube id, top of post — pending real uploads
+  body: PostSection[];
+  faqs: QA[];
+};
+
+export const newsletterPosts: NewsletterPost[] = [
   {
     slug: "guest-list-is-your-ceiling",
     title: "Your guest list is your show's ceiling.",
@@ -299,6 +314,51 @@ export const newsletterPosts = [
       "The format matters less than people think. What decides whether your show works is who agrees to sit down. Spend the time on the guest list and most production problems quietly solve themselves.",
     readingTime: "4 min read",
     date: "May 2026",
+    dateLong: "May 24, 2026",
+    author: "Moksh",
+    body: [
+      {
+        paragraphs: [
+          "Most founders start a podcast by deciding the format. Solo or interview. Weekly or fortnightly. Forty minutes or ninety. They settle the look, the name, the intro music, and only then start thinking about who to put in front of the camera.",
+          "That order is backwards. The format is a small decision wearing a big costume. The decision that actually sets the ceiling on your show is the guest list, and it is the one most people rush.",
+        ],
+      },
+      {
+        heading: "The format is a smaller decision than you think",
+        paragraphs: [
+          "A show with a sharp guest and a plain format beats a show with a clever format and a guest nobody came for. The audience is not tuning in for your lower thirds. They are tuning in because someone they respect agreed to talk for an hour, and they want to hear it.",
+          "Once you accept that, a lot of production anxiety disappears. You stop optimising the things that do not move the needle and start spending your attention on the one thing that does: the names.",
+        ],
+      },
+      {
+        heading: "Booking is the work",
+        paragraphs: [
+          "Booking a guest who does not already know you is a real skill, and it is mostly patience plus a reason to say yes. The reason is rarely your audience size in the early days. It is the quality of the conversation you are promising, and the proof that you take it seriously.",
+          "This is why the brief matters before the booking. A guest can tell within two messages whether you have done the reading. The ones worth having on are exactly the ones who notice.",
+        ],
+      },
+      {
+        heading: "What a ceiling actually means",
+        paragraphs: [
+          "When we say the guest list is your ceiling, we mean it literally. Your best episode this year will be your best guest this year. Everything else, the edit, the clips, the distribution, raises the floor. It does not raise the ceiling.",
+          "So spend accordingly. Put your scarce hours into the list. Let the studio handle the rest.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Should I wait until I can book big guests to start?",
+        a: "No. Start with the best guest who will say yes now, and let the show earn the next one. A real episode in the world is worth more than a perfect plan. The list grows from proof, not from waiting.",
+      },
+      {
+        q: "How do I get a guest who doesn't know me to say yes?",
+        a: "Give them a reason that isn't your reach: a sharp brief, a clear format, and evidence you've done the reading. Serious people say yes to serious preparation more often than to big numbers.",
+      },
+      {
+        q: "Does the guest matter more than production quality?",
+        a: "The guest sets the ceiling; production raises the floor. You need both, but if you have to choose where your own hours go early on, put them on the list and let the studio carry the craft.",
+      },
+    ],
   },
   {
     slug: "stop-chasing-clips",
@@ -307,6 +367,50 @@ export const newsletterPosts = [
       "Every founder asks about clip counts first. It's the wrong end of the funnel. A clip from a thin episode dies in a day. A clip from an episode someone finished gets sent in DMs for a year.",
     readingTime: "5 min read",
     date: "May 2026",
+    dateLong: "May 10, 2026",
+    author: "Moksh",
+    body: [
+      {
+        paragraphs: [
+          "The first question almost every founder asks us is how many clips they will get per episode. It is a fair question, and it is the wrong place to start. Clips are the last step in the pipeline, not the first, and treating them as the goal quietly damages everything upstream.",
+        ],
+      },
+      {
+        heading: "The clip is the last step, not the first",
+        paragraphs: [
+          "A clip is a window into a conversation. If the conversation is good, the window is easy to cut and worth watching. If the conversation is thin, no amount of clever editing will hide it. You can feel the difference in the first three seconds, and so can the person scrolling past.",
+          "When clips become the objective, the episode gets built to produce clippable moments instead of a conversation worth finishing. The guest senses it. The audience senses it. The show starts to feel like a content farm wearing a studio's clothes.",
+        ],
+      },
+      {
+        heading: "A thin episode can't be saved in post",
+        paragraphs: [
+          "Post-production is leverage on what already exists. A good colour grade, a tight edit, and a strong hook make a real episode shine. They cannot manufacture substance that was never recorded. Garbage in is still garbage out, just with nicer typography.",
+          "This is why we work back from the conversation. Get the booking right, prepare the host, shoot it properly, and the clips almost cut themselves because the raw material is genuinely good.",
+        ],
+      },
+      {
+        heading: "Finish the episode",
+        paragraphs: [
+          "A clip from an episode someone actually finished gets sent in DMs for a year. It carries the weight of the full conversation behind it. A clip from a thin episode gets a few views and dies by the weekend.",
+          "So the metric we care about is not clip count. It is whether the episode is the kind of thing a serious person watches to the end and then forwards to one other serious person. Get that right and the clips do their job for free.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "How many clips should I get per episode?",
+        a: "As many as the episode earns, typically three, six, or twelve, sized to where you're distributing. But the count is downstream of the conversation. A strong episode yields strong clips without forcing it.",
+      },
+      {
+        q: "Do clips even drive the business?",
+        a: "They drive discovery. The episode drives trust. Clips bring the right person to the door; the finished conversation is what makes them stay and remember who made it.",
+      },
+      {
+        q: "Should I cut the episode shorter to hold attention?",
+        a: "Length is not the problem; thin content is. A ninety-minute conversation worth finishing holds better than a padded thirty. Cut for density, not for a target runtime.",
+      },
+    ],
   },
   {
     slug: "cheapest-table",
@@ -315,8 +419,107 @@ export const newsletterPosts = [
       "A flight to meet a CFO costs more than a quarter of production. A podcast is the only format where the person you want across from you says yes because the cost is ninety minutes, not a calendar.",
     readingTime: "3 min read",
     date: "Apr 2026",
+    dateLong: "Apr 28, 2026",
+    author: "Moksh",
+    body: [
+      {
+        paragraphs: [
+          "There is a person you want to be in a room with. A CFO, an investor, a founder two stages ahead of you. Getting thirty minutes of their real attention through the usual channels is expensive and slow. A podcast is the cheapest table you will ever buy to sit across from them.",
+        ],
+      },
+      {
+        heading: "The math nobody runs",
+        paragraphs: [
+          "Flying to a conference to maybe catch fifteen minutes with the person you want costs more than a quarter of a production budget, and the odds are poor. A cold introduction takes months and a favour you may not have. A podcast invitation flips the dynamic entirely.",
+          "You are not asking for their time as a buyer. You are offering them a platform and a serious conversation. That is a far easier yes, and it puts you on equal footing in the room.",
+        ],
+      },
+      {
+        heading: "Ninety minutes is the currency",
+        paragraphs: [
+          "The reason this works is that the cost to your guest is ninety minutes, not a slot on a sales calendar. People who would never take a pitch will happily sit for a good conversation about their own work. It flatters the right way, and it gives them something to share afterwards.",
+          "By the end of that ninety minutes you have done something no sales call achieves: you have spent real time thinking alongside the person you wanted to meet, on the record, in a way they are proud to circulate.",
+        ],
+      },
+      {
+        heading: "Why the format does the convincing",
+        paragraphs: [
+          "A podcast is the only format where the person you want across from you says yes because of what it is, not because of who you are yet. That is rare, and it is worth far more than the production it costs to run.",
+          "Buy the table. Fill the seat with the person who decides what happens to your company. The rest is just making sure the room looks like one worth sitting in.",
+        ],
+      },
+    ],
+    faqs: [
+      {
+        q: "Will the guest I want actually come on a small show?",
+        a: "More often than you'd expect. Serious people respond to a serious invitation and a sharp brief, not to subscriber counts. The format gives them a reason to say yes that a sales call never can.",
+      },
+      {
+        q: "Isn't a podcast a lot of effort for one meeting?",
+        a: "It's one meeting that also becomes an episode, a set of clips, and a relationship on the record. Compared to the cost and odds of catching that person any other way, the effort is low for what it returns.",
+      },
+      {
+        q: "What makes someone say yes to a podcast over a sales call?",
+        a: "On a sales call they're the buyer being sold to. On a podcast they're the expert being listened to. The second is a far more comfortable yes, and it puts you in the room as a peer.",
+      },
+    ],
   },
 ];
+
+// Studio team. Headshots are pending; cards render an initials plate until the
+// photos land. Tejas's LinkedIn URL is still to come.
+export const team: {
+  name: string;
+  role: string;
+  line: string;
+  linkedin: string | null;
+}[] = [
+  {
+    name: "Angara Moksh",
+    role: "CEO",
+    line: "Runs strategy and the room. The first call and the last cut.",
+    linkedin: "https://www.linkedin.com/in/angaramoksh/",
+  },
+  {
+    name: "Manav",
+    role: "Production Head",
+    line: "Owns what happens on set, from the cameras to the calm.",
+    linkedin: "https://www.linkedin.com/in/manavbendi/",
+  },
+  {
+    name: "Hatim",
+    role: "Post-Production Head",
+    line: "Turns a day of footage into an hour worth watching twice.",
+    linkedin: "https://www.linkedin.com/in/motiwala-hatim/",
+  },
+  {
+    name: "Rudra",
+    role: "CMO",
+    line: "Makes sure the right people find the work.",
+    linkedin: "https://www.linkedin.com/in/rudra-jaiswal-878100241/",
+  },
+  {
+    name: "Tejas",
+    role: "Lead Designer",
+    line: "The brand systems behind every show we build.",
+    linkedin: null,
+  },
+];
+
+// The studio's four convictions, shown on /about. Each is its own block.
+export const beliefs: string[] = [
+  "A podcast isn't content. It's the cheapest way to sit across from the people who decide what happens to your company.",
+  "The guest matters more than the views. One CFO who finished the episode beats ten thousand who watched a clip.",
+  "Production should disappear. If the audience notices the edit before the idea, we did it wrong.",
+  "Show the work, don't claim it. The show belongs to the client. We're the studio behind it, not in front of it.",
+];
+
+export const contact = {
+  phone: "+91 99204 21611",
+  phoneHref: "+919920421611",
+  email: "hey@temporaryperspective.com",
+  location: "Mumbai, India",
+};
 
 export type QA = { q: string; a: string };
 

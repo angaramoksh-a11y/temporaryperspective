@@ -4,6 +4,29 @@ These sections from the spec are built around assets that don't exist in the rep
 yet. The surrounding pages ship without them; drop the assets in and wire up the
 section when ready. Each item notes exactly where it slots.
 
+## Newsletter — /newsletter and /newsletter/[slug]
+
+- [ ] **Post thumbnails.** The index rows currently use a numbered chromium
+      plate in place of a photo. If you want real 16:9 thumbnails per post, add a
+      `thumb` field to each `newsletterPost` in `lib/work.ts` and swap the plate
+      in `app/newsletter/page.tsx`.
+- [ ] **Top-of-post video.** Each post template has a video slot that renders
+      only when `videoId` is set. Add the YouTube ID from Moksh's channel to the
+      relevant `newsletterPost` in `lib/work.ts` and it appears automatically.
+- [ ] **Body copy is a first draft.** The long-form article bodies and inline
+      FAQs in `lib/work.ts` were written in-house to populate the template.
+      Review and replace with Moksh's own copy before this is treated as final
+      published writing.
+
+## About — /about
+
+- [ ] **Team headshots.** The five team cards render an initials monogram plate
+      until photos land. Add a `headshot` field to each entry in `team`
+      (`lib/work.ts`) and swap the plate in `app/about/page.tsx`.
+- [ ] **Tejas LinkedIn.** Tejas's card ships without a LinkedIn icon until the
+      URL exists. Set `linkedin` on the Tejas entry in `team` and the icon
+      renders automatically.
+
 ## Case study — /case-studies/bharatvaarta
 
 - [ ] **Section 5, artifacts row (brand book).** A second showcase row with a
