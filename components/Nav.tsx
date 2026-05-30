@@ -1,7 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import { CAL_LINK } from "@/lib/work";
+import Logo from "./Logo";
 import { PrimaryButton } from "./ui";
 
 const links = [
@@ -10,29 +13,59 @@ const links = [
   { label: "About", href: "/about" },
 ];
 
+function isActive(pathname: string, href: string) {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
 export default function Nav() {
+  const pathname = usePathname();
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close the mobile overlay whenever the route changes.
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll while the overlay is open.
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Clean tonal fade-to-black behind the nav: solid bg at the top edge
-          easing to fully transparent. No blur, so nothing smears the content
-          scrolling underneath. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32"
+        className="pointer-events-none absolute inset-0 -z-10 border-b transition-[background-color,backdrop-filter,border-color] duration-500 ease-[var(--ease-out-quart)]"
         style={{
-          background:
-            "linear-gradient(to bottom, var(--color-bg) 0%, oklch(0.115 0.005 264 / 0.88) 30%, oklch(0.115 0.005 264 / 0.5) 56%, oklch(0.115 0.005 264 / 0.18) 78%, transparent 100%)",
+          backgroundColor: scrolled
+            ? "oklch(0.085 0.004 264 / 0.8)"
+            : "oklch(0.085 0.004 264 / 0)",
+          backdropFilter: scrolled ? "blur(12px)" : "blur(0px)",
+          borderColor: scrolled
+            ? "var(--color-line)"
+            : "oklch(1 0 0 / 0)",
         }}
       />
-      <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:px-10">
+      <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:h-[72px] lg:px-10">
         <Link
           href="/"
           aria-label="Temporary Perspective, home"
           className="group flex items-center gap-2.5 justify-self-start"
         >
-          <span className="relative grid h-8 w-8 place-items-center rounded-md border border-line-strong bg-bg-raised font-display text-sm leading-none text-text">
-            TP
-            <span className="led-breathe absolute -right-0.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-accent" />
+          <span className="relative inline-flex items-center">
+            <Logo className="h-[1.15rem] w-auto text-text" />
+            <span className="led-breathe absolute -right-1.5 -top-0.5 h-1.5 w-1.5 rounded-full bg-accent" />
           </span>
           <span className="hidden font-medium tracking-tight text-text sm:inline">
             Temporary Perspective
@@ -40,21 +73,99 @@ export default function Nav() {
         </Link>
 
         <div className="hidden items-center justify-center gap-1 justify-self-center sm:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="rounded-[var(--radius-btn)] px-3.5 py-2 text-sm text-text-muted transition-colors hover:text-text"
-            >
-              {l.label}
-            </Link>
-          ))}
+          {links.map((l) => {
+            const active = isActive(pathname, l.href);
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                className={`relative rounded-[var(--radius-btn)] px-3.5 py-2 text-sm transition-colors ${
+                  active ? "text-text" : "text-text-muted hover:text-text"
+                }`}
+              >
+                {l.label}
+                <span
+                  aria-hidden
+                  className={`absolute inset-x-3.5 -bottom-px h-px origin-center bg-text transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    active ? "scale-x-100" : "scale-x-0"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </div>
 
-        <div className="flex items-center justify-self-end">
-          <PrimaryButton href={CAL_LINK}>Book a call</PrimaryButton>
+        <div className="flex items-center gap-2 justify-self-end">
+          <div className="hidden sm:block">
+            <PrimaryButton href={CAL_LINK}>Book a call</PrimaryButton>
+          </div>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="relative inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-btn)] text-text sm:hidden"
+          >
+            <span className="relative block h-3.5 w-5">
+              <span
+                className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                  open ? "top-1.5 rotate-45" : "top-0"
+                }`}
+              />
+              <span
+                className={`absolute left-0 top-1.5 block h-px w-5 bg-current transition-opacity duration-200 ${
+                  open ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                  open ? "top-1.5 -rotate-45" : "top-3"
+                }`}
+              />
+            </span>
+          </button>
         </div>
       </nav>
+
+      {/* Mobile overlay */}
+      <div
+        className={`fixed inset-0 top-16 z-40 origin-top bg-bg/95 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-[var(--ease-out-quart)] sm:hidden ${
+          open
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+      >
+        <div className="flex flex-col gap-1 px-6 py-8">
+          {links.map((l) => {
+            const active = isActive(pathname, l.href);
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                aria-current={active ? "page" : undefined}
+                className={`flex items-center justify-between border-b border-line py-4 font-thunder text-3xl uppercase leading-none tracking-tight transition-colors ${
+                  active ? "text-text" : "text-text-muted"
+                }`}
+              >
+                {l.label}
+                {active && <span className="h-1.5 w-1.5 rounded-full bg-accent" />}
+              </Link>
+            );
+          })}
+          <Link
+            href="/newsletter"
+            className="flex items-center border-b border-line py-4 font-thunder text-3xl uppercase leading-none tracking-tight text-text-muted transition-colors"
+          >
+            Newsletter
+          </Link>
+          <div className="mt-6">
+            <PrimaryButton href={CAL_LINK} size="lg" className="w-full">
+              Book a call
+            </PrimaryButton>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }

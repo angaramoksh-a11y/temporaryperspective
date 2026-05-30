@@ -20,9 +20,11 @@ section when ready. Each item notes exactly where it slots.
 
 ## About — /about
 
-- [ ] **Team headshots.** The five team cards render an initials monogram plate
-      until photos land. Add a `headshot` field to each entry in `team`
-      (`lib/work.ts`) and swap the plate in `app/about/page.tsx`.
+- [ ] **Remaining team headshots.** Moksh's photo is wired (`/moksh.jpg`); the
+      `headshot` field and image rendering exist in `team` (`lib/work.ts`) and
+      `app/about/page.tsx`. Manav, Hatim, Rudra, and Tejas still render an
+      initials monogram plate. Drop each photo in `public/` and set `headshot`
+      on their `team` entry; the card swaps automatically.
 - [ ] **Tejas LinkedIn.** Tejas's card ships without a LinkedIn icon until the
       URL exists. Set `linkedin` on the Tejas entry in `team` and the icon
       renders automatically.

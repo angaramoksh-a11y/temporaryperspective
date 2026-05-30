@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Beliefs from "@/components/Beliefs";
@@ -58,17 +59,27 @@ export default function AboutPage() {
               {team.map((m) => (
                 <div key={m.name} className="group flex flex-col">
                   <div className="sweep relative aspect-square w-full overflow-hidden rounded-xl border border-line-strong bg-bg-raised/50 transition-[transform] duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5">
+                    {m.headshot ? (
+                      <Image
+                        src={m.headshot}
+                        alt={m.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
+                        className="object-cover grayscale transition-[filter] duration-500 ease-[var(--ease-out-quart)] group-hover:grayscale-0"
+                      />
+                    ) : (
+                      <span className="absolute inset-0 grid place-items-center font-thunder text-[clamp(2.5rem,5vw,3.5rem)] uppercase leading-none text-text-faint transition-colors duration-300 group-hover:text-text-muted">
+                        {monogram(m.name)}
+                      </span>
+                    )}
                     <span
                       aria-hidden
-                      className="absolute inset-x-0 top-0 h-px"
+                      className="absolute inset-x-0 top-0 z-10 h-px"
                       style={{
                         background:
                           "linear-gradient(90deg, transparent, oklch(1 0 0 / 0.45) 50%, transparent)",
                       }}
                     />
-                    <span className="absolute inset-0 grid place-items-center font-thunder text-[clamp(2.5rem,5vw,3.5rem)] uppercase leading-none text-text-faint transition-colors duration-300 group-hover:text-text-muted">
-                      {monogram(m.name)}
-                    </span>
                   </div>
                   <h3 className="mt-5 font-thunder text-[clamp(1.5rem,2vw,1.875rem)] uppercase leading-none tracking-tight">
                     {m.name}

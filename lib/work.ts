@@ -466,19 +466,21 @@ export const newsletterPosts: NewsletterPost[] = [
   },
 ];
 
-// Studio team. Headshots are pending; cards render an initials plate until the
-// photos land. Tejas's LinkedIn URL is still to come.
+// Studio team. Remaining headshots are pending; those cards render an initials
+// plate until the photos land. Tejas's LinkedIn URL is still to come.
 export const team: {
   name: string;
   role: string;
   line: string;
   linkedin: string | null;
+  headshot?: string;
 }[] = [
   {
     name: "Angara Moksh",
     role: "CEO",
     line: "Runs strategy and the room. The first call and the last cut.",
     linkedin: "https://www.linkedin.com/in/angaramoksh/",
+    headshot: "/moksh.jpg",
   },
   {
     name: "Manav",
