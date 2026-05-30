@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { phases } from "@/lib/work";
-import { EdgeDivider, GhostButton } from "./ui";
+import { GhostButton } from "./ui";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -88,7 +88,6 @@ export default function Process() {
 
   return (
     <section className="relative py-24 lg:py-28">
-      <EdgeDivider />
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-10">
         {/* left — sticky framing */}
         <motion.div

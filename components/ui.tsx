@@ -34,6 +34,7 @@ export function PrimaryButton({
 
     let raf = 0;
     const REACH = 150; // how far "near" extends past the button edge
+    const PULL = 10; // max magnetic displacement in px
     const onMove = (e: PointerEvent) => {
       cancelAnimationFrame(raf);
       raf = requestAnimationFrame(() => {
@@ -46,12 +47,17 @@ export function PrimaryButton({
         const reach = REACH + Math.max(r.width, r.height) / 2;
         if (dist > reach) {
           glow.style.opacity = "0";
+          wrap.style.transform = "translate3d(0,0,0)";
           return;
         }
         const t = 1 - dist / reach; // 0 (far) .. 1 (centered)
         glow.style.opacity = (0.18 + t * 0.82).toFixed(3);
         glow.style.setProperty("--gx", `${e.clientX - r.left}px`);
         glow.style.setProperty("--gy", `${e.clientY - r.top}px`);
+        // magnetic pull toward the cursor, eased by proximity and capped
+        const mx = Math.max(-PULL, Math.min(PULL, dx * t * 0.35));
+        const my = Math.max(-PULL, Math.min(PULL, dy * t * 0.35));
+        wrap.style.transform = `translate3d(${mx.toFixed(2)}px, ${my.toFixed(2)}px, 0)`;
       });
     };
     window.addEventListener("pointermove", onMove, { passive: true });
@@ -62,7 +68,11 @@ export function PrimaryButton({
   }, []);
 
   return (
-    <span ref={wrapRef} className="relative inline-flex">
+    <span
+      ref={wrapRef}
+      className="relative inline-flex will-change-transform"
+      style={{ transition: "transform 0.45s var(--ease-out-quart)" }}
+    >
       <span
         ref={glowRef}
         aria-hidden

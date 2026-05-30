@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { embed, selectedWork, type Episode } from "@/lib/work";
-import { EdgeDivider } from "./ui";
 import Thumb from "./Thumb";
 import Lightbox from "./Lightbox";
 
@@ -14,6 +13,36 @@ export default function SelectedWork() {
   // drag-to-scroll
   const rowRef = useRef<HTMLDivElement>(null);
   const drag = useRef({ down: false, startX: 0, scroll: 0, moved: 0 });
+
+  // arrow affordances: track whether there's more to scroll on each side
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
+
+  const sync = useCallback(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft < max - 4);
+  }, []);
+
+  useEffect(() => {
+    sync();
+    const el = rowRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      el.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, [sync]);
+
+  const nudge = (dir: 1 | -1) => {
+    const el = rowRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.82, behavior: "smooth" });
+  };
 
   const onDown = (e: React.PointerEvent) => {
     const el = rowRef.current;
@@ -48,12 +77,15 @@ export default function SelectedWork() {
 
   return (
     <section className="relative py-24 lg:py-28">
-      <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="mb-12 flex items-end justify-between">
+        <div className="mb-12 flex items-end justify-between gap-6">
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
             Some of our work
           </h2>
+          <div className="hidden shrink-0 items-center gap-2 sm:flex">
+            <ScrollArrow dir={-1} disabled={!canLeft} onClick={() => nudge(-1)} />
+            <ScrollArrow dir={1} disabled={!canRight} onClick={() => nudge(1)} />
+          </div>
         </div>
       </div>
 
@@ -120,5 +152,39 @@ export default function SelectedWork() {
         onSelect={(e) => setActive(e)}
       />
     </section>
+  );
+}
+
+function ScrollArrow({
+  dir,
+  disabled,
+  onClick,
+}: {
+  dir: 1 | -1;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === 1 ? "Scroll work right" : "Scroll work left"}
+      className="grid h-10 w-10 place-items-center rounded-full border border-line text-text-muted transition-[color,border-color,opacity] duration-300 ease-[var(--ease-out-quart)] hover:border-line-strong hover:text-text disabled:pointer-events-none disabled:opacity-30"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+        aria-hidden
+        style={{ transform: dir === 1 ? "none" : "scaleX(-1)" }}
+      >
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </button>
   );
 }

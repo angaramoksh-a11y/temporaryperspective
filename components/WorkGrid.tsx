@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { embed, workLibrary, type Episode } from "@/lib/work";
-import { EdgeDivider } from "./ui";
 import Thumb from "./Thumb";
 import Lightbox from "./Lightbox";
 
@@ -69,7 +68,6 @@ export default function WorkGrid() {
 
   return (
     <section className="relative pb-24 pt-20 lg:pb-28 lg:pt-24">
-      <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
           {workLibrary.map((ep, i) => (
