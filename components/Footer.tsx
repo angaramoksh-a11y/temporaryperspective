@@ -60,7 +60,7 @@ export default function Footer() {
           <div className="flex items-center gap-5">
             <span>Mumbai, India</span>
             <a
-              href="https://www.linkedin.com/"
+              href="https://www.linkedin.com/company/temporary-perspective/"
               target="_blank"
               rel="noreferrer"
               className="transition-colors hover:text-text"

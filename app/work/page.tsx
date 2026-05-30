@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
+import WorkBackdrop from "@/components/WorkBackdrop";
 import WorkGrid from "@/components/WorkGrid";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider } from "@/components/ui";
@@ -17,12 +18,15 @@ export default function WorkPage() {
     <>
       <Nav />
       <main>
-        <PageHero
-          title="The work."
-          subcopy="The shows we produce, episode by episode."
-          size="md"
-          minH="short"
-        />
+        <div className="relative">
+          <WorkBackdrop />
+          <PageHero
+            title="The work."
+            subcopy="The shows we produce, episode by episode."
+            size="md"
+            minH="short"
+          />
+        </div>
         <WorkGrid />
         <section className="relative py-20 lg:py-24">
           <EdgeDivider />

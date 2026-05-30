@@ -1,8 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { GhostButton, PrimaryButton } from "./ui";
+
+// WebGL volumetric rays. Client-only (touches WebGL); skipped under SSR so the
+// dark hero paints instantly and the rays fade in once mounted.
+const LightRays = dynamic(() => import("./LightRays"), { ssr: false });
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const rise = {
@@ -36,6 +41,27 @@ export default function Hero() {
             filter: "blur(64px)",
           }}
         />
+        {/* volumetric god-rays raking down from the top key light */}
+        <div
+          className="absolute inset-0 opacity-60"
+          style={{ mixBlendMode: "screen" }}
+        >
+          <LightRays
+            raysOrigin="top-center"
+            raysColor="#ffffff"
+            raysSpeed={0.8}
+            lightSpread={1}
+            rayLength={1.2}
+            followMouse
+            mouseInfluence={0.3}
+            noiseAmount={0.1}
+            distortion={0}
+            pulsating
+            fadeDistance={1.5}
+            saturation={1}
+          />
+        </div>
+
         {/* vignette — offset up toward the key light, corners to near-black */}
         <div
           className="absolute inset-0"

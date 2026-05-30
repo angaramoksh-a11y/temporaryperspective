@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Fraunces, Geist, Geist_Mono } from "next/font/google";
+import GrainOverlay from "@/components/GrainOverlay";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -49,7 +50,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${thunder.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-bg text-text">{children}</body>
+      <body className="min-h-full bg-bg text-text">
+        {children}
+        <GrainOverlay />
+      </body>
     </html>
   );
 }
