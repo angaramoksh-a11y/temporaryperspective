@@ -37,6 +37,9 @@ Strategy: **Restrained.** Cool-tinted near-OLED neutrals + one warm accent.
 - **Display**: Playfair Display (high-contrast Didone serif). Weights 400/500/600
   + italic. Large statements only. Tight leading, fluid `clamp()`. The high stroke
   contrast carries the editorial-luxury feel that stands in for resend's Reckless.
+- **Poster (Thunder)**: tall ultra-condensed grotesque, `--font-thunder` (Anton
+  stands in for the licensed Thunder until swapped). Uppercase, poster scale only:
+  the `/case-studies` page title and the per-client names. Never for body or UI.
 - **UI / body / labels**: Geist (sans). Tight tracking on labels, weight contrast
   within the family. This is the chrome.
 - Mono (Geist Mono) for tiny technical labels only, sparingly.
@@ -70,6 +73,26 @@ fluid `clamp(min, vw, max)` so they lock at both ends.
   min so the three `whitespace-nowrap` lines fit at 375px. Max still 3.5rem (h1).
 - Body copy lives in `body-lg` for lede paragraphs, `body` for everything else.
   Line length stays 65-75ch.
+
+### Poster display (Thunder) — locked
+
+The condensed poster face is sized separately from the Playfair scale. Uppercase,
+two roles only. Leading stays open enough that stacked lines never kiss.
+
+| Role | Where | Size | Leading | Tracking |
+|------|-------|------|---------|----------|
+| poster-xl | `/case-studies` page title | `clamp(3.25rem, 13.5vw, 11.5rem)` | 0.96 | -0.01em |
+| poster-name | per-client name (CaseSection) | `clamp(2.5rem, 7vw, 8rem)` | 0.85 | -0.01em |
+
+- Never tighter than `0.85` leading on a single line, `0.95` when it wraps to two.
+- The longest client name must fit its grid column at every breakpoint, so the
+  `vw` term is capped low enough to avoid horizontal overflow on desktop.
+
+### Accordion / list-item headings
+
+Repeating item titles that name a thing (Process phases: Branding, Guest Prep,
+Production, …) are **h3 (display)**, not body or a shrunken label. They carry the
+section, so they get the h3 role; the per-item meta tag stays h6 (mono kicker).
 
 ## Spacing scale (locked)
 

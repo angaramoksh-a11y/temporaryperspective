@@ -37,12 +37,12 @@ function PhaseRow({
       <button
         onClick={onToggle}
         aria-expanded={open}
-        className="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-5 text-left transition-colors duration-300 ease-[var(--ease-out-quart)] hover:bg-white/[0.025]"
+        className="flex w-full cursor-pointer items-center justify-between gap-4 px-7 py-6 text-left transition-colors duration-300 ease-[var(--ease-out-quart)] hover:bg-white/[0.025]"
       >
-        <span className="flex items-baseline gap-3">
-          <span className="font-display text-xl font-light tracking-tight">
+        <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+          <h3 className="font-display text-[clamp(1.375rem,2.2vw,1.9rem)] font-normal leading-[1.15] tracking-[-0.015em]">
             {phase.title}
-          </span>
+          </h3>
           <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-text-faint">
             {phase.label}
           </span>
@@ -61,8 +61,8 @@ function PhaseRow({
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >
         <div className="overflow-hidden">
-          <div className="px-6 pb-6">
-            <p className="max-w-md text-[0.95rem] leading-relaxed text-text-muted">
+          <div className="px-7 pb-7">
+            <p className="max-w-xl text-[1.0625rem] leading-relaxed text-text-muted">
               {phase.body}
             </p>
             <Link

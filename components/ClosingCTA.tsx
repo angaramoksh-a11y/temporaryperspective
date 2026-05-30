@@ -1,7 +1,7 @@
 import { CAL_LINK } from "@/lib/work";
 import { EdgeDivider, PrimaryButton } from "./ui";
 
-export default function ClosingCTA() {
+export default function ClosingCTA({ subline }: { subline?: string }) {
   return (
     <section className="relative">
       <EdgeDivider />
@@ -10,9 +10,16 @@ export default function ClosingCTA() {
           aria-hidden
           className="led-breathe h-2 w-2 rounded-full bg-accent"
         />
-        <h2 className="max-w-2xl font-display text-[clamp(2.25rem,5vw,3.75rem)] font-light leading-[1.05] tracking-tight">
-          Let&apos;s talk about your show.
-        </h2>
+        <div className="flex flex-col items-center gap-5">
+          <h2 className="max-w-2xl font-display text-[clamp(2.25rem,5vw,3.75rem)] font-light leading-[1.05] tracking-tight">
+            Let&apos;s talk about your show.
+          </h2>
+          {subline && (
+            <p className="max-w-md text-lg leading-relaxed text-text-muted">
+              {subline}
+            </p>
+          )}
+        </div>
         <PrimaryButton href={CAL_LINK} size="lg">
           Book a call
         </PrimaryButton>

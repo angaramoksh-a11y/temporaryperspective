@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Anton, Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +19,16 @@ const playfair = Playfair_Display({
   subsets: ["latin"],
 });
 
+// Poster display face. Stand-in for Thunder (Pangram Pangram, commercial):
+// Anton is the closest free tall-condensed grotesque. To use the real Thunder,
+// swap this for next/font/local pointing at the Thunder files — the
+// `--font-thunder` variable and every `font-thunder` usage stay unchanged.
+const thunder = Anton({
+  variable: "--font-thunder",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Temporary Perspective — B2B podcast studio, Mumbai",
   description:
@@ -33,7 +43,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${thunder.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-bg text-text">{children}</body>
     </html>

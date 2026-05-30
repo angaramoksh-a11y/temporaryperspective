@@ -59,7 +59,7 @@ export default function Lightbox({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 8 }}
             transition={{ duration: 0.35, ease }}
-            className="chrome-card relative z-10 w-[92vw] max-w-[1200px]"
+            className="chrome-card relative z-10 w-[96vw] max-w-[1600px]"
           >
             <button
               onClick={onClose}
@@ -110,7 +110,7 @@ export default function Lightbox({
                   <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
                     Browse more
                   </p>
-                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                  <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {others.map((o) => (
                       <button
                         key={o.id}

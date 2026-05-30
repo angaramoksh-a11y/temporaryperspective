@@ -13,6 +13,7 @@
   --color-accent: oklch(0.64 0.21 25);
 
   --font-display: var(--font-playfair), Georgia, serif;
+  --font-thunder: var(--font-thunder), "Arial Narrow", sans-serif;
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
@@ -145,10 +146,10 @@ body::after {
   padding: 1px;
   background: linear-gradient(
     125deg,
-    oklch(0.85 0.2 158 / 0.85),
-    oklch(0.85 0.2 158 / 0) 38%,
-    oklch(0.85 0.2 158 / 0) 60%,
-    oklch(0.88 0.18 152 / 0.65)
+    oklch(0.85 0.2 158 / 0.5),
+    oklch(0.85 0.2 158 / 0) 40%,
+    oklch(0.85 0.2 158 / 0) 62%,
+    oklch(0.88 0.18 152 / 0.38)
   );
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
@@ -224,11 +225,47 @@ body::after {
   animation: breathe 2.4s var(--ease-out-quart) infinite;
 }
 
+/* Calm, slow-drifting background texture for the home hero. Two faint blurred
+   blobs glide on independent loops so the dark never reads as flat. GPU-safe:
+   transform + opacity only. */
+@keyframes drift-a {
+  0% {
+    transform: translate3d(-6%, 2%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(7%, -5%, 0) scale(1.12);
+  }
+  100% {
+    transform: translate3d(-6%, 2%, 0) scale(1);
+  }
+}
+@keyframes drift-b {
+  0% {
+    transform: translate3d(5%, -3%, 0) scale(1.08);
+  }
+  50% {
+    transform: translate3d(-8%, 6%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(5%, -3%, 0) scale(1.08);
+  }
+}
+.bg-drift-a {
+  animation: drift-a 26s ease-in-out infinite;
+  will-change: transform;
+}
+.bg-drift-b {
+  animation: drift-b 34s ease-in-out infinite;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   .led-breathe,
+  .bg-drift-a,
+  .bg-drift-b,
   .sweep::after {
     animation: none;
     transition: none;

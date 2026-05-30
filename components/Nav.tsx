@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { CAL_LINK } from "@/lib/work";
 import { PrimaryButton } from "./ui";
 
@@ -12,34 +11,48 @@ const links = [
 ];
 
 export default function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* smooth fade-to-black + progressive blur, no hard line (resend.com) */}
+      {/* Always-on fade-to-black with PROGRESSIVE blur (resend.com). Instead of
+          one blurred layer (which leaves a visible blur cutoff), we stack layers
+          whose blur radius increases downward while each is masked to a band.
+          Result: blur ramps smoothly from 0 at the bottom edge to its full
+          strength under the nav, with no hard line anywhere. */}
       <div
         aria-hidden
-        className={`pointer-events-none absolute inset-x-0 top-0 -z-10 h-28 transition-opacity duration-500 ${
-          scrolled ? "opacity-100" : "opacity-0"
-        }`}
-        style={{
-          background:
-            "linear-gradient(to bottom, var(--color-bg) 0%, oklch(0.115 0.005 264 / 0.82) 42%, transparent 100%)",
-          backdropFilter: "blur(8px)",
-          WebkitBackdropFilter: "blur(8px)",
-          maskImage:
-            "linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, #000 0%, #000 46%, transparent 100%)",
-        }}
-      />
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-36"
+      >
+        {/* tonal fade */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, var(--color-bg) 0%, oklch(0.115 0.005 264 / 0.86) 26%, oklch(0.115 0.005 264 / 0.52) 50%, oklch(0.115 0.005 264 / 0.2) 74%, transparent 100%)",
+          }}
+        />
+        {/* progressive blur ramp */}
+        {[
+          { blur: 1, from: 0, to: 38 },
+          { blur: 3, from: 14, to: 54 },
+          { blur: 7, from: 34, to: 74 },
+          { blur: 14, from: 56, to: 100 },
+        ].map((l) => (
+          <div
+            key={l.blur}
+            className="absolute inset-0"
+            style={{
+              backdropFilter: `blur(${l.blur}px)`,
+              WebkitBackdropFilter: `blur(${l.blur}px)`,
+              maskImage: `linear-gradient(to bottom, transparent ${l.from}%, #000 ${
+                (l.from + l.to) / 2
+              }%, transparent ${l.to}%)`,
+              WebkitMaskImage: `linear-gradient(to bottom, transparent ${l.from}%, #000 ${
+                (l.from + l.to) / 2
+              }%, transparent ${l.to}%)`,
+            }}
+          />
+        ))}
+      </div>
       <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:px-10">
         <Link
           href="/"

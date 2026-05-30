@@ -17,7 +17,8 @@
       "mcp__Claude_Preview__preview_start",
       "Bash(kill 34420)",
       "Bash(xargs kill -9)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(npm uninstall *)"
     ]
   }
 }
