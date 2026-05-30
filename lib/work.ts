@@ -118,6 +118,49 @@ export const caseStudies: CaseStudy[] = [
   },
 ];
 
+// Bespoke long-form content for individual case studies. Clients present here
+// render the rich layout; clients absent fall back to the generic template.
+export type CaseContent = {
+  producedWith: string;
+  tagline: string;
+  testimonialId: string; // youtube id
+  testimonialName: string;
+  aboutShow: string[];
+  ourRole: string[];
+  showcase: Episode[];
+  related: { client: string; tag: string; href: string }[];
+};
+
+export const caseStudyContent: Record<string, CaseContent> = {
+  bharatvaarta: {
+    producedWith: "Produced with Roshan Cariappa",
+    tagline: "Politics · Policy · Culture",
+    testimonialId: "ilqq-eyj80M",
+    testimonialName: "Roshan Cariappa · Bharatvaarta",
+    aboutShow: [
+      "Bharatvaarta is a long-form show on Indian politics, policy, and culture. The longer, harder conversations, taken seriously. Guests have included former R&AW chief Vikram Sood, Saurabh Mukherjea, Manish Sabharwal, and Medha Bhaskaran.",
+      "It isn't built for views. It's built for the people who want the full conversation, and it's stayed that way because that's how Roshan runs it. We're glad to still be on the project.",
+    ],
+    ourRole: [
+      "We handle the production end to end. Brand and visual identity, the shoot, the master edit, the colour grade and lighting tuned to each conversation, clipping, and distribution. When the host needed to record on location, we brought the studio to him.",
+      "The show, the guests, and the editorial direction are Roshan's. Our job is to make sure the production never gets in the way of the conversation, and that an hour worth watching looks like one.",
+    ],
+    showcase: [
+      { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta" },
+      { id: "W6odY9EG6Jk", guest: "Saurabh Mukherjea", client: "Bharatvaarta" },
+      { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta" },
+      { id: "Ef5bn6AWxUQ", guest: "Amish Tripathi", client: "Bharatvaarta" },
+      { id: "QTH0goRHdn0", guest: "Medha Bhaskaran", client: "Bharatvaarta" },
+      { id: "SwF6KbsbITc", guest: "Ami Ganatra", client: "Bharatvaarta" },
+      { id: "qpIIH89FepQ", guest: "Aabhas Maldahiyar", client: "Bharatvaarta" },
+    ],
+    related: [
+      { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
+      { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
+    ],
+  },
+};
+
 export const phases = [
   {
     id: "branding",

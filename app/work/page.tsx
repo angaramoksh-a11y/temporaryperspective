@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import WorkGrid from "@/components/WorkGrid";
 import ClosingCTA from "@/components/ClosingCTA";
+import { ArrowLink, EdgeDivider } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "The work — Temporary Perspective",
@@ -23,6 +24,15 @@ export default function WorkPage() {
           minH="short"
         />
         <WorkGrid />
+        <section className="relative py-20 lg:py-24">
+          <EdgeDivider />
+          <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-4 px-6 text-center lg:px-10">
+            <p className="text-text-muted">Looking for everything?</p>
+            <ArrowLink href="/work/archive" className="text-base text-text">
+              Browse the full library
+            </ArrowLink>
+          </div>
+        </section>
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>
       <Footer />
