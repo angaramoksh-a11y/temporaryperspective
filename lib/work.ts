@@ -57,6 +57,28 @@ export const selectedWork: Episode[] = [
   { id: "FKA-b5KXha8", guest: "Ananthan Ayyasamy", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
 ];
 
+// The full catalog for /work. Same shape as selectedWork; the home row shows a
+// curated subset, this wall shows everything.
+export const workLibrary: Episode[] = [
+  { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "W6odY9EG6Jk", guest: "Saurabh Mukherjea", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "Ef5bn6AWxUQ", guest: "Amish Tripathi", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "_RR2a1bh1T0", guest: "Bureau Podcast — Ishaan", client: "Bureau", caseStudy: "/case-studies/bureau" },
+  { id: "qpIIH89FepQ", guest: "Aabhas Maldahiyar", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "KRFL9DtVFfk", guest: "Bureau Fraud Forum", client: "Bureau", caseStudy: "/case-studies/bureau" },
+  { id: "QTH0goRHdn0", guest: "Medha Bhaskaran", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "KMZ_k4C8vxQ", guest: "Indmoney testimonial", client: "Bureau", caseStudy: "/case-studies/bureau" },
+  { id: "SwF6KbsbITc", guest: "Ami Ganatra — 1 God or 33 Crore", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "ZDDBFbaSxoY", guest: "Neelkanth Podcast", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "b4l3-RO4A9c", guest: "Nilesh Oak", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "7srevoi1THs", guest: "IPS Amit Lodha", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "kgOeJjDuf-w", guest: "Ranjan Reddy — Bureau Founder", client: "Bureau", caseStudy: "/case-studies/bureau" },
+  { id: "FKA-b5KXha8", guest: "Ananthan Ayyasamy", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "560sRbXiyGA", guest: "Dr. Uday S. Kulkarni", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "nsVBqVg3ipo", guest: "Medha Bhaskaran — Forgotten Genocide", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+];
+
 export type CaseStudy = {
   client: string;
   href: string;
