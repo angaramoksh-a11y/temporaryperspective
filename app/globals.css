@@ -11,6 +11,7 @@
   --color-line-strong: oklch(1 0 0 / 0.16);
   --color-chrome: oklch(0.99 0.002 264);
   --color-accent: oklch(0.64 0.21 25);
+  --color-gold: oklch(0.82 0.085 85);
 
   --font-display: var(--font-fraunces), Georgia, serif;
   --font-thunder: var(--font-thunder), "Arial Narrow", sans-serif;
@@ -238,6 +239,23 @@ body::after {
   animation: breathe 2.4s var(--ease-out-quart) infinite;
 }
 
+/* Chromium "active state" breathe: silver, not the record-light red. For the
+   pre-launch status indicator (qapita case study). */
+@keyframes chrome-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    box-shadow: 0 0 6px 1px oklch(0.99 0.002 264 / 0.35);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 14px 3px oklch(0.99 0.002 264 / 0.6);
+  }
+}
+.chrome-breathe {
+  animation: chrome-breathe 3s var(--ease-out-quart) infinite;
+}
+
 /* The resend "3D room" hero light. One key light breathes almost
    imperceptibly behind the headline; a raking floor beam drifts beneath it so
    the dark reads as a lit surface, not a flat fill. GPU-safe: transform +
@@ -279,6 +297,7 @@ body::after {
     scroll-behavior: auto;
   }
   .led-breathe,
+  .chrome-breathe,
   .bg-keylight,
   .bg-floorbeam,
   .sweep::after {

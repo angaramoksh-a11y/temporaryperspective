@@ -18,6 +18,39 @@ section when ready. Each item notes exactly where it slots.
       x.com/PatkarSumedh/status/2013494631724634552 was not confirmed to resolve)
       and a styled/dark X embed.
 
+## Case study — /case-studies/bureau
+
+- [ ] **Section 5, Fraud Forum talking heads.** Two more tiles in the "Bureau
+      Fraud Forum" block: Deepak Sharma (Investor) and Sandessh (CTO). Needs:
+      their YouTube IDs. Drop into `bureauContent.formats[0].tiles` in
+      `lib/work.ts` and they render automatically in the by-format grid.
+
+## Process — /process
+
+The page ships as a sticky scroll-spy timeline over five text-forward phase
+sections. The spec's right-column visuals are all asset-blocked; sections render
+single-column until the assets land. Each item notes where it slots.
+
+- [ ] **Branding, brand book.** Right-column PDF first-page thumbnail of the
+      Bharatvaarta brand book + a "View the Bharatvaarta brand book →" link that
+      opens a PDF lightbox. Needs: the brand-book PDF + page-1 thumb + a PDF
+      lightbox mode. Slots into the `branding` section in `ProcessTimeline.tsx`.
+- [ ] **Guest Prep, questionnaire.** A sample questionnaire/brief PDF thumbnail
+      (or a stylized quote pulled from a real prep doc). Slots into `guest-prep`.
+- [ ] **Production, BTS still.** A behind-the-scenes still from a Bharatvaarta
+      shoot, hairline/chromium framed. Slots into `production` (alongside the
+      existing "How we shoot remote →" link). Note: `/virtual` route is itself
+      not built yet; the link is live across the site already.
+- [ ] **Post, one-to-many grid.** A small grid: one master-edit thumb + 3-4 clip
+      thumbnails signalling the "1 episode → many cuts" model. Slots into `post`.
+- [ ] **Growth, channel chart.** A subtle chart or stat strip showing channel
+      growth over time (Bharatvaarta-themed sample numbers). Slots into `growth`.
+- [ ] **Before / after proof.** Final full-viewport section: frame line "This is
+      what production does." over two synchronized muted-autoplay clips of the
+      same Bharatvaarta scene, different grades, sub-line "Same studio. The
+      production caught up to the conversation." Needs: the two graded clips.
+      Slots after the `growth` section, before the closing CTA.
+
 ## Work archive — /work/archive
 
 - [ ] **PDF artifact tiles.** The grid currently shows video episodes only. The

@@ -6,8 +6,11 @@ import Footer from "@/components/Footer";
 import CaseVideo from "@/components/CaseVideo";
 import TestimonialVideo from "@/components/TestimonialVideo";
 import CaseWorkRow from "@/components/CaseWorkRow";
+import BureauCaseStudy from "@/components/BureauCaseStudy";
+import QapitaCaseStudy from "@/components/QapitaCaseStudy";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider, SectionLabel } from "@/components/ui";
+import { CaseBackLink, CaseProse, RelatedCases } from "@/components/caseParts";
 import {
   caseStudies,
   caseStudyContent,
@@ -46,6 +49,9 @@ export default async function CaseStudyPage({
   const { client } = await params;
   const cs = find(client);
   if (!cs) notFound();
+
+  if (client === "bureau") return <BureauCaseStudy />;
+  if (client === "qapita") return <QapitaCaseStudy />;
 
   const content = caseStudyContent[client];
   if (content) return <RichCaseStudy client={cs.client} content={content} />;
@@ -136,23 +142,6 @@ export default async function CaseStudyPage({
   );
 }
 
-function Prose({ label, paragraphs }: { label: string; paragraphs: string[] }) {
-  return (
-    <section className="relative px-6 py-16 lg:px-10 lg:py-20">
-      <div className="mx-auto max-w-[720px]">
-        <SectionLabel>{label}</SectionLabel>
-        <div className="mt-6 space-y-6">
-          {paragraphs.map((p, i) => (
-            <p key={i} className="text-[clamp(1.0625rem,1.5vw,1.3125rem)] leading-[1.7] text-text">
-              {p}
-            </p>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function RichCaseStudy({
   client,
   content,
@@ -167,12 +156,7 @@ function RichCaseStudy({
         {/* 1. Header */}
         <section className="relative px-6 pb-10 pt-32 lg:px-10 lg:pt-40">
           <div className="mx-auto max-w-[1400px]">
-            <Link
-              href="/case-studies"
-              className="text-sm text-text-faint transition-colors hover:text-text"
-            >
-              ← All case studies
-            </Link>
+            <CaseBackLink />
             <h1 className="mt-8 font-thunder text-[clamp(3.5rem,15vw,12rem)] uppercase leading-[0.9] tracking-[-0.01em]">
               {client}
             </h1>
@@ -191,8 +175,8 @@ function RichCaseStudy({
         </section>
 
         {/* 3 + 4. About the show / Our role */}
-        <Prose label="About the show" paragraphs={content.aboutShow} />
-        <Prose label="Our role" paragraphs={content.ourRole} />
+        <CaseProse label="About the show" paragraphs={content.aboutShow} />
+        <CaseProse label="Our role" paragraphs={content.ourRole} />
 
         {/* 5. Work showcase */}
         <section className="relative py-20 lg:py-24">
@@ -206,31 +190,7 @@ function RichCaseStudy({
         </section>
 
         {/* 8. Related work */}
-        <section className="relative py-20 lg:py-24">
-          <EdgeDivider />
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <SectionLabel>Other case studies</SectionLabel>
-            <div className="mt-8 grid gap-5 sm:grid-cols-2">
-              {content.related.map((r) => (
-                <Link
-                  key={r.href}
-                  href={r.href}
-                  className="sweep group flex items-center justify-between rounded-2xl border border-line bg-bg-raised/30 p-8 transition-[transform,border-color] duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 hover:border-white/20"
-                >
-                  <span>
-                    <span className="block font-display text-[clamp(1.5rem,2.4vw,2rem)] font-normal tracking-tight">
-                      {r.client}
-                    </span>
-                    <span className="mt-1 block text-sm text-text-faint">{r.tag}</span>
-                  </span>
-                  <span className="shrink-0 text-text-muted transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1 group-hover:text-text">
-                    →
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+        <RelatedCases related={content.related} />
 
         <ClosingCTA subline={`Want a show like ${client}? Start with a call.`} />
       </main>

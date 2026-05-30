@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
-import Process from "@/components/Process";
+import ProcessTimeline from "@/components/ProcessTimeline";
 import ClosingCTA from "@/components/ClosingCTA";
 
 export const metadata: Metadata = {
   title: "The process — Temporary Perspective",
   description:
-    "How a show comes together: branding, guest prep, production, post, and growth. Per episode, end to end.",
+    "How we run a podcast, end to end. Branding, guest prep, production, post, and growth, with Bharatvaarta as the running example.",
 };
 
 export default function ProcessPage() {
@@ -18,11 +18,11 @@ export default function ProcessPage() {
       <main>
         <PageHero
           title="The process."
-          subcopy="From a cold start to a show that ships every week. Five phases, scoped to what you actually need."
-          size="md"
-          minH="short"
+          subcopy="How we run a podcast, end to end. Bharatvaarta as the running example."
+          size="lg"
+          minH="tall"
         />
-        <Process embedded />
+        <ProcessTimeline />
         <ClosingCTA subline="Tell us where your show is. We'll scope the rest." />
       </main>
       <Footer />

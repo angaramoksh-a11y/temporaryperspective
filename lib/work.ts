@@ -161,13 +161,97 @@ export const caseStudyContent: Record<string, CaseContent> = {
   },
 };
 
-export const phases = [
+// Bureau: bespoke, organised by production format rather than a single show.
+export type FormatBlock = {
+  heading: string;
+  label: string;
+  body: string;
+  tiles: Episode[];
+};
+
+export const bureauContent = {
+  producedWith: "Produced for Bureau",
+  tagline: "Fintech · Fraud Prevention",
+  testimonialVimeoId: "1195342176",
+  testimonialName: "Rahi · Content Head, Bureau",
+  about: [
+    "Bureau builds fraud-prevention infrastructure for fintech. Their thinking: fraudsters network fast, so the people stopping them have to network faster. The Bureau Fraud Forum is how they do it, an industry event putting operators in one room on how fraud works.",
+    "We produce across Bureau's formats: the Forum, their series, and their testimonial work. One team that knows the brand and the subject.",
+  ],
+  quote: {
+    text: "It gets easier every single project we do.",
+    attribution: "Rahi, Content Head, Bureau",
+  },
+  formats: [
+    {
+      heading: "Bureau Fraud Forum",
+      label: "Event coverage",
+      body: "Event coverage of the Forum, sizzle reels and talking heads with founders, investors, and operators.",
+      tiles: [
+        { id: "KRFL9DtVFfk", guest: "Forum sizzle reel", client: "Bureau" },
+        { id: "kgOeJjDuf-w", guest: "Ranjan Reddy, Founder", client: "Bureau" },
+      ],
+    },
+    {
+      heading: "Bureau Backyard",
+      label: "Podcast series",
+      body: "Bureau's ongoing series, podcast format. Long-form conversations with operators in the fraud-prevention space.",
+      tiles: [{ id: "_RR2a1bh1T0", guest: "Ishaan", client: "Bureau" }],
+    },
+    {
+      heading: "Testimonials",
+      label: "Client work",
+      body: "Client testimonial production for Bureau's customers.",
+      tiles: [{ id: "KMZ_k4C8vxQ", guest: "Indmoney", client: "Bureau" }],
+    },
+  ] as FormatBlock[],
+  related: [
+    { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },
+    { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
+  ],
+};
+
+// Qapita / The Catapult Code: title differs from the client; show is pre-launch.
+export const qapitaContent = {
+  title: "The Catapult Code",
+  producedWith: "Produced for Qapita",
+  tagline: "Founder stories · In production",
+  testimonialVimeoId: "1196195127",
+  testimonialName: "Brendan Marshall · The Catapult Code",
+  aboutShow: [
+    "The Catapult Code is a founder podcast from Qapita, hosted by Brendan Marshall (StartX, Stanford) and Ravi Ravulaparthi (CEO, Qapita). It's built for the messy middle: founders past early traction, scaling toward the next level.",
+  ],
+  ourRole: [
+    "We're producing the series end to end. Three episodes shot in Mumbai, with more in production across the US. We consult and edit those, and finish all nine in house. Full production ownership.",
+  ],
+  status: {
+    label: "In production.",
+    sub: "First episodes launching soon.",
+  },
+  related: [
+    { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },
+    { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
+  ],
+};
+
+export type Phase = {
+  id: string;
+  title: string;
+  label: string;
+  body: string; // short, for the home accordion
+  detail: string; // fuller, for the /process page section
+  link?: { label: string; href: string };
+};
+
+export const phases: Phase[] = [
   {
     id: "branding",
     title: "Branding",
     label: "Foundational",
     body:
       "Logo, palette, typography, and the show's full visual system. Built from scratch, only if you're starting cold.",
+    detail:
+      "If you're starting from scratch: logo, palette, typography, the show's full visual system. Done once, at the start. Built so every episode after has a consistent identity.",
   },
   {
     id: "guest-prep",
@@ -175,6 +259,8 @@ export const phases = [
     label: "Per episode",
     body:
       "Briefs and questionnaires per guest. The host walks in ready; the guest knows the format.",
+    detail:
+      "A custom questionnaire and brief for every guest. The host walks in ready, the guest knows the format. No ninety-minute conversation should start cold.",
   },
   {
     id: "production",
@@ -182,6 +268,9 @@ export const phases = [
     label: "Per episode",
     body:
       "The shoot, studio, on location, or remote across cities. Multi-camera, properly lit and miked.",
+    detail:
+      "The shoot: your studio, the guest's location, or remote across cities. Multi-camera, properly lit and miked. Built for an hour that looks like one.",
+    link: { label: "How we shoot remote", href: "/virtual" },
   },
   {
     id: "post",
@@ -189,12 +278,16 @@ export const phases = [
     label: "Per episode",
     body:
       "Master edit with hooks and b-roll, colour grade tuned per conversation, plus clips cut for distribution.",
+    detail:
+      "Master edit with hooks and b-roll, colour grade tuned per conversation, plus clips cut for distribution. As many clips as the show needs, typically three, six, or twelve.",
   },
   {
     id: "growth",
     title: "Growth",
     label: "Per episode",
     body: "Publishing and channel management, ongoing after the show ships.",
+    detail:
+      "Publishing and channel management, ongoing after launch. The show keeps growing because someone keeps running it.",
   },
 ];
 
