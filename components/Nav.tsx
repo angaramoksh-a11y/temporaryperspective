@@ -13,46 +13,17 @@ const links = [
 export default function Nav() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Always-on fade-to-black with PROGRESSIVE blur (resend.com). Instead of
-          one blurred layer (which leaves a visible blur cutoff), we stack layers
-          whose blur radius increases downward while each is masked to a band.
-          Result: blur ramps smoothly from 0 at the bottom edge to its full
-          strength under the nav, with no hard line anywhere. */}
+      {/* Clean tonal fade-to-black behind the nav: solid bg at the top edge
+          easing to fully transparent. No blur, so nothing smears the content
+          scrolling underneath. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-36"
-      >
-        {/* tonal fade */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(to bottom, var(--color-bg) 0%, oklch(0.115 0.005 264 / 0.86) 26%, oklch(0.115 0.005 264 / 0.52) 50%, oklch(0.115 0.005 264 / 0.2) 74%, transparent 100%)",
-          }}
-        />
-        {/* progressive blur ramp */}
-        {[
-          { blur: 1, from: 0, to: 38 },
-          { blur: 3, from: 14, to: 54 },
-          { blur: 7, from: 34, to: 74 },
-          { blur: 14, from: 56, to: 100 },
-        ].map((l) => (
-          <div
-            key={l.blur}
-            className="absolute inset-0"
-            style={{
-              backdropFilter: `blur(${l.blur}px)`,
-              WebkitBackdropFilter: `blur(${l.blur}px)`,
-              maskImage: `linear-gradient(to bottom, transparent ${l.from}%, #000 ${
-                (l.from + l.to) / 2
-              }%, transparent ${l.to}%)`,
-              WebkitMaskImage: `linear-gradient(to bottom, transparent ${l.from}%, #000 ${
-                (l.from + l.to) / 2
-              }%, transparent ${l.to}%)`,
-            }}
-          />
-        ))}
-      </div>
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-32"
+        style={{
+          background:
+            "linear-gradient(to bottom, var(--color-bg) 0%, oklch(0.115 0.005 264 / 0.88) 30%, oklch(0.115 0.005 264 / 0.5) 56%, oklch(0.115 0.005 264 / 0.18) 78%, transparent 100%)",
+        }}
+      />
       <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:px-10">
         <Link
           href="/"

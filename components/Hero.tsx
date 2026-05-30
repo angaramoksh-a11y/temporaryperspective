@@ -12,27 +12,36 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section
-      className="relative flex min-h-[100svh] items-center justify-center overflow-hidden"
-      style={{ background: "#0a0a0a" }}
-    >
-      {/* moving texture: two faint blobs drift slowly so the dark stays alive.
-          Whisper-subtle, GPU-only (transform), killed under reduced-motion. */}
+    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-bg">
+      {/* The resend "3D room": one key light blooms behind the headline, a
+          raking floor beam catches the surface beneath it, and a vignette
+          crushes the corners so the lit centre reads dimensional. All
+          pointer-events-none, GPU-only motion, killed under reduced-motion. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* key light — soft radial bloom, upper centre */}
         <div
-          className="bg-drift-a absolute left-[14%] top-[16%] h-[72vh] w-[72vh] rounded-full"
+          className="bg-keylight absolute left-1/2 top-[-22%] h-[100vh] w-[120vw]"
           style={{
             background:
-              "radial-gradient(closest-side, oklch(0.26 0.012 264 / 0.45), transparent 70%)",
+              "radial-gradient(closest-side, oklch(0.82 0.025 264 / 0.32), oklch(0.42 0.02 264 / 0.10) 46%, transparent 72%)",
+          }}
+        />
+        {/* floor beam — long, heavily blurred streak raking the lower scene,
+            a faint horizon so the dark reads as a lit surface, not a flat fill */}
+        <div
+          className="bg-floorbeam absolute bottom-[-12%] left-1/2 h-[40vh] w-[155vw] rounded-[50%]"
+          style={{
+            background:
+              "radial-gradient(closest-side, oklch(0.7 0.025 250 / 0.26), transparent 68%)",
             filter: "blur(64px)",
           }}
         />
+        {/* vignette — offset up toward the key light, corners to near-black */}
         <div
-          className="bg-drift-b absolute bottom-[8%] right-[10%] h-[62vh] w-[62vh] rounded-full"
+          className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(closest-side, oklch(0.23 0.018 286 / 0.4), transparent 70%)",
-            filter: "blur(72px)",
+              "radial-gradient(125% 95% at 50% 26%, transparent 38%, oklch(0.05 0.004 264 / 0.55) 76%, oklch(0.04 0.004 264 / 0.9) 100%)",
           }}
         />
       </div>
@@ -54,7 +63,7 @@ export default function Hero() {
               className="pointer-events-none absolute -inset-3 -z-10 rounded-full opacity-40 blur-lg transition-opacity duration-300 group-hover:opacity-70"
               style={{
                 background:
-                  "radial-gradient(closest-side, oklch(0.82 0.18 158 / 0.22), transparent)",
+                  "radial-gradient(closest-side, oklch(0.99 0.002 264 / 0.18), transparent)",
               }}
             />
             See case studies
@@ -67,10 +76,10 @@ export default function Hero() {
         {/* headline */}
         <motion.h1
           variants={rise}
-          className="mt-8 font-display text-[clamp(2rem,6.5vw,4.75rem)] font-semibold leading-[1.05] tracking-[-0.035em]"
+          className="mt-8 font-display text-[clamp(2.1rem,6.4vw,4.9rem)] font-medium leading-[1.04] tracking-[-0.02em]"
         >
           For podcast conversations you only get to have{" "}
-          <span className="italic text-text-muted">once.</span>
+          <span className="font-normal italic text-text-muted">once.</span>
         </motion.h1>
 
         {/* sub-headline */}

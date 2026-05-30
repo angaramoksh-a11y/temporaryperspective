@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Geist, Geist_Mono, Playfair_Display } from "next/font/google";
+import { Anton, Fraunces, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,8 +12,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+// Display face. High-contrast modern serif: the free stand-in closest to
+// resend's licensed Reckless, with optical sizing for editorial-luxury weight
+// at poster scale. Swap to next/font/local for the real face later; the
+// `--font-fraunces` variable and every `font-display` usage stay unchanged.
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   subsets: ["latin"],
@@ -43,7 +47,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${playfair.variable} ${thunder.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${thunder.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-bg text-text">{children}</body>
     </html>

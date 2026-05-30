@@ -1,0 +1,31 @@
+import type { Metadata } from "next";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
+import WorkGrid from "@/components/WorkGrid";
+import ClosingCTA from "@/components/ClosingCTA";
+
+export const metadata: Metadata = {
+  title: "The work — Temporary Perspective",
+  description:
+    "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
+};
+
+export default function WorkPage() {
+  return (
+    <>
+      <Nav />
+      <main>
+        <PageHero
+          title="The work."
+          subcopy="The shows we produce, episode by episode."
+          size="md"
+          minH="short"
+        />
+        <WorkGrid />
+        <ClosingCTA subline="Want a show like these? Start with a call." />
+      </main>
+      <Footer />
+    </>
+  );
+}

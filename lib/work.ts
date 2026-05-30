@@ -12,7 +12,7 @@ export function thumb(id: string) {
 export function thumbFallback(id: string) {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 }
-export function embed(id: string, autoplay = false) {
+export function embed(id: string, autoplay = false, chromeless = false) {
   const params = new URLSearchParams({
     rel: "0",
     modestbranding: "1",
@@ -21,6 +21,17 @@ export function embed(id: string, autoplay = false) {
   if (autoplay) {
     params.set("autoplay", "1");
     params.set("mute", "1");
+  }
+  // chromeless = silent hover preview: no controls, captions, annotations,
+  // fullscreen, or keyboard. Loops the clip. Just the footage playing.
+  if (chromeless) {
+    params.set("controls", "0");
+    params.set("cc_load_policy", "0");
+    params.set("iv_load_policy", "3");
+    params.set("fs", "0");
+    params.set("disablekb", "1");
+    params.set("loop", "1");
+    params.set("playlist", id); // loop requires playlist for a single video
   }
   return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
 }
@@ -146,6 +157,87 @@ export const newsletterPosts = [
       "A flight to meet a CFO costs more than a quarter of production. A podcast is the only format where the person you want across from you says yes because the cost is ninety minutes, not a calendar.",
     readingTime: "3 min read",
     date: "Apr 2026",
+  },
+];
+
+export type QA = { q: string; a: string };
+
+// Six surfaced on the home page; the full set lives on /faq.
+export const homeFaqs: QA[] = [
+  {
+    q: "What does it cost?",
+    a: "We don't send quotes. We learn what your show needs on the first call, then come back with a plan and pricing built around it, not a number pulled from a rate card.",
+  },
+  {
+    q: "Do you only work with B2B companies?",
+    a: "It's where we do our best work: founders, fintech, SaaS, the kind of show with a serious guest list. We've done other formats, but B2B is the focus.",
+  },
+  {
+    q: "Can you shoot if my guest is in another city?",
+    a: "Yes. We produce remotely: your city, the guest's, or split across both. The show looks the same wherever it's shot.",
+  },
+  {
+    q: "Do you handle editing only, or full production?",
+    a: "Either. Some clients take the full pipeline; others come to us only for the edit. We'll scope it to what you actually need.",
+  },
+  {
+    q: "How long until my first episode is live?",
+    a: "Depends on scope, but a typical first episode moves from shoot to published in a few weeks. We'll give you a real timeline on the call.",
+  },
+  {
+    q: "Do you write the questions or book the guests?",
+    a: "No. The guests and the conversation are yours. That's your relationship and your vision. We help with prep and structure, but the editorial call is always the host's.",
+  },
+];
+
+export const faqs: QA[] = [
+  {
+    q: "What does a typical engagement look like?",
+    a: "It starts with a call to understand the show you want. From there we scope the work, brand and shoot if you're starting cold, or pick up editing and distribution if you're already running. Most clients settle into a per-episode rhythm with us once the format is set.",
+  },
+  {
+    q: "Do you only work with B2B companies?",
+    a: "It's where we do our best work: founders, fintech, SaaS, the kind of show with a serious guest list. We've done other formats, but B2B is the focus.",
+  },
+  {
+    q: "What do you need from me to start?",
+    a: "A sense of who you want on the show and what you want it to do. We handle the rest of the production planning. If you have brand assets already, send them; if you don't, that's a phase we cover.",
+  },
+  {
+    q: "Do you write the questions or book the guests?",
+    a: "No. The guests and the conversation are yours. That's your relationship and your vision. We help with prep and structure, but the editorial call is always the host's.",
+  },
+  {
+    q: "Can you shoot if my guest is in another city?",
+    a: "Yes. We produce remotely: your city, the guest's, or split across both. The show looks the same wherever it's shot.",
+  },
+  {
+    q: "Where are you based?",
+    a: "Mumbai. We shoot in studio here, on location, and remotely across cities and countries.",
+  },
+  {
+    q: "Do you handle editing only, or full production?",
+    a: "Either. Some clients take the full pipeline; others come to us only for the edit. We'll scope it to what you actually need.",
+  },
+  {
+    q: "How many clips do I get from an episode?",
+    a: "As many as the show needs. Typically three, six, or twelve cuts per episode, sized to where you're distributing.",
+  },
+  {
+    q: "Do you do the branding too?",
+    a: "Yes, if you're starting from scratch. Logo, palette, typography, and the show's full visual system, built once at the start so every episode after stays consistent.",
+  },
+  {
+    q: "How long until my first episode is live?",
+    a: "Depends on scope, but a typical first episode moves from shoot to published in a few weeks. We'll give you a real timeline on the call.",
+  },
+  {
+    q: "What does it cost?",
+    a: "We don't send quotes. We learn what your show needs on the first call, then come back with a plan and pricing built around it, not a number pulled from a rate card.",
+  },
+  {
+    q: "How do we start?",
+    a: "Book a thirty-minute call. No pitch, no quote on the call. We listen first, then come back with a plan built for your show.",
   },
 ];
 

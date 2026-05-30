@@ -10,7 +10,6 @@ import Lightbox from "./Lightbox";
 export default function SelectedWork() {
   const [active, setActive] = useState<Episode | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
-  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // drag-to-scroll
   const rowRef = useRef<HTMLDivElement>(null);
@@ -37,14 +36,9 @@ export default function SelectedWork() {
     drag.current.down = false;
   };
 
-  const enter = (id: string) => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    hoverTimer.current = setTimeout(() => setHovered(id), 3000);
-  };
-  const leave = () => {
-    if (hoverTimer.current) clearTimeout(hoverTimer.current);
-    setHovered(null);
-  };
+  // play the preview the moment the card is hovered, no hold on the still
+  const enter = (id: string) => setHovered(id);
+  const leave = () => setHovered(null);
 
   const open = (e: Episode) => {
     if (drag.current.moved > 6) return; // was a drag, not a click
@@ -90,10 +84,12 @@ export default function SelectedWork() {
               />
               {hovered === ep.id && (
                 <iframe
-                  src={embed(ep.id, true)}
+                  src={embed(ep.id, true, true)}
                   title={ep.guest}
                   allow="autoplay; encrypted-media; picture-in-picture"
-                  className="pointer-events-none absolute inset-0 h-full w-full"
+                  // scaled slightly past the frame so YouTube's residual title
+                  // strip is clipped — only the footage shows
+                  className="pointer-events-none absolute inset-0 h-full w-full scale-[1.2]"
                 />
               )}
             </button>

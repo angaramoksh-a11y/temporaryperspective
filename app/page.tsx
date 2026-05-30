@@ -6,6 +6,7 @@ import Process from "@/components/Process";
 import CaseStudies from "@/components/CaseStudies";
 import VirtualCallout from "@/components/VirtualCallout";
 import Newsletter from "@/components/Newsletter";
+import CommonQuestions from "@/components/CommonQuestions";
 import ClosingCTA from "@/components/ClosingCTA";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
         <CaseStudies />
         <VirtualCallout />
         <Newsletter />
+        <CommonQuestions />
         <ClosingCTA />
       </main>
       <Footer />

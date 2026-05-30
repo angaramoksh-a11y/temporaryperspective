@@ -21,9 +21,9 @@ edge-light, and frosted-glass floating elements, not from drop shadows.
 
 Strategy: **Restrained.** Cool-tinted near-OLED neutrals + one warm accent.
 
-- `--bg`        oklch(0.115 0.005 264) near-OLED black, cool
-- `--bg-raised` oklch(0.15 0.005 264)  raised surfaces / cards
-- `--bg-sunken` oklch(0.09 0.004 264)  wells
+- `--bg`        oklch(0.085 0.004 264) near-OLED black, cool (resend-dark)
+- `--bg-raised` oklch(0.135 0.005 264) raised surfaces / cards
+- `--bg-sunken` oklch(0.065 0.004 264) wells
 - `--text`      oklch(0.96 0.004 264)  primary (never #fff)
 - `--text-muted` oklch(0.70 0.006 264) sub-headlines, captions
 - `--text-faint` oklch(0.55 0.006 264) metadata, client names
@@ -34,9 +34,11 @@ Strategy: **Restrained.** Cool-tinted near-OLED neutrals + one warm accent.
 
 ## Typography
 
-- **Display**: Playfair Display (high-contrast Didone serif). Weights 400/500/600
-  + italic. Large statements only. Tight leading, fluid `clamp()`. The high stroke
-  contrast carries the editorial-luxury feel that stands in for resend's Reckless.
+- **Display**: Fraunces (high-contrast modern serif, optical sizing). Weights
+  400/500/600 + italic. Large statements only. Tight leading, fluid `clamp()`.
+  Closer to resend's licensed Reckless than a pure Didone: the optical-size axis
+  keeps the stroke contrast editorial at poster scale without turning brittle.
+  Headlines sit at 500; emphasis italics drop to 400.
 - **Poster (Thunder)**: tall ultra-condensed grotesque, `--font-thunder` (Anton
   stands in for the licensed Thunder until swapped). Uppercase, poster scale only:
   the `/case-studies` page title and the per-client names. Never for body or UI.
@@ -51,7 +53,7 @@ Strategy: **Restrained.** Cool-tinted near-OLED neutrals + one warm accent.
 ## Type scale (locked)
 
 Do not invent sizes per component. Pick the nearest role below. Headings are
-Playfair (display); body, labels, and captions are Geist (sans). Values use
+Fraunces (display); body, labels, and captions are Geist (sans). Values use
 fluid `clamp(min, vw, max)` so they lock at both ends.
 
 | Role | Font | Size | Leading | Tracking | Weight |
