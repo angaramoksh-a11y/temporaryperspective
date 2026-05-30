@@ -87,9 +87,7 @@ export default function SelectedWork() {
                   src={embed(ep.id, true, true)}
                   title={ep.guest}
                   allow="autoplay; encrypted-media; picture-in-picture"
-                  // scaled slightly past the frame so YouTube's residual title
-                  // strip is clipped — only the footage shows
-                  className="pointer-events-none absolute inset-0 h-full w-full scale-[1.2]"
+                  className="pointer-events-none absolute inset-0 h-full w-full"
                 />
               )}
             </button>
