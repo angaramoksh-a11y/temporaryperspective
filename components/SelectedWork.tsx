@@ -76,7 +76,7 @@ export default function SelectedWork() {
   };
 
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative pt-14 pb-16 lg:pt-16 lg:pb-20">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="mb-12 flex items-end justify-between gap-6">
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">

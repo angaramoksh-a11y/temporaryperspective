@@ -18,7 +18,7 @@ export default function WorkBackdrop() {
           "linear-gradient(180deg, transparent 0%, #000 22%, #000 55%, transparent 100%)",
       }}
     >
-      <Silk speed={1.7} scale={0.7} color="#717271" noiseIntensity={2.3} rotation={0} />
+      <Silk speed={1.5} scale={0.7} color="#4f5349" noiseIntensity={2.3} rotation={0} />
     </div>
   );
 }

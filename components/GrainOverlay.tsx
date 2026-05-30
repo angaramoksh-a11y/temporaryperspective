@@ -8,9 +8,9 @@ import { useEffect, useRef } from "react";
 // Sits above content (pointer-events:none), pauses when the tab is hidden,
 // and freezes to a single static frame under reduced-motion.
 export default function GrainOverlay({
-  alpha = 9,
+  alpha = 14,
   refreshInterval = 2,
-  tile = 480,
+  tile = 460,
 }: {
   alpha?: number;
   refreshInterval?: number;

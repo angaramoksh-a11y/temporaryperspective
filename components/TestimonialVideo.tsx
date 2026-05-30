@@ -60,7 +60,6 @@ export default function TestimonialVideo({
               }`}
             />
             <span className="pointer-events-none absolute bottom-4 left-4 inline-flex items-center gap-2 rounded-full border border-line-strong bg-bg/60 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors group-hover:text-text">
-              <span className="led-breathe h-1.5 w-1.5 rounded-full bg-accent" />
               Tap for sound
             </span>
           </>

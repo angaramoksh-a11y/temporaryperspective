@@ -80,7 +80,6 @@ export default async function CaseStudyPage({
               </p>
               {cs.status && (
                 <span className="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-line-strong px-3 py-1 text-xs text-text-muted">
-                  <span className="led-breathe h-1.5 w-1.5 rounded-full bg-accent" />
                   {cs.status}
                 </span>
               )}

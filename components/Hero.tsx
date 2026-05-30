@@ -70,6 +70,15 @@ export default function Hero() {
               "radial-gradient(125% 95% at 50% 26%, transparent 38%, oklch(0.05 0.004 264 / 0.55) 76%, oklch(0.04 0.004 264 / 0.9) 100%)",
           }}
         />
+        {/* bottom blend — dissolves the hero into the page so there's no hard
+            section seam where the next block begins */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-48"
+          style={{
+            background:
+              "linear-gradient(to bottom, transparent, var(--color-bg))",
+          }}
+        />
       </div>
 
       <motion.div
@@ -104,8 +113,11 @@ export default function Hero() {
           variants={rise}
           className="mt-8 font-display text-[clamp(2.1rem,6.4vw,4.9rem)] font-medium leading-[1.04] tracking-[-0.02em]"
         >
-          For podcast conversations you only get to have{" "}
-          <span className="font-normal italic text-text-muted">once.</span>
+          <span className="block">For podcast conversations</span>
+          <span className="block">
+            you only get to have{" "}
+            <span className="font-normal italic text-text-muted">once.</span>
+          </span>
         </motion.h1>
 
         {/* sub-headline */}

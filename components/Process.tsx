@@ -87,7 +87,7 @@ export default function Process() {
   const headInView = useInView(headRef, { once: true, amount: 0.4 });
 
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative pt-16 pb-24 lg:pt-20 lg:pb-28">
       <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-10">
         {/* left — sticky framing */}
         <motion.div
