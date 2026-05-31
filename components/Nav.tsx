@@ -44,22 +44,15 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Gradient scrim — a dark top fading to transparent, with the blur
-          masked to dissolve at the bottom edge so the bar melts into the page
-          instead of cutting it with a hard line. */}
+      {/* Gradient scrim — a solid black top fading straight to transparent,
+          no blur, so the bar melts into the page without a hard line. */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[180%] transition-opacity duration-500 ease-[var(--ease-out-quart)]"
         style={{
           opacity: scrolled ? 1 : 0,
           background:
-            "linear-gradient(to bottom, oklch(0.085 0.004 264 / 0.95) 0%, oklch(0.085 0.004 264 / 0.7) 45%, oklch(0.085 0.004 264 / 0) 100%)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          maskImage:
-            "linear-gradient(to bottom, black 0%, black 50%, transparent 92%)",
-          WebkitMaskImage:
-            "linear-gradient(to bottom, black 0%, black 50%, transparent 92%)",
+            "linear-gradient(to bottom, oklch(0.085 0.004 264 / 0.2) 0%, oklch(0.085 0.004 264 / 0.2) 80%, oklch(0.085 0.004 264 / 0) 100%)",
         }}
       />
       <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:h-[72px] lg:px-10">

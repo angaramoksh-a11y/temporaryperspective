@@ -72,9 +72,9 @@ export default function GrainOverlay({
       aria-hidden
       className="pointer-events-none fixed inset-0 h-screen w-screen"
       style={{
-        zIndex: 60,
+        zIndex: -1,
         imageRendering: "pixelated",
-        mixBlendMode: "overlay",
+        mixBlendMode: "screen",
       }}
     />
   );

@@ -50,7 +50,7 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${thunder.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-bg text-text">
+      <body className="min-h-full text-text">
         {children}
         <GrainOverlay />
       </body>

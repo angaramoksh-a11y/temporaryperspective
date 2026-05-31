@@ -45,7 +45,6 @@ html {
 }
 
 body {
-  background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -63,12 +62,12 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: -1;
   pointer-events: none;
   background-image: var(--noise);
   background-size: 180px 180px;
-  opacity: 0.035;
-  mix-blend-mode: overlay;
+  opacity: 0.03;
+  mix-blend-mode: screen;
 }
 
 /* Metallic glass surface: frosted, hairline-lit, for small floating chrome */
