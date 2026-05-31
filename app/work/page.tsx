@@ -17,9 +17,9 @@ export default function WorkPage() {
   return (
     <>
       <Nav />
+      <WorkBackdrop />
       <main>
         <div className="relative">
-          <WorkBackdrop />
           <PageHero
             title="The work."
             subcopy="The shows we produce, episode by episode."

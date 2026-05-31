@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
 
 // Living film grain over the whole frame. A small noise tile is regenerated
 // every few frames and stretched to the viewport with nearest-neighbour
@@ -8,7 +9,7 @@ import { useEffect, useRef } from "react";
 // Sits above content (pointer-events:none), pauses when the tab is hidden,
 // and freezes to a single static frame under reduced-motion.
 export default function GrainOverlay({
-  alpha = 14,
+  alpha = 64,
   refreshInterval = 2,
   tile = 460,
 }: {
@@ -17,8 +18,12 @@ export default function GrainOverlay({
   tile?: number;
 }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const pathname = usePathname();
+  // The /work page uses the Silk shader as its sole background texture.
+  const hidden = pathname?.startsWith("/work") ?? false;
 
   useEffect(() => {
+    if (hidden) return;
     const canvas = ref.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: true });
@@ -64,7 +69,9 @@ export default function GrainOverlay({
       cancelAnimationFrame(raf);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, [alpha, refreshInterval, tile]);
+  }, [alpha, refreshInterval, tile, hidden]);
+
+  if (hidden) return null;
 
   return (
     <canvas
@@ -73,6 +80,7 @@ export default function GrainOverlay({
       className="pointer-events-none fixed inset-0 h-screen w-screen"
       style={{
         zIndex: -1,
+        opacity: 0.15,
         imageRendering: "pixelated",
         mixBlendMode: "screen",
       }}

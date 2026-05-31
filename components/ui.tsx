@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, type ComponentProps, type ReactNode } from "react";
+import { type ComponentProps, type ReactNode, type PointerEvent, useRef } from "react";
+import { motion, useMotionValue, useSpring, useReducedMotion } from "motion/react";
 
 export function EdgeDivider({ className = "" }: { className?: string }) {
   return (
@@ -23,72 +24,13 @@ export function PrimaryButton({
   size = "md",
   ...props
 }: ComponentProps<typeof Link> & { size?: keyof typeof sizes }) {
-  const wrapRef = useRef<HTMLSpanElement>(null);
-  const glowRef = useRef<HTMLSpanElement>(null);
-
-  useEffect(() => {
-    const wrap = wrapRef.current;
-    const glow = glowRef.current;
-    if (!wrap || !glow) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    let raf = 0;
-    const REACH = 150; // how far "near" extends past the button edge
-    const PULL = 10; // max magnetic displacement in px
-    const onMove = (e: PointerEvent) => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const r = wrap.getBoundingClientRect();
-        const cx = r.left + r.width / 2;
-        const cy = r.top + r.height / 2;
-        const dx = e.clientX - cx;
-        const dy = e.clientY - cy;
-        const dist = Math.hypot(dx, dy);
-        const reach = REACH + Math.max(r.width, r.height) / 2;
-        if (dist > reach) {
-          glow.style.opacity = "0";
-          wrap.style.transform = "translate3d(0,0,0)";
-          return;
-        }
-        const t = 1 - dist / reach; // 0 (far) .. 1 (centered)
-        glow.style.opacity = (0.18 + t * 0.82).toFixed(3);
-        glow.style.setProperty("--gx", `${e.clientX - r.left}px`);
-        glow.style.setProperty("--gy", `${e.clientY - r.top}px`);
-        // magnetic pull toward the cursor, eased by proximity and capped
-        const mx = Math.max(-PULL, Math.min(PULL, dx * t * 0.35));
-        const my = Math.max(-PULL, Math.min(PULL, dy * t * 0.35));
-        wrap.style.transform = `translate3d(${mx.toFixed(2)}px, ${my.toFixed(2)}px, 0)`;
-      });
-    };
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
   return (
-    <span
-      ref={wrapRef}
-      className="relative inline-flex will-change-transform"
-      style={{ transition: "transform 0.45s var(--ease-out-quart)" }}
+    <Link
+      {...props}
+      className={`sweep group inline-flex items-center justify-center gap-2 rounded-[var(--radius-btn)] bg-text font-medium text-bg transition-[transform,background] duration-300 ease-[var(--ease-out-quart)] hover:scale-[1.02] hover:bg-white ${sizes[size]} ${className}`}
     >
-      <span
-        ref={glowRef}
-        aria-hidden
-        className="pointer-events-none absolute -inset-5 -z-10 rounded-full opacity-0 blur-2xl"
-        style={{
-          background:
-            "radial-gradient(90px circle at var(--gx, 50%) var(--gy, 50%), oklch(0.92 0.04 236 / 0.6), oklch(0.85 0.05 236 / 0.18) 45%, oklch(0.85 0.05 236 / 0) 72%)",
-        }}
-      />
-      <Link
-        {...props}
-        className={`sweep group inline-flex items-center justify-center gap-2 rounded-[var(--radius-btn)] bg-text font-medium text-bg transition-[transform,background] duration-300 ease-[var(--ease-out-quart)] hover:scale-[1.02] hover:bg-white ${sizes[size]} ${className}`}
-      >
-        {children}
-      </Link>
-    </span>
+      {children}
+    </Link>
   );
 }
 
@@ -131,5 +73,59 @@ export function SectionLabel({ children }: { children: ReactNode }) {
     <span className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
       {children}
     </span>
+  );
+}
+
+// Subtle magnetic pull: the wrapped element drifts a fraction of the cursor's
+// offset from its centre and springs home on leave. The wrapper hugs the child
+// (inline-block, no padding/background) so there's no compositing seam — motion
+// manages will-change only while it's actually moving, so nothing lingers at
+// rest. Capped travel keeps it "a little bit", never a slingshot. Off under
+// reduced-motion.
+export function Magnetic({
+  children,
+  strength = 0.25,
+  max = 8,
+  className = "",
+}: {
+  children: ReactNode;
+  strength?: number;
+  max?: number;
+  className?: string;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const reduce = useReducedMotion();
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const spring = { stiffness: 220, damping: 18, mass: 0.45 };
+  const sx = useSpring(x, spring);
+  const sy = useSpring(y, spring);
+
+  const clamp = (v: number) => Math.max(-max, Math.min(max, v));
+
+  function onMove(e: PointerEvent<HTMLSpanElement>) {
+    if (reduce) return;
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    x.set(clamp((e.clientX - (r.left + r.width / 2)) * strength));
+    y.set(clamp((e.clientY - (r.top + r.height / 2)) * strength));
+  }
+
+  function reset() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.span
+      ref={ref}
+      onPointerMove={onMove}
+      onPointerLeave={reset}
+      style={{ x: sx, y: sy }}
+      className={`inline-block ${className}`}
+    >
+      {children}
+    </motion.span>
   );
 }

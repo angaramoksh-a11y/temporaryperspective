@@ -3,7 +3,7 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "motion/react";
-import { GhostButton, PrimaryButton } from "./ui";
+import { GhostButton, Magnetic, PrimaryButton } from "./ui";
 
 // WebGL volumetric rays. Client-only (touches WebGL); skipped under SSR so the
 // dark hero paints instantly and the rays fade in once mounted.
@@ -96,10 +96,10 @@ export default function Hero() {
         {/* headline */}
         <motion.h1
           variants={rise}
-          className="mt-8 font-display text-[clamp(2.1rem,6.4vw,4.9rem)] font-medium leading-[1.04] tracking-[-0.02em]"
+          className="mt-8 font-display text-[clamp(1.4rem,5.9vw,4.6rem)] font-medium leading-[1.06] tracking-[-0.02em]"
         >
-          <span className="block">For podcast conversations</span>
-          <span className="block">
+          <span className="block whitespace-nowrap">For podcast conversations</span>
+          <span className="block whitespace-nowrap">
             you only get to have{" "}
             <span className="font-normal text-text-muted">once.</span>
           </span>
@@ -118,9 +118,11 @@ export default function Hero() {
           variants={rise}
           className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
-          <PrimaryButton href="/contact" size="lg">
-            Book a call
-          </PrimaryButton>
+          <Magnetic>
+            <PrimaryButton href="/contact" size="lg">
+              Book a call
+            </PrimaryButton>
+          </Magnetic>
           <GhostButton href="/case-studies" size="lg">
             See our work
           </GhostButton>

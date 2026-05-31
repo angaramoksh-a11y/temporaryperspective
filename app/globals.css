@@ -24,11 +24,6 @@
   --radius-btn: 8px;
 }
 
-/* Film grain / noise texture. Fixed, pointer-events-none overlay (see DESIGN.md). */
-:root {
-  --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
 :root {
   --background: var(--color-bg);
   --foreground: var(--color-text);
@@ -55,19 +50,6 @@ body {
 ::selection {
   background: oklch(0.64 0.21 25 / 0.28);
   color: var(--color-text);
-}
-
-/* Fixed film-grain overlay over the whole canvas */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: var(--noise);
-  background-size: 180px 180px;
-  opacity: 0.03;
-  mix-blend-mode: screen;
 }
 
 /* Metallic glass surface: frosted, hairline-lit, for small floating chrome */

@@ -16,13 +16,13 @@ export default function CaseStudies() {
     <section className="relative py-24 lg:min-h-[100svh] lg:py-32">
       <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <SectionLabel>Case studies</SectionLabel>
+        <SectionLabel>Testimonials</SectionLabel>
       </div>
       <div className="mx-auto mt-8 flex max-w-[1400px] flex-col gap-12 px-6 lg:mt-10 lg:grid lg:grid-cols-[0.36fr_0.64fr] lg:items-start lg:gap-20 lg:px-10">
         {/* left — picker */}
         <div>
           <h2 className="max-w-sm font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-light leading-[1.1] tracking-tight">
-            The shows behind the work.
+            What our clients say about us.
           </h2>
 
           {/* mobile: horizontal tabs / desktop: vertical rail */}
