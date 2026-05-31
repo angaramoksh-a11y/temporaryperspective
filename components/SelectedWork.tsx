@@ -77,6 +77,16 @@ export default function SelectedWork() {
 
   return (
     <section className="relative pt-14 pb-16 lg:pt-16 lg:pb-20">
+      {/* Continuation of the hero light: it spills across the seam and
+          gradients out within this section instead of dying at the fold. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[70vh]"
+        style={{
+          background:
+            "radial-gradient(125% 80% at 50% -12%, oklch(0.62 0.02 255 / 0.13), oklch(0.5 0.015 255 / 0.05) 38%, transparent 64%)",
+        }}
+      />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="mb-12 flex items-end justify-between gap-6">
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">

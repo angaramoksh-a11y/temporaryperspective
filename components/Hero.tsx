@@ -22,15 +22,7 @@ export default function Hero() {
           raking floor beam catches the surface beneath it, and a vignette
           crushes the corners so the lit centre reads dimensional. All
           pointer-events-none, GPU-only motion, killed under reduced-motion. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        {/* key light — soft radial bloom, upper centre */}
-        <div
-          className="bg-keylight absolute left-1/2 top-[-22%] h-[100vh] w-[120vw]"
-          style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.82 0.025 264 / 0.32), oklch(0.42 0.02 264 / 0.10) 46%, transparent 72%)",
-          }}
-        />
+      <div aria-hidden className="pointer-events-none absolute inset-0">
         {/* floor beam — long, heavily blurred streak raking the lower scene,
             a faint horizon so the dark reads as a lit surface, not a flat fill */}
         <div
@@ -62,21 +54,14 @@ export default function Hero() {
           />
         </div>
 
-        {/* vignette — offset up toward the key light, corners to near-black */}
+        {/* vignette — darkens the upper corners for the lit-room look, but
+            stays soft toward the bottom so the floor beam keeps glowing into
+            the seam instead of being crushed to black. */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(125% 95% at 50% 26%, transparent 38%, oklch(0.05 0.004 264 / 0.55) 76%, oklch(0.04 0.004 264 / 0.9) 100%)",
-          }}
-        />
-        {/* bottom blend — dissolves the hero into the page so there's no hard
-            section seam where the next block begins */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-48"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent, var(--color-bg))",
+              "radial-gradient(135% 100% at 50% 22%, transparent 46%, oklch(0.05 0.004 264 / 0.34) 80%, oklch(0.045 0.004 264 / 0.6) 100%)",
           }}
         />
       </div>
@@ -116,7 +101,7 @@ export default function Hero() {
           <span className="block">For podcast conversations</span>
           <span className="block">
             you only get to have{" "}
-            <span className="font-normal italic text-text-muted">once.</span>
+            <span className="font-normal text-text-muted">once.</span>
           </span>
         </motion.h1>
 
