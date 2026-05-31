@@ -79,7 +79,7 @@ export function PrimaryButton({
         className="pointer-events-none absolute -inset-5 -z-10 rounded-full opacity-0 blur-2xl"
         style={{
           background:
-            "radial-gradient(90px circle at var(--gx, 50%) var(--gy, 50%), oklch(0.92 0.04 236 / 0.6), oklch(0.85 0.05 236 / 0.18) 45%, transparent 72%)",
+            "radial-gradient(90px circle at var(--gx, 50%) var(--gy, 50%), oklch(0.92 0.04 236 / 0.6), oklch(0.85 0.05 236 / 0.18) 45%, oklch(0.85 0.05 236 / 0) 72%)",
         }}
       />
       <Link

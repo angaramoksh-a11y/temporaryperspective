@@ -83,7 +83,7 @@ export default function Hero() {
               className="pointer-events-none absolute -inset-3 -z-10 rounded-full opacity-40 blur-lg transition-opacity duration-300 group-hover:opacity-70"
               style={{
                 background:
-                  "radial-gradient(closest-side, oklch(0.99 0.002 264 / 0.18), transparent)",
+                  "radial-gradient(closest-side, oklch(0.99 0.002 264 / 0.18), oklch(0.99 0.002 264 / 0))",
               }}
             />
             See case studies

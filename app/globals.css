@@ -36,6 +36,7 @@
 
 * {
   border-color: var(--color-line);
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
@@ -176,9 +177,9 @@ body::after {
   inset: 0;
   background: linear-gradient(
     105deg,
-    transparent 40%,
+    oklch(1 0 0 / 0) 40%,
     oklch(1 0 0 / 0.07) 50%,
-    transparent 60%
+    oklch(1 0 0 / 0) 60%
   );
   transform: translateX(-110%);
   transition: transform 0.6s var(--ease-out-quart);
