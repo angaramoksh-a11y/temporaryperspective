@@ -46,7 +46,9 @@
       "Bash(lsof -nP -iTCP:3000 -sTCP:LISTEN)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/work)",
-      "Bash(kill 51010)"
+      "Bash(kill 51010)",
+      "Bash(curl -s -o /dev/null -w \"/ -> %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"/work -> %{http_code}\\\\n\" http://localhost:3000/work)"
     ]
   }
 }
