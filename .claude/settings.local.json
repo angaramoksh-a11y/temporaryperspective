@@ -48,7 +48,8 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/work)",
       "Bash(kill 51010)",
       "Bash(curl -s -o /dev/null -w \"/ -> %{http_code}\\\\n\" http://localhost:3000/)",
-      "Bash(curl -s -o /dev/null -w \"/work -> %{http_code}\\\\n\" http://localhost:3000/work)"
+      "Bash(curl -s -o /dev/null -w \"/work -> %{http_code}\\\\n\" http://localhost:3000/work)",
+      "Bash(node -e \"const p=require\\('/Users/angara/v12/package.json'\\); console.log\\(JSON.stringify\\({dependencies:p.dependencies,devDependencies:p.devDependencies},null,2\\)\\)\")"
     ]
   }
 }

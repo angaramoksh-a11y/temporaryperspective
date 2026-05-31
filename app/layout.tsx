@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Anton, Fraunces, Geist, Geist_Mono } from "next/font/google";
+import BottomBlur from "@/components/BottomBlur";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -49,7 +50,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${thunder.variable} h-full antialiased`}
     >
-      <body className="min-h-full text-text">{children}</body>
+      <body className="min-h-full text-text">
+        {children}
+        <BottomBlur />
+      </body>
     </html>
   );
 }
