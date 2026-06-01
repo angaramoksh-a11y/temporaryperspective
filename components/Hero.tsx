@@ -1,13 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { motion } from "motion/react";
 import { GhostButton, Magnetic, PrimaryButton } from "./ui";
-
-// WebGL volumetric rays. Client-only (touches WebGL); skipped under SSR so the
-// dark hero paints instantly and the rays fade in once mounted.
-const LightRays = dynamic(() => import("./LightRays"), { ssr: false });
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const rise = {
@@ -18,9 +13,9 @@ const rise = {
 export default function Hero() {
   return (
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-bg">
-      {/* The resend "3D room": one key light blooms behind the headline, a
-          raking floor beam catches the surface beneath it, and a vignette
-          crushes the corners so the lit centre reads dimensional. All
+      {/* The resend "3D room": a key light blooms behind the headline and a
+          vignette crushes the corners so the lit centre reads dimensional.
+          Light rays removed — keeping the stage plain for now. All
           pointer-events-none, GPU-only motion, killed under reduced-motion. */}
       <div aria-hidden className="pointer-events-none absolute inset-0">
         {/* floor beam — long, heavily blurred streak raking the lower scene,
@@ -33,26 +28,6 @@ export default function Hero() {
             filter: "blur(64px)",
           }}
         />
-        {/* volumetric god-rays raking down from the top key light */}
-        <div
-          className="absolute inset-0 opacity-60"
-          style={{ mixBlendMode: "screen" }}
-        >
-          <LightRays
-            raysOrigin="top-center"
-            raysColor="#ffffff"
-            raysSpeed={0.8}
-            lightSpread={1}
-            rayLength={1.2}
-            followMouse
-            mouseInfluence={0.3}
-            noiseAmount={0.1}
-            distortion={0}
-            pulsating
-            fadeDistance={1.5}
-            saturation={1}
-          />
-        </div>
 
         {/* vignette — darkens the upper corners for the lit-room look, but
             stays soft toward the bottom so the floor beam keeps glowing into

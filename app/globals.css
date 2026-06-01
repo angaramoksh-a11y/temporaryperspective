@@ -274,6 +274,56 @@ body {
   will-change: transform, opacity;
 }
 
+/* Metallic logomark. Chrome gradient clipped to the logo via mask; a bright
+   highlight band rakes across and back (alternate) so it loops seamlessly with
+   no jump. A faint warm-gold stop is the "burn". A soft chrome bloom sits
+   behind, matching the hero key-light vocabulary. */
+.metallic-logo-wrap {
+  position: relative;
+  display: inline-block;
+}
+.metallic-logo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 548.99 / 305.99;
+  background: linear-gradient(
+    100deg,
+    oklch(0.46 0.008 264) 0%,
+    oklch(0.86 0.005 264) 16%,
+    oklch(0.99 0.002 264) 28%,
+    oklch(0.8 0.05 88) 36%,
+    oklch(0.55 0.008 264) 50%,
+    oklch(0.93 0.004 264) 64%,
+    oklch(0.5 0.008 264) 80%,
+    oklch(0.82 0.006 264) 100%
+  );
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  -webkit-mask: url(/logo-white.svg) center / contain no-repeat;
+  mask: url(/logo-white.svg) center / contain no-repeat;
+  animation: metal-sweep 9s var(--ease-out-quart) infinite alternate;
+  will-change: background-position;
+}
+.metallic-logo-glow {
+  position: absolute;
+  inset: -35% -20%;
+  background: radial-gradient(
+    closest-side,
+    oklch(0.99 0.002 264 / 0.16),
+    transparent 72%
+  );
+  filter: blur(34px);
+  pointer-events: none;
+}
+@keyframes metal-sweep {
+  from {
+    background-position: 0% 50%;
+  }
+  to {
+    background-position: 100% 50%;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -282,6 +332,7 @@ body {
   .chrome-breathe,
   .bg-keylight,
   .bg-floorbeam,
+  .metallic-logo,
   .sweep::after {
     animation: none;
     transition: none;
