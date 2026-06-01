@@ -12,7 +12,7 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-bg">
+    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       {/* The resend "3D room": a key light blooms behind the headline and a
           vignette crushes the corners so the lit centre reads dimensional.
           Light rays removed — keeping the stage plain for now. All

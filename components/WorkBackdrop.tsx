@@ -12,7 +12,7 @@ export default function WorkBackdrop() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden opacity-[0.85]"
     >
-      <Silk speed={1.5} scale={0.7} color="#8b9276" noiseIntensity={2.3} rotation={0} />
+      <Silk speed={1.5} scale={0.7} color="#8c8f82" noiseIntensity={2.3} rotation={0} />
     </div>
   );
 }

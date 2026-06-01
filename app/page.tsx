@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import HomeBackdrop from "@/components/HomeBackdrop";
 import Hero from "@/components/Hero";
 import SelectedWork from "@/components/SelectedWork";
 import Process from "@/components/Process";
@@ -13,6 +14,7 @@ export default function Home() {
   return (
     <>
       <Nav />
+      <HomeBackdrop />
       <main>
         <Hero />
         <SelectedWork />

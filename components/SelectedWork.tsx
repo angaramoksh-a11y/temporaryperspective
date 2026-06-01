@@ -69,6 +69,20 @@ export default function SelectedWork() {
   const enter = (id: string) => setHovered(id);
   const leave = () => setHovered(null);
 
+  // magic-bento lighting: spotlight follows the pointer across the row, and each
+  // card's hairline ring lights toward the cursor. Both are pure CSS vars; the
+  // visuals are gated off under reduced-motion in globals.css.
+  const onRowMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
+  };
+  const onCardMove = (e: React.PointerEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--cx", `${e.clientX - r.left}px`);
+    e.currentTarget.style.setProperty("--cy", `${e.clientY - r.top}px`);
+  };
+
   const open = (e: Episode) => {
     if (drag.current.moved > 6) return; // was a drag, not a click
     setActive(e);
@@ -99,14 +113,15 @@ export default function SelectedWork() {
         </div>
       </div>
 
-      <div
-        ref={rowRef}
-        onPointerDown={onDown}
-        onPointerMove={onMoveDrag}
-        onPointerUp={onUp}
-        onPointerLeave={onUp}
-        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
-      >
+      <div className="bento-row relative" onPointerMove={onRowMove}>
+        <div
+          ref={rowRef}
+          onPointerDown={onDown}
+          onPointerMove={onMoveDrag}
+          onPointerUp={onUp}
+          onPointerLeave={onUp}
+          className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
+        >
         {selectedWork.map((ep) => (
           <figure
             key={ep.id}
@@ -116,8 +131,9 @@ export default function SelectedWork() {
           >
             <button
               onClick={() => open(ep)}
+              onPointerMove={onCardMove}
               aria-label={`${ep.guest}, ${ep.client}`}
-              className="relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
+              className="bento-card relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
             >
               <Thumb
                 id={ep.id}
@@ -140,10 +156,11 @@ export default function SelectedWork() {
           </figure>
         ))}
 
-        {/* CTA tile */}
+        {/* CTA tile — frosted glass, with the same bento ring */}
         <Link
           href="/work"
-          className="sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-xl border border-line-strong bg-bg-raised/40 sm:w-[420px] lg:w-[480px]"
+          onPointerMove={onCardMove}
+          className="glass bento-card sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-xl sm:w-[420px] lg:w-[480px]"
           style={{ aspectRatio: "16 / 9" }}
         >
           <span className="inline-flex items-center gap-2 font-display text-3xl font-light tracking-tight">
@@ -153,6 +170,8 @@ export default function SelectedWork() {
             </span>
           </span>
         </Link>
+        </div>
+        <div aria-hidden className="bento-spot" />
       </div>
 
       <Lightbox
