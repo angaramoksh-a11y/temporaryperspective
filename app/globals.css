@@ -312,7 +312,7 @@ body {
     oklch(0.99 0.002 264 / 0.16),
     transparent 72%
   );
-  filter: blur(34px);
+  filter: blur(44px);
   pointer-events: none;
 }
 @keyframes metal-sweep {

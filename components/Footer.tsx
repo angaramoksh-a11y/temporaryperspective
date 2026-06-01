@@ -82,7 +82,9 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
+        {/* Lifted above the fixed BottomBlur (z-30) so the legal line stays
+            crisp at the foot of the page instead of dissolving into the blur. */}
+        <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© Temporary Perspective LLP, {year}.</span>
           <span>Mumbai, India</span>
         </div>

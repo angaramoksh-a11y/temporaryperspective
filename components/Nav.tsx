@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CAL_LINK } from "@/lib/work";
 import Logo from "./Logo";
-import { PrimaryButton } from "./ui";
+import { Magnetic, PrimaryButton } from "./ui";
 
 const links = [
   { label: "Work", href: "/work" },
@@ -93,7 +93,9 @@ export default function Nav() {
 
         <div className="flex items-center gap-2 justify-self-end">
           <div className="hidden sm:block">
-            <PrimaryButton href={CAL_LINK}>Book a call</PrimaryButton>
+            <Magnetic>
+              <PrimaryButton href={CAL_LINK}>Book a call</PrimaryButton>
+            </Magnetic>
           </div>
           <button
             type="button"
