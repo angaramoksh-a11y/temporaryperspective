@@ -52,7 +52,9 @@
       "Bash(node -e \"const p=require\\('/Users/angara/v12/package.json'\\); console.log\\(JSON.stringify\\({dependencies:p.dependencies,devDependencies:p.devDependencies},null,2\\)\\)\")",
       "Bash(node -e \"console.log\\(JSON.stringify\\(require\\('/Users/angara/v12/package.json'\\).scripts,null,2\\)\\)\")",
       "Bash(git config *)",
-      "Bash(echo \"EXIT: $?\")"
+      "Bash(echo \"EXIT: $?\")",
+      "Bash(git show *)",
+      "Read(//tmp/**)"
     ]
   }
 }

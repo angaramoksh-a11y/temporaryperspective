@@ -19,15 +19,7 @@ function isActive(pathname: string, href: string) {
 
 export default function Nav() {
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   // Close the mobile overlay whenever the route changes.
   useEffect(() => {
@@ -44,17 +36,6 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      {/* Gradient scrim — a solid black top fading straight to transparent,
-          no blur, so the bar melts into the page without a hard line. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[180%] transition-opacity duration-500 ease-[var(--ease-out-quart)]"
-        style={{
-          opacity: scrolled ? 1 : 0,
-          background:
-            "linear-gradient(to bottom, oklch(0.085 0.004 264 / 0.2) 0%, oklch(0.085 0.004 264 / 0.2) 80%, oklch(0.085 0.004 264 / 0) 100%)",
-        }}
-      />
       <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:h-[72px] lg:px-10">
         <Link
           href="/"
