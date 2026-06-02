@@ -15,9 +15,19 @@ export default function Hero() {
     <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
       {/* The resend "3D room": a key light blooms behind the headline and a
           vignette crushes the corners so the lit centre reads dimensional.
-          Light rays removed — keeping the stage plain for now. All
+          Light rays removed — keeping the stage plain for now. Faded out at the
+          bottom so the hero's own vignette/floor beam dissolve into the global
+          silk instead of clipping into a hard seam at the section edge. All
           pointer-events-none, GPU-only motion, killed under reduced-motion. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          maskImage: "linear-gradient(to bottom, #000 66%, transparent 95%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, #000 66%, transparent 95%)",
+        }}
+      >
         {/* floor beam — long, heavily blurred streak raking the lower scene,
             a faint horizon so the dark reads as a lit surface, not a flat fill */}
         <div
@@ -45,7 +55,7 @@ export default function Hero() {
         initial="hidden"
         animate="show"
         transition={{ staggerChildren: 0.09, delayChildren: 0.15 }}
-        className="relative z-10 flex w-full max-w-3xl flex-col items-center px-6 text-center"
+        className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-col items-start px-6 text-left lg:px-10"
       >
         {/* pill */}
         <motion.div variants={rise}>
@@ -91,7 +101,7 @@ export default function Hero() {
         {/* buttons */}
         <motion.div
           variants={rise}
-          className="mt-10 flex flex-wrap items-center justify-center gap-3"
+          className="mt-10 flex flex-wrap items-center justify-start gap-3"
         >
           <Magnetic>
             <PrimaryButton href="/contact" size="lg">

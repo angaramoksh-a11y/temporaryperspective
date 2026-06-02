@@ -380,6 +380,27 @@ body {
   opacity: 1;
 }
 
+/* Very light magnetism: the tile drifts a few px toward the cursor (JS sets the
+   vars, clamped small) and springs home on leave via the transition. */
+.bento-magnet {
+  transform: translate(var(--tx, 0px), var(--ty, 0px));
+  transition: transform 0.4s var(--ease-out-quart);
+}
+
+/* Click ripple: a chrome pulse from the click point (element created in JS). */
+.bento-ripple {
+  position: absolute;
+  z-index: 3;
+  border-radius: 9999px;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    circle,
+    oklch(0.99 0.002 264 / 0.45),
+    transparent 70%
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -390,9 +411,13 @@ body {
   .bg-floorbeam,
   .metallic-logo,
   .bento-card::after,
+  .bento-magnet,
   .sweep::after {
     animation: none;
     transition: none;
+  }
+  .bento-magnet {
+    transform: none;
   }
   .bento-spot {
     display: none;

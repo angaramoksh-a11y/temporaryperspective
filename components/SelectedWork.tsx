@@ -1,92 +1,85 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useState } from "react";
+import { useReducedMotion } from "motion/react";
 import { embed, selectedWork, type Episode } from "@/lib/work";
 import Thumb from "./Thumb";
 import Lightbox from "./Lightbox";
 
+// Bento spans, applied on both the 2-col (mobile) and 4-col (lg) grid. col-span-2
+// is full-width on mobile / half on desktop, so one set of classes yields a
+// coherent bento at both sizes: a 2x2 featured tile, two squares, three wides.
+const SPANS = [
+  "col-span-2 row-span-2",
+  "col-span-1 row-span-1",
+  "col-span-1 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-2 row-span-1",
+  "col-span-2 row-span-1",
+];
+
 export default function SelectedWork() {
   const [active, setActive] = useState<Episode | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  const reduce = useReducedMotion();
 
-  // drag-to-scroll
-  const rowRef = useRef<HTMLDivElement>(null);
-  const drag = useRef({ down: false, startX: 0, scroll: 0, moved: 0 });
-
-  // arrow affordances: track whether there's more to scroll on each side
-  const [canLeft, setCanLeft] = useState(false);
-  const [canRight, setCanRight] = useState(true);
-
-  const sync = useCallback(() => {
-    const el = rowRef.current;
-    if (!el) return;
-    const max = el.scrollWidth - el.clientWidth;
-    setCanLeft(el.scrollLeft > 4);
-    setCanRight(el.scrollLeft < max - 4);
-  }, []);
-
-  useEffect(() => {
-    sync();
-    const el = rowRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", sync, { passive: true });
-    window.addEventListener("resize", sync);
-    return () => {
-      el.removeEventListener("scroll", sync);
-      window.removeEventListener("resize", sync);
-    };
-  }, [sync]);
-
-  const nudge = (dir: 1 | -1) => {
-    const el = rowRef.current;
-    if (!el) return;
-    el.scrollBy({ left: dir * el.clientWidth * 0.82, behavior: "smooth" });
-  };
-
-  const onDown = (e: React.PointerEvent) => {
-    const el = rowRef.current;
-    if (!el) return;
-    drag.current = {
-      down: true,
-      startX: e.clientX,
-      scroll: el.scrollLeft,
-      moved: 0,
-    };
-  };
-  const onMoveDrag = (e: React.PointerEvent) => {
-    const el = rowRef.current;
-    if (!el || !drag.current.down) return;
-    const dx = e.clientX - drag.current.startX;
-    drag.current.moved = Math.max(drag.current.moved, Math.abs(dx));
-    el.scrollLeft = drag.current.scroll - dx;
-  };
-  const onUp = () => {
-    drag.current.down = false;
-  };
-
-  // play the preview the moment the card is hovered, no hold on the still
   const enter = (id: string) => setHovered(id);
   const leave = () => setHovered(null);
+  const open = (e: Episode) => {
+    setActive(e);
+    setHovered(null);
+  };
 
-  // magic-bento lighting: spotlight follows the pointer across the row, and each
-  // card's hairline ring lights toward the cursor. Both are pure CSS vars; the
-  // visuals are gated off under reduced-motion in globals.css.
+  // spotlight follows the cursor across the whole grid
   const onRowMove = (e: React.PointerEvent<HTMLDivElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
     e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
   };
+
+  // per-tile: border-ring position (--cx/--cy) + a touch of magnetism (--tx/--ty)
   const onCardMove = (e: React.PointerEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--cx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--cy", `${e.clientY - r.top}px`);
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left;
+    const y = e.clientY - r.top;
+    el.style.setProperty("--cx", `${x}px`);
+    el.style.setProperty("--cy", `${y}px`);
+    if (reduce) return;
+    const clamp = (v: number) => Math.max(-5, Math.min(5, v));
+    el.style.setProperty("--tx", `${clamp((x - r.width / 2) * 0.06)}px`);
+    el.style.setProperty("--ty", `${clamp((y - r.height / 2) * 0.06)}px`);
+  };
+  const onCardLeave = (e: React.PointerEvent<HTMLElement>) => {
+    e.currentTarget.style.setProperty("--tx", "0px");
+    e.currentTarget.style.setProperty("--ty", "0px");
   };
 
-  const open = (e: Episode) => {
-    if (drag.current.moved > 6) return; // was a drag, not a click
-    setActive(e);
-    setHovered(null);
+  // chrome click pulse from the pointer-down point
+  const onRipple = (e: React.PointerEvent<HTMLElement>) => {
+    if (reduce) return;
+    const el = e.currentTarget;
+    const r = el.getBoundingClientRect();
+    const d = Math.max(r.width, r.height);
+    const s = document.createElement("span");
+    s.className = "bento-ripple";
+    s.style.left = `${e.clientX - r.left}px`;
+    s.style.top = `${e.clientY - r.top}px`;
+    s.style.width = s.style.height = `${d}px`;
+    el.appendChild(s);
+    if (typeof s.animate !== "function") {
+      s.remove();
+      return;
+    }
+    const anim = s.animate(
+      [
+        { transform: "translate(-50%, -50%) scale(0)", opacity: 0.4 },
+        { transform: "translate(-50%, -50%) scale(2.4)", opacity: 0 },
+      ],
+      { duration: 600, easing: "cubic-bezier(0.25, 1, 0.5, 1)" },
+    );
+    anim.onfinish = () => s.remove();
   };
 
   return (
@@ -102,76 +95,66 @@ export default function SelectedWork() {
         }}
       />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="mb-12 flex items-end justify-between gap-6">
+        <div className="mb-10 flex items-end justify-between gap-6">
           <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
             Some of our work
           </h2>
-          <div className="hidden shrink-0 items-center gap-2 sm:flex">
-            <ScrollArrow dir={-1} disabled={!canLeft} onClick={() => nudge(-1)} />
-            <ScrollArrow dir={1} disabled={!canRight} onClick={() => nudge(1)} />
-          </div>
         </div>
-      </div>
 
-      <div className="bento-row relative" onPointerMove={onRowMove}>
-        <div
-          ref={rowRef}
-          onPointerDown={onDown}
-          onPointerMove={onMoveDrag}
-          onPointerUp={onUp}
-          onPointerLeave={onUp}
-          className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
-        >
-        {selectedWork.map((ep) => (
-          <figure
-            key={ep.id}
-            className="group w-[78vw] shrink-0 sm:w-[420px] lg:w-[480px]"
-            onMouseEnter={() => enter(ep.id)}
-            onMouseLeave={leave}
-          >
-            <button
-              onClick={() => open(ep)}
-              onPointerMove={onCardMove}
-              aria-label={`${ep.guest}, ${ep.client}`}
-              className="bento-card relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
-            >
-              <Thumb
-                id={ep.id}
-                alt={`${ep.guest} on ${ep.client}`}
-                className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
-              />
-              {hovered === ep.id && (
-                <iframe
-                  src={embed(ep.id, true, true)}
-                  title={ep.guest}
-                  allow="autoplay; encrypted-media; picture-in-picture"
-                  className="pointer-events-none absolute inset-0 h-full w-full"
+        <div className="bento-row relative" onPointerMove={onRowMove}>
+          <div className="grid auto-rows-[150px] grid-cols-2 gap-3 sm:auto-rows-[175px] lg:auto-rows-[200px] lg:grid-cols-4 lg:gap-4">
+            {selectedWork.map((ep, i) => (
+              <button
+                key={ep.id}
+                onClick={() => open(ep)}
+                onPointerMove={onCardMove}
+                onPointerLeave={onCardLeave}
+                onPointerDown={onRipple}
+                onMouseEnter={() => enter(ep.id)}
+                onMouseLeave={leave}
+                aria-label={`${ep.guest}, ${ep.client}`}
+                className={`bento-card bento-magnet group relative overflow-hidden rounded-xl border border-line ${SPANS[i] ?? "col-span-2 row-span-1"}`}
+              >
+                <Thumb
+                  id={ep.id}
+                  alt={`${ep.guest} on ${ep.client}`}
+                  className="brightness-[0.82] transition-[transform,filter] duration-500 ease-[var(--ease-out-quart)] group-hover:scale-105 group-hover:brightness-100"
                 />
-              )}
-            </button>
-            <figcaption className="mt-4 px-0.5">
-              <p className="font-medium leading-snug">{ep.guest}</p>
-              <p className="mt-1 text-sm text-text-faint">{ep.client}</p>
-            </figcaption>
-          </figure>
-        ))}
+                {hovered === ep.id && (
+                  <iframe
+                    src={embed(ep.id, true, true)}
+                    title={ep.guest}
+                    allow="autoplay; encrypted-media; picture-in-picture"
+                    className="pointer-events-none absolute inset-0 z-[2] h-full w-full"
+                  />
+                )}
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] bg-gradient-to-t from-bg/95 via-bg/40 to-transparent p-3 text-left sm:p-4">
+                  <p className="font-medium leading-snug">{ep.guest}</p>
+                  <p className="mt-0.5 text-xs text-text-faint sm:text-sm">
+                    {ep.client}
+                  </p>
+                </div>
+              </button>
+            ))}
 
-        {/* CTA tile — frosted glass, with the same bento ring */}
-        <Link
-          href="/work"
-          onPointerMove={onCardMove}
-          className="glass bento-card sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-xl sm:w-[420px] lg:w-[480px]"
-          style={{ aspectRatio: "16 / 9" }}
-        >
-          <span className="inline-flex items-center gap-2 font-display text-3xl font-light tracking-tight">
-            Watch more work
-            <span className="text-2xl transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
-              →
-            </span>
-          </span>
-        </Link>
+            {/* CTA tile — frosted glass, same bento treatment */}
+            <Link
+              href="/work"
+              onPointerMove={onCardMove}
+              onPointerLeave={onCardLeave}
+              onPointerDown={onRipple}
+              className="glass bento-card bento-magnet sweep group col-span-2 row-span-1 flex items-center justify-center gap-2 rounded-xl lg:col-span-4"
+            >
+              <span className="inline-flex items-center gap-2 font-display text-2xl font-light tracking-tight sm:text-3xl">
+                Watch more work
+                <span className="text-xl transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1 sm:text-2xl">
+                  →
+                </span>
+              </span>
+            </Link>
+          </div>
+          <div aria-hidden className="bento-spot" />
         </div>
-        <div aria-hidden className="bento-spot" />
       </div>
 
       <Lightbox
@@ -181,39 +164,5 @@ export default function SelectedWork() {
         onSelect={(e) => setActive(e)}
       />
     </section>
-  );
-}
-
-function ScrollArrow({
-  dir,
-  disabled,
-  onClick,
-}: {
-  dir: 1 | -1;
-  disabled: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={dir === 1 ? "Scroll work right" : "Scroll work left"}
-      className="grid h-10 w-10 place-items-center rounded-full border border-line text-text-muted transition-[color,border-color,opacity] duration-300 ease-[var(--ease-out-quart)] hover:border-line-strong hover:text-text disabled:pointer-events-none disabled:opacity-30"
-    >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="h-4 w-4"
-        aria-hidden
-        style={{ transform: dir === 1 ? "none" : "scaleX(-1)" }}
-      >
-        <path d="M5 12h14M13 6l6 6-6 6" />
-      </svg>
-    </button>
   );
 }
