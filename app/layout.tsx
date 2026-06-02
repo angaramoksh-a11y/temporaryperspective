@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Fraunces, Geist, Geist_Mono } from "next/font/google";
+import { Anton, Geist, Geist_Mono } from "next/font/google";
 import BottomBlur from "@/components/BottomBlur";
 import "./globals.css";
 
@@ -13,16 +13,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// Display face. High-contrast modern serif: the free stand-in closest to
-// resend's licensed Reckless, with optical sizing for editorial-luxury weight
-// at poster scale. Swap to next/font/local for the real face later; the
-// `--font-fraunces` variable and every `font-display` usage stay unchanged.
-const fraunces = Fraunces({
-  variable: "--font-fraunces",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  subsets: ["latin"],
-});
+// Display face: the system sans (SF Pro on Apple, Geist elsewhere) wired into
+// the `--font-display` token in globals.css. No webfont to load.
 
 // Poster display face. Stand-in for Thunder (Pangram Pangram, commercial):
 // Anton is the closest free tall-condensed grotesque. To use the real Thunder,
@@ -48,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${thunder.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${thunder.variable} h-full antialiased`}
     >
       <body className="min-h-full text-text">
         {children}
