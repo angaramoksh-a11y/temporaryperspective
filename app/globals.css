@@ -326,62 +326,6 @@ body {
   }
 }
 
-/* Magic-bento work cards. Chrome, never purple. A hairline border-ring lights
-   toward the cursor on hover (same mask-border trick as .edge-gradient); a dim
-   chrome spotlight tracks the pointer across the row. Glassmorphism lives on the
-   CTA tile (.glass). GPU-cheap, all off under reduced-motion. Adapted from the
-   reactbits magic-bento feel, not copied: dimmer, thinner, on our palette. */
-.bento-card {
-  position: relative;
-  isolation: isolate;
-}
-.bento-card::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  border-radius: inherit;
-  padding: 1px;
-  background: radial-gradient(
-    150px circle at var(--cx, 50%) var(--cy, 50%),
-    oklch(0.99 0.002 264 / 0.55),
-    oklch(0.99 0.002 264 / 0) 62%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.35s var(--ease-out-quart);
-  pointer-events: none;
-}
-.bento-card:hover::after,
-.bento-card:focus-visible::after {
-  opacity: 1;
-}
-
-.bento-spot {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(
-    320px circle at var(--mx, 50%) var(--my, 50%),
-    oklch(0.99 0.002 264 / 0.06),
-    transparent 70%
-  );
-  mix-blend-mode: screen;
-  transition: opacity 0.4s var(--ease-out-quart);
-}
-.bento-row:hover .bento-spot {
-  opacity: 1;
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -391,12 +335,8 @@ body {
   .bg-keylight,
   .bg-floorbeam,
   .metallic-logo,
-  .bento-card::after,
   .sweep::after {
     animation: none;
     transition: none;
-  }
-  .bento-spot {
-    display: none;
   }
 }

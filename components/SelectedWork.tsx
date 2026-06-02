@@ -69,20 +69,6 @@ export default function SelectedWork() {
   const enter = (id: string) => setHovered(id);
   const leave = () => setHovered(null);
 
-  // magic-bento lighting: spotlight follows the pointer across the row, and each
-  // card's hairline ring lights toward the cursor. Both are pure CSS vars; the
-  // visuals are gated off under reduced-motion in globals.css.
-  const onRowMove = (e: React.PointerEvent<HTMLDivElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`);
-  };
-  const onCardMove = (e: React.PointerEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    e.currentTarget.style.setProperty("--cx", `${e.clientX - r.left}px`);
-    e.currentTarget.style.setProperty("--cy", `${e.clientY - r.top}px`);
-  };
-
   const open = (e: Episode) => {
     if (drag.current.moved > 6) return; // was a drag, not a click
     setActive(e);
@@ -90,40 +76,45 @@ export default function SelectedWork() {
   };
 
   return (
-    <section className="relative pt-14 pb-16 lg:pt-16 lg:pb-20">
+    <section className="relative pt-14 pb-28 lg:pt-16 lg:pb-36">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="mb-12 flex items-end justify-between gap-6">
-          <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
-            Some of our work
-          </h2>
-          <div className="hidden shrink-0 items-center gap-2 sm:flex">
+        <div className="mb-12 flex items-start justify-between gap-6">
+          <div className="max-w-xl">
+            <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
+              Some of our work
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-text-muted">
+              Politics, fintech, and founder stories. Long-form conversations
+              with the kind of guests who don&apos;t usually say yes, and the
+              production behind them.
+            </p>
+          </div>
+          <div className="hidden shrink-0 items-center gap-2 pt-1 sm:flex">
             <ScrollArrow dir={-1} disabled={!canLeft} onClick={() => nudge(-1)} />
             <ScrollArrow dir={1} disabled={!canRight} onClick={() => nudge(1)} />
           </div>
         </div>
       </div>
 
-      <div className="bento-row relative" onPointerMove={onRowMove}>
-        <div
-          ref={rowRef}
-          onPointerDown={onDown}
-          onPointerMove={onMoveDrag}
-          onPointerUp={onUp}
-          onPointerLeave={onUp}
-          className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
-        >
+      <div
+        ref={rowRef}
+        onPointerDown={onDown}
+        onPointerMove={onMoveDrag}
+        onPointerUp={onUp}
+        onPointerLeave={onUp}
+        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
+      >
         {selectedWork.map((ep) => (
           <figure
             key={ep.id}
-            className="group w-[78vw] shrink-0 sm:w-[420px] lg:w-[480px]"
+            className="glass sweep group w-[78vw] shrink-0 rounded-2xl p-2.5 sm:w-[420px] lg:w-[480px]"
             onMouseEnter={() => enter(ep.id)}
             onMouseLeave={leave}
           >
             <button
               onClick={() => open(ep)}
-              onPointerMove={onCardMove}
               aria-label={`${ep.guest}, ${ep.client}`}
-              className="bento-card relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
+              className="relative block aspect-video w-full overflow-hidden rounded-xl"
             >
               <Thumb
                 id={ep.id}
@@ -139,18 +130,17 @@ export default function SelectedWork() {
                 />
               )}
             </button>
-            <figcaption className="mt-4 px-0.5">
+            <figcaption className="px-1.5 pb-1 pt-3.5">
               <p className="font-medium leading-snug">{ep.guest}</p>
               <p className="mt-1 text-sm text-text-faint">{ep.client}</p>
             </figcaption>
           </figure>
         ))}
 
-        {/* CTA tile — frosted glass, with the same bento ring */}
+        {/* CTA tile — frosted glass with the light sweep */}
         <Link
           href="/work"
-          onPointerMove={onCardMove}
-          className="glass bento-card sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-xl sm:w-[420px] lg:w-[480px]"
+          className="glass sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-2xl sm:w-[420px] lg:w-[480px]"
           style={{ aspectRatio: "16 / 9" }}
         >
           <span className="inline-flex items-center gap-2 font-display text-3xl font-light tracking-tight">
@@ -160,8 +150,6 @@ export default function SelectedWork() {
             </span>
           </span>
         </Link>
-        </div>
-        <div aria-hidden className="bento-spot" />
       </div>
 
       <Lightbox

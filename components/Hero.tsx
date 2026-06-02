@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import GuestPass from "./GuestPass";
 import { GhostButton, Magnetic, PrimaryButton } from "./ui";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -51,9 +50,6 @@ export default function Hero() {
           }}
         />
       </div>
-
-      {/* Guest Pass lanyard fills the right-hand negative space (lg+). */}
-      <GuestPass className="absolute right-[7%] top-24 z-10 hidden lg:flex" />
 
       <motion.div
         initial="hidden"

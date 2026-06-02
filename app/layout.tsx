@@ -44,7 +44,7 @@ export default function RootLayout({
     >
       <body className="min-h-full text-text">
         {children}
-        <BottomBlur />
+        <BottomBlur strength={1} />
       </body>
     </html>
   );

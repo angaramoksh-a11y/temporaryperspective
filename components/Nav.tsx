@@ -2,147 +2,375 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Logo from "./Logo";
 import { Magnetic, PrimaryButton } from "./ui";
 
-// Floating glass card-nav. The top bar is always visible (logo, a Menu toggle,
-// and the persistent Book a call); toggling expands the bar into three cards.
-// Adapted from the reactbits card-nav: our palette, glass surface, subtle inner
-// tiles (no heavy nested cards), motion height reveal off under reduced-motion.
-const groups = [
+// Floating glass nav that morphs. Inspired by sarvam.ai (feel only): a detached
+// rounded bar with flat, always-visible links; hovering a category smoothly
+// expands the *same* bar into a megamenu (sub-items + a featured card), its
+// height and corner radius animating together. No desktop Menu toggle; mobile
+// falls back to a hamburger accordion overlay.
+
+type Item = { label: string; href: string; desc: string };
+type Featured = { title: string; copy: string; href: string; cta: string };
+type Category =
+  | { label: string; items: Item[]; featured: Featured; href?: never }
+  | { label: string; href: string; items?: never; featured?: never };
+
+const categories: Category[] = [
   {
-    title: "On screen.",
-    sub: "Every episode, every show.",
-    links: [
-      { label: "All episodes", href: "/work" },
-      { label: "Case studies", href: "/case-studies" },
+    label: "Watch",
+    items: [
+      { label: "All episodes", href: "/work", desc: "Every episode, every show." },
+      { label: "Case studies", href: "/case-studies", desc: "How the work came together." },
     ],
+    featured: {
+      title: "The work",
+      copy: "100+ episodes for India's hardest-to-book guests.",
+      href: "/work",
+      cta: "See all work",
+    },
   },
   {
-    title: "The studio.",
-    sub: "How we run a show, where we shoot, who runs it.",
-    links: [
-      { label: "Our process", href: "/process" },
-      { label: "Shooting remote", href: "/virtual" },
-      { label: "About us", href: "/about" },
-      { label: "Common questions", href: "/faq" },
+    label: "Studio",
+    items: [
+      { label: "Our process", href: "/process", desc: "How we run a show." },
+      { label: "Shooting remote", href: "/virtual", desc: "Record from anywhere." },
+      { label: "About us", href: "/about", desc: "Who runs the studio." },
+      { label: "Common questions", href: "/faq", desc: "Everything you might ask." },
     ],
+    featured: {
+      title: "Start with a call",
+      copy: "Tell us about your show. We handle the rest.",
+      href: "/contact",
+      cta: "Book a call",
+    },
   },
-  {
-    title: "Writing.",
-    sub: "Notes on running a podcast worth watching.",
-    links: [{ label: "Newsletter", href: "/newsletter" }],
-  },
+  { label: "Newsletter", href: "/newsletter" },
 ];
+
+const under = (p: string, href: string) => p === href || p.startsWith(`${href}/`);
+const isActive = (p: string, c: Category) =>
+  c.items ? c.items.some((i) => under(p, i.href)) : under(p, c.href);
 
 export default function Nav() {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
+  const [openCat, setOpenCat] = useState<string | null>(null);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [expanded, setExpanded] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Close on route change and on Escape.
-  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    setOpenCat(null);
+    setMobileOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setOpenCat(null);
+        setMobileOpen(false);
+      }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const panelEase = { duration: reduce ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] as const };
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileOpen]);
+
+  const open = (label: string | null) => {
+    clearTimeout(closeTimer.current);
+    setOpenCat(label);
+  };
+  const scheduleClose = () => {
+    closeTimer.current = setTimeout(() => setOpenCat(null), 180);
+  };
+
+  const current = categories.find((c) => c.label === openCat && c.items) as
+    | Extract<Category, { items: Item[] }>
+    | undefined;
+  const isOpen = !!current;
+  const smooth = { duration: reduce ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] as const };
+  const fade = { duration: reduce ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
-      <div className="glass edge-gradient mx-auto max-w-[1100px] overflow-hidden rounded-2xl">
-        {/* top bar — always visible */}
-        <div className="flex h-14 items-center justify-between gap-3 px-3 sm:h-[60px] sm:px-4">
+    <header className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-4">
+      <motion.div
+        onMouseEnter={() => clearTimeout(closeTimer.current)}
+        onMouseLeave={scheduleClose}
+        initial={{ borderRadius: 12 }}
+        animate={{ borderRadius: isOpen ? 18 : 12 }}
+        transition={smooth}
+        className="glass edge-gradient mx-auto max-w-[1080px] overflow-hidden"
+      >
+        {/* top bar */}
+        <div className="relative flex h-[58px] items-center justify-between gap-4 pl-5 pr-4">
           <Link
             href="/"
             aria-label="Temporary Perspective, home"
-            className="flex items-center gap-2.5 pl-1"
+            onMouseEnter={() => open(null)}
+            className="flex items-center"
           >
-            <Logo className="h-5 w-auto text-text" />
-            <span className="hidden font-medium tracking-tight text-text sm:inline">
-              Temporary Perspective
-            </span>
+            <Logo className="h-7 w-auto text-text" />
           </Link>
 
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              aria-expanded={open}
-              aria-label={open ? "Close menu" : "Open menu"}
-              className="group inline-flex h-10 items-center gap-2.5 rounded-[var(--radius-btn)] px-3 text-sm text-text-muted transition-colors hover:text-text"
-            >
-              <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
-              <span className="relative block h-3 w-5" aria-hidden>
-                <span
-                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                    open ? "top-1.5 rotate-45" : "top-0"
-                  }`}
-                />
-                <span
-                  className={`absolute left-0 bottom-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                    open ? "bottom-1.5 -rotate-45" : ""
-                  }`}
-                />
-              </span>
-            </button>
+          {/* desktop links — absolutely centered in the bar so they don't drift
+              with the logo/CTA widths */}
+          <ul className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-9 lg:flex">
+            {categories.map((c) => {
+              const active = isActive(pathname, c);
+              if (!c.items) {
+                return (
+                  <li key={c.label} onMouseEnter={() => open(null)}>
+                    <Link
+                      href={c.href}
+                      className={`relative text-[0.95rem] font-medium transition-colors ${
+                        active ? "text-text" : "text-text-muted hover:text-text"
+                      }`}
+                    >
+                      {c.label}
+                      {active && (
+                        <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-chrome" />
+                      )}
+                    </Link>
+                  </li>
+                );
+              }
+              const isThis = openCat === c.label;
+              return (
+                <li key={c.label} onMouseEnter={() => open(c.label)}>
+                  <button
+                    type="button"
+                    aria-haspopup="true"
+                    aria-expanded={isThis}
+                    onFocus={() => open(c.label)}
+                    className={`group relative inline-flex items-center gap-1 text-[0.95rem] font-medium transition-colors ${
+                      active || isThis ? "text-text" : "text-text-muted hover:text-text"
+                    }`}
+                  >
+                    {c.label}
+                    <svg
+                      viewBox="0 0 24 24"
+                      className={`h-3 w-3 text-text-faint transition-transform duration-300 ${isThis ? "rotate-180" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                    {active && (
+                      <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-chrome" />
+                    )}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="hidden lg:block" onMouseEnter={() => open(null)}>
             <Magnetic>
               <PrimaryButton href="/contact">Book a call</PrimaryButton>
             </Magnetic>
           </div>
+
+          {/* mobile controls */}
+          <div className="flex items-center gap-2 lg:hidden">
+            <PrimaryButton href="/contact" className="h-9 px-4 text-sm">
+              Book a call
+            </PrimaryButton>
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              className="relative inline-flex h-9 w-9 items-center justify-center text-text"
+            >
+              <span className="relative block h-3 w-5" aria-hidden>
+                <span
+                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    mobileOpen ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1.5 block h-px w-5 bg-current transition-opacity duration-200 ${
+                    mobileOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    mobileOpen ? "top-1.5 -rotate-45" : "top-3"
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </div>
 
-        {/* expandable card panel */}
+        {/* morphing megamenu (desktop) */}
         <AnimatePresence initial={false}>
-          {open && (
+          {isOpen && (
             <motion.div
               key="panel"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={panelEase}
-              className="bg-bg/95"
+              transition={smooth}
+              className="hidden lg:block"
             >
-              <div className="grid gap-3 border-t border-line px-3 py-3 sm:px-4 sm:py-4 md:grid-cols-3">
-                {groups.map((g, i) => (
+              <div className="border-t border-line px-5 py-5">
+                <AnimatePresence mode="wait">
                   <motion.div
-                    key={g.title}
-                    initial={reduce ? false : { opacity: 0, y: 8 }}
+                    key={current!.label}
+                    initial={{ opacity: 0, y: 6 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: open ? i * 0.06 : 0, ease: [0.16, 1, 0.3, 1] }}
-                    className="rounded-xl border border-line bg-white/[0.02] p-5"
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={fade}
+                    className="grid min-h-[184px] grid-cols-[1fr_300px] gap-6"
                   >
-                    <h3 className="font-display text-lg font-medium tracking-tight">
-                      {g.title}
-                    </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-text-faint">
-                      {g.sub}
-                    </p>
-                    <ul className="mt-4 flex flex-col gap-2.5">
-                      {g.links.map((l) => (
-                        <li key={l.href}>
+                    <div>
+                      <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-text-faint">
+                        {current!.label}
+                      </p>
+                      <div className="mt-4 grid grid-cols-2 gap-1">
+                        {current!.items.map((it) => (
                           <Link
-                            href={l.href}
-                            className="group inline-flex items-center gap-1.5 text-text-muted transition-colors hover:text-text"
+                            key={it.href}
+                            href={it.href}
+                            className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.04]"
                           >
-                            {l.label}
-                            <span className="text-text-faint transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5 group-hover:text-text">
-                              →
+                            <span className="flex items-center gap-1.5 text-sm text-text">
+                              {it.label}
+                              <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
+                                →
+                              </span>
                             </span>
+                            <span className="text-xs text-text-faint">{it.desc}</span>
                           </Link>
-                        </li>
-                      ))}
-                    </ul>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Link
+                      href={current!.featured.href}
+                      className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
+                      }}
+                    >
+                      <div>
+                        <p className="font-display text-lg font-medium tracking-tight text-text">
+                          {current!.featured.title}
+                        </p>
+                        <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
+                          {current!.featured.copy}
+                        </p>
+                      </div>
+                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
+                        {current!.featured.cta}
+                        <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
+                          →
+                        </span>
+                      </span>
+                    </Link>
                   </motion.div>
-                ))}
+                </AnimatePresence>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
+      </motion.div>
+
+      {/* mobile overlay */}
+      <div
+        className={`fixed inset-0 top-0 z-40 origin-top bg-bg/95 backdrop-blur-xl transition-[opacity] duration-300 ease-[var(--ease-out-quart)] lg:hidden ${
+          mobileOpen
+            ? "pointer-events-auto opacity-100"
+            : "pointer-events-none opacity-0"
+        }`}
+      >
+        <div className="flex h-svh flex-col overflow-y-auto px-6 pb-6 pt-24">
+          <div className="flex flex-col">
+            {categories.map((c) => {
+              if (!c.items) {
+                return (
+                  <Link
+                    key={c.label}
+                    href={c.href}
+                    className="border-b border-line py-4 font-display text-2xl font-medium tracking-tight text-text"
+                  >
+                    {c.label}
+                  </Link>
+                );
+              }
+              const isExp = expanded === c.label;
+              return (
+                <div key={c.label} className="border-b border-line">
+                  <button
+                    type="button"
+                    onClick={() => setExpanded(isExp ? null : c.label)}
+                    aria-expanded={isExp}
+                    className="flex w-full items-center justify-between py-4 font-display text-2xl font-medium tracking-tight text-text"
+                  >
+                    {c.label}
+                    <svg
+                      viewBox="0 0 24 24"
+                      className={`h-5 w-5 text-text-faint transition-transform duration-300 ${isExp ? "rotate-180" : ""}`}
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={1.5}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      aria-hidden
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isExp && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: reduce ? 0 : 0.3, ease: [0.16, 1, 0.3, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="flex flex-col gap-1 pb-3">
+                          {c.items.map((it) => (
+                            <Link
+                              key={it.href}
+                              href={it.href}
+                              className="flex flex-col gap-0.5 py-2.5 pl-1"
+                            >
+                              <span className="text-base text-text">{it.label}</span>
+                              <span className="text-xs text-text-faint">{it.desc}</span>
+                            </Link>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+          <div className="mt-auto pt-6">
+            <PrimaryButton href="/contact" size="lg" className="w-full">
+              Book a call
+            </PrimaryButton>
+          </div>
+        </div>
       </div>
     </header>
   );
