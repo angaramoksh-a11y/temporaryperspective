@@ -3,145 +3,146 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { CAL_LINK } from "@/lib/work";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Logo from "./Logo";
 import { Magnetic, PrimaryButton } from "./ui";
 
-const links = [
-  { label: "Work", href: "/work" },
-  { label: "Process", href: "/process" },
-  { label: "About", href: "/about" },
+// Floating glass card-nav. The top bar is always visible (logo, a Menu toggle,
+// and the persistent Book a call); toggling expands the bar into three cards.
+// Adapted from the reactbits card-nav: our palette, glass surface, subtle inner
+// tiles (no heavy nested cards), motion height reveal off under reduced-motion.
+const groups = [
+  {
+    title: "On screen.",
+    sub: "Every episode, every show.",
+    links: [
+      { label: "All episodes", href: "/work" },
+      { label: "Case studies", href: "/case-studies" },
+    ],
+  },
+  {
+    title: "The studio.",
+    sub: "How we run a show, where we shoot, who runs it.",
+    links: [
+      { label: "Our process", href: "/process" },
+      { label: "Shooting remote", href: "/virtual" },
+      { label: "About us", href: "/about" },
+      { label: "Common questions", href: "/faq" },
+    ],
+  },
+  {
+    title: "Writing.",
+    sub: "Notes on running a podcast worth watching.",
+    links: [{ label: "Newsletter", href: "/newsletter" }],
+  },
 ];
-
-function isActive(pathname: string, href: string) {
-  return pathname === href || pathname.startsWith(`${href}/`);
-}
 
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const reduce = useReducedMotion();
 
-  // Close the mobile overlay whenever the route changes.
+  // Close on route change and on Escape.
+  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
-  // Lock body scroll while the overlay is open.
-  useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open]);
+  const panelEase = { duration: reduce ? 0 : 0.4, ease: [0.16, 1, 0.3, 1] as const };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="mx-auto grid h-16 max-w-[1400px] grid-cols-[1fr_auto_1fr] items-center px-6 lg:h-[72px] lg:px-10">
-        <Link
-          href="/"
-          aria-label="Temporary Perspective, home"
-          className="group flex items-center gap-2.5 justify-self-start"
-        >
-          <Logo className="h-[1.15rem] w-auto text-text" />
-          <span className="hidden font-medium tracking-tight text-text sm:inline">
-            Temporary Perspective
-          </span>
-        </Link>
+    <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-4 sm:pt-4">
+      <div className="glass edge-gradient mx-auto max-w-[1100px] overflow-hidden rounded-2xl">
+        {/* top bar — always visible */}
+        <div className="flex h-14 items-center justify-between gap-3 px-3 sm:h-[60px] sm:px-4">
+          <Link
+            href="/"
+            aria-label="Temporary Perspective, home"
+            className="flex items-center gap-2.5 pl-1"
+          >
+            <Logo className="h-5 w-auto text-text" />
+            <span className="hidden font-medium tracking-tight text-text sm:inline">
+              Temporary Perspective
+            </span>
+          </Link>
 
-        <div className="hidden items-center justify-center gap-1 justify-self-center sm:flex">
-          {links.map((l) => {
-            const active = isActive(pathname, l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={active ? "page" : undefined}
-                className={`relative rounded-[var(--radius-btn)] px-3.5 py-2 text-sm transition-colors ${
-                  active ? "text-text" : "text-text-muted hover:text-text"
-                }`}
-              >
-                {l.label}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="group inline-flex h-10 items-center gap-2.5 rounded-[var(--radius-btn)] px-3 text-sm text-text-muted transition-colors hover:text-text"
+            >
+              <span className="hidden sm:inline">{open ? "Close" : "Menu"}</span>
+              <span className="relative block h-3 w-5" aria-hidden>
                 <span
-                  aria-hidden
-                  className={`absolute inset-x-3.5 -bottom-px h-px origin-center bg-text transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                    active ? "scale-x-100" : "scale-x-0"
+                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    open ? "top-1.5 rotate-45" : "top-0"
                   }`}
                 />
-              </Link>
-            );
-          })}
-        </div>
-
-        <div className="flex items-center gap-2 justify-self-end">
-          <div className="hidden sm:block">
+                <span
+                  className={`absolute left-0 bottom-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    open ? "bottom-1.5 -rotate-45" : ""
+                  }`}
+                />
+              </span>
+            </button>
             <Magnetic>
-              <PrimaryButton href={CAL_LINK}>Book a call</PrimaryButton>
+              <PrimaryButton href="/contact">Book a call</PrimaryButton>
             </Magnetic>
           </div>
-          <button
-            type="button"
-            onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            className="relative inline-flex h-10 w-10 items-center justify-center rounded-[var(--radius-btn)] text-text sm:hidden"
-          >
-            <span className="relative block h-3.5 w-5">
-              <span
-                className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                  open ? "top-1.5 rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1.5 block h-px w-5 bg-current transition-opacity duration-200 ${
-                  open ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                  open ? "top-1.5 -rotate-45" : "top-3"
-                }`}
-              />
-            </span>
-          </button>
         </div>
-      </nav>
 
-      {/* Mobile overlay */}
-      <div
-        className={`fixed inset-0 top-16 z-40 origin-top bg-bg/95 backdrop-blur-xl transition-[opacity,transform] duration-300 ease-[var(--ease-out-quart)] sm:hidden ${
-          open
-            ? "pointer-events-auto opacity-100"
-            : "pointer-events-none opacity-0"
-        }`}
-      >
-        <div className="flex flex-col gap-1 px-6 py-8">
-          {links.map((l) => {
-            const active = isActive(pathname, l.href);
-            return (
-              <Link
-                key={l.href}
-                href={l.href}
-                aria-current={active ? "page" : undefined}
-                className={`flex items-center justify-between border-b border-line py-4 font-thunder text-3xl uppercase leading-none tracking-tight transition-colors ${
-                  active ? "text-text" : "text-text-muted"
-                }`}
-              >
-                {l.label}
-              </Link>
-            );
-          })}
-          <Link
-            href="/newsletter"
-            className="flex items-center border-b border-line py-4 font-thunder text-3xl uppercase leading-none tracking-tight text-text-muted transition-colors"
-          >
-            Newsletter
-          </Link>
-          <div className="mt-6">
-            <PrimaryButton href={CAL_LINK} size="lg" className="w-full">
-              Book a call
-            </PrimaryButton>
-          </div>
-        </div>
+        {/* expandable card panel */}
+        <AnimatePresence initial={false}>
+          {open && (
+            <motion.div
+              key="panel"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={panelEase}
+              className="bg-bg/95"
+            >
+              <div className="grid gap-3 border-t border-line px-3 py-3 sm:px-4 sm:py-4 md:grid-cols-3">
+                {groups.map((g, i) => (
+                  <motion.div
+                    key={g.title}
+                    initial={reduce ? false : { opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: open ? i * 0.06 : 0, ease: [0.16, 1, 0.3, 1] }}
+                    className="rounded-xl border border-line bg-white/[0.02] p-5"
+                  >
+                    <h3 className="font-display text-lg font-medium tracking-tight">
+                      {g.title}
+                    </h3>
+                    <p className="mt-1 text-sm leading-relaxed text-text-faint">
+                      {g.sub}
+                    </p>
+                    <ul className="mt-4 flex flex-col gap-2.5">
+                      {g.links.map((l) => (
+                        <li key={l.href}>
+                          <Link
+                            href={l.href}
+                            className="group inline-flex items-center gap-1.5 text-text-muted transition-colors hover:text-text"
+                          >
+                            {l.label}
+                            <span className="text-text-faint transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5 group-hover:text-text">
+                              →
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

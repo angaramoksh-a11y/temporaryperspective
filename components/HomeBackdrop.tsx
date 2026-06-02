@@ -15,7 +15,7 @@ export default function HomeBackdrop() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-[0.42]">
+      <div className="absolute inset-0 opacity-[0.22]">
         <Silk
           speed={1.4}
           scale={0.6}
@@ -24,12 +24,13 @@ export default function HomeBackdrop() {
           rotation={0}
         />
       </div>
-      {/* vignette: keep the edges deep and the lit centre readable */}
+      {/* vignette: keep the edges deep and the lit centre readable. Tuned dark
+          so the silk reads as a faint sheen, not a distracting backdrop. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(120% 90% at 50% 18%, transparent 28%, oklch(0.085 0.004 264 / 0.55) 70%, oklch(0.085 0.004 264 / 0.88) 100%)",
+            "radial-gradient(120% 95% at 50% 16%, transparent 16%, oklch(0.085 0.004 264 / 0.62) 58%, oklch(0.085 0.004 264 / 0.93) 100%)",
         }}
       />
     </div>
