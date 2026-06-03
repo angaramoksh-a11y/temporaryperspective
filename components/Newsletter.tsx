@@ -9,9 +9,9 @@ export default function Newsletter() {
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
             <SectionLabel>From the newsletter</SectionLabel>
-            <h3 className="mt-4 max-w-xl font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-tight">
+            <h2 className="mt-4 max-w-xl font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-tight">
               Notes on running a podcast worth watching.
-            </h3>
+            </h2>
           </div>
           <ArrowLink href="/newsletter" className="text-sm">
             All posts

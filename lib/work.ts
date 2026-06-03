@@ -12,7 +12,12 @@ export function thumb(id: string) {
 export function thumbFallback(id: string) {
   return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
 }
-export function embed(id: string, autoplay = false, chromeless = false) {
+export function embed(
+  id: string,
+  autoplay = false,
+  chromeless = false,
+  start?: number,
+) {
   const params = new URLSearchParams({
     rel: "0",
     modestbranding: "1",
@@ -21,6 +26,9 @@ export function embed(id: string, autoplay = false, chromeless = false) {
   if (autoplay) {
     params.set("autoplay", "1");
     params.set("mute", "1");
+  }
+  if (start && start > 0) {
+    params.set("start", String(Math.floor(start)));
   }
   // chromeless = silent hover preview: no controls, captions, annotations,
   // fullscreen, or keyboard. Loops the clip. Just the footage playing.

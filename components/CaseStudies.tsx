@@ -22,7 +22,7 @@ export default function CaseStudies() {
           Testimonials
         </h2>
         <p className="mt-4 max-w-md leading-relaxed text-text-muted">
-          What our clients say about us.
+          The people we make it for.
         </p>
 
         {/* one card: stacks on mobile, video + controls side-by-side on desktop.

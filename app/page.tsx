@@ -16,11 +16,11 @@ export default function Home() {
       <main>
         <Hero />
         <SelectedWork />
+        <VirtualCallout />
         <Process />
         <CaseStudies />
-        <VirtualCallout />
-        <Newsletter />
         <CommonQuestions />
+        <Newsletter />
         <ClosingCTA divider={false} />
       </main>
       <Footer />

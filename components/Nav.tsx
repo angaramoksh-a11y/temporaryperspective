@@ -5,41 +5,38 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Logo from "./Logo";
+import Thumb from "./Thumb";
 import { Magnetic, PrimaryButton } from "./ui";
 
 // Floating glass nav that morphs. Inspired by sarvam.ai (feel only): a detached
 // rounded bar with flat, always-visible links; hovering a category smoothly
-// expands the *same* bar into a megamenu (sub-items + a featured card), its
-// height and corner radius animating together. No desktop Menu toggle; mobile
-// falls back to a hamburger accordion overlay.
+// expands the *same* bar into a megamenu, its height and corner radius animating
+// together. A shared-layout pill slides between the top-level links (hover +
+// active). The Work menu previews footage of whichever item is hovered. No
+// desktop Menu toggle; mobile falls back to a hamburger accordion overlay.
 
 type Item = { label: string; href: string; desc: string };
 type Featured = { title: string; copy: string; href: string; cta: string };
 type Category =
-  | { label: string; items: Item[]; featured: Featured; href?: never }
+  | { label: string; items: Item[]; featured?: Featured; href?: never }
   | { label: string; href: string; items?: never; featured?: never };
 
 const categories: Category[] = [
   {
-    label: "Watch",
+    label: "Work",
     items: [
-      { label: "All episodes", href: "/work", desc: "Every episode, every show." },
-      { label: "Case studies", href: "/case-studies", desc: "How the work came together." },
+      { label: "The work", href: "/work", desc: "The shows we produce, episode by episode." },
+      { label: "Full archive", href: "/work/archive", desc: "Every episode and clip. Filter by client or format." },
+      { label: "Case studies", href: "/case-studies", desc: "The shows, told by the clients." },
     ],
-    featured: {
-      title: "The work",
-      copy: "100+ episodes for India's hardest-to-book guests.",
-      href: "/work",
-      cta: "See all work",
-    },
   },
   {
     label: "Studio",
     items: [
       { label: "Our process", href: "/process", desc: "How we run a show." },
-      { label: "Shooting remote", href: "/virtual", desc: "Record from anywhere." },
+      { label: "Remote production", href: "/virtual", desc: "When your guest's in another city." },
+      { label: "What clients say", href: "/testimonials", desc: "Proof, from the people we make it for." },
       { label: "About us", href: "/about", desc: "Who runs the studio." },
-      { label: "Common questions", href: "/faq", desc: "Everything you might ask." },
     ],
     featured: {
       title: "Start with a call",
@@ -51,6 +48,29 @@ const categories: Category[] = [
   { label: "Newsletter", href: "/newsletter" },
 ];
 
+// Hover-reactive footage spotlight for the Work menu, keyed by sub-item href.
+const WORK_SPOTLIGHT: Record<
+  string,
+  { ytId?: string; posterSrc?: string; title: string; line: string }
+> = {
+  "/work": {
+    ytId: "TomnFVq3Bt4",
+    title: "Vikram Sood · Bharatvaarta",
+    line: "The shows we produce, episode by episode.",
+  },
+  "/work/archive": {
+    ytId: "W6odY9EG6Jk",
+    title: "The full archive",
+    line: "Every episode and clip, filterable by client or format.",
+  },
+  "/case-studies": {
+    posterSrc: "https://vumbnail.com/1169858825.jpg",
+    title: "Bharatvaarta",
+    line: "100+ episodes, India's sharpest policy talk.",
+  },
+};
+const WORK_DEFAULT = "/work";
+
 const under = (p: string, href: string) => p === href || p.startsWith(`${href}/`);
 const isActive = (p: string, c: Category) =>
   c.items ? c.items.some((i) => under(p, i.href)) : under(p, c.href);
@@ -59,6 +79,8 @@ export default function Nav() {
   const pathname = usePathname();
   const reduce = useReducedMotion();
   const [openCat, setOpenCat] = useState<string | null>(null);
+  const [hoveredTop, setHoveredTop] = useState<string | null>(null);
+  const [hoveredWork, setHoveredWork] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -67,6 +89,11 @@ export default function Nav() {
     setOpenCat(null);
     setMobileOpen(false);
   }, [pathname]);
+
+  // reset the spotlight to its default when a different menu opens
+  useEffect(() => {
+    setHoveredWork(null);
+  }, [openCat]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -100,6 +127,12 @@ export default function Nav() {
   const isOpen = !!current;
   const smooth = { duration: reduce ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] as const };
   const fade = { duration: reduce ? 0 : 0.18, ease: [0.16, 1, 0.3, 1] as const };
+  const pillT = reduce
+    ? { duration: 0 }
+    : { type: "spring" as const, stiffness: 420, damping: 38 };
+
+  const activeLabel = categories.find((c) => isActive(pathname, c))?.label ?? null;
+  const pillLabel = hoveredTop ?? activeLabel;
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-4">
@@ -112,10 +145,8 @@ export default function Nav() {
         className="glass edge-gradient relative mx-auto max-w-[1080px] overflow-hidden"
       >
         {/* darken the glass so the links stay legible over a bright backdrop */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-bg/55"
-        />
+        <div aria-hidden className="pointer-events-none absolute inset-0 bg-bg/55" />
+
         {/* top bar */}
         <div className="relative z-10 flex h-[58px] items-center justify-between gap-4 pl-5 pr-4">
           <Link
@@ -129,55 +160,81 @@ export default function Nav() {
 
           {/* desktop links — absolutely centered in the bar so they don't drift
               with the logo/CTA widths */}
-          <ul className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-9 lg:flex">
+          <ul
+            onMouseLeave={() => setHoveredTop(null)}
+            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-1 lg:flex"
+          >
             {categories.map((c) => {
-              const active = isActive(pathname, c);
+              const highlight = pillLabel === c.label;
+              const textCls = highlight
+                ? "text-text"
+                : "text-text-muted hover:text-text";
+              const pill = highlight && (
+                <motion.span
+                  layoutId="nav-pill"
+                  transition={pillT}
+                  className="absolute inset-0 rounded-full border border-line-strong bg-bg-raised shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08)]"
+                />
+              );
+
               if (!c.items) {
                 return (
-                  <li key={c.label} onMouseEnter={() => open(null)}>
-                    <Link
-                      href={c.href}
-                      className={`relative text-[0.95rem] font-medium transition-colors ${
-                        active ? "text-text" : "text-text-muted hover:text-text"
-                      }`}
-                    >
-                      {c.label}
-                      {active && (
-                        <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-chrome" />
-                      )}
-                    </Link>
+                  <li
+                    key={c.label}
+                    onMouseEnter={() => {
+                      open(null);
+                      setHoveredTop(c.label);
+                    }}
+                  >
+                    <div className="relative">
+                      {pill}
+                      <Link
+                        href={c.href}
+                        className={`relative z-10 block rounded-full px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
+                      >
+                        {c.label}
+                      </Link>
+                    </div>
                   </li>
                 );
               }
+
               const isThis = openCat === c.label;
               return (
-                <li key={c.label} onMouseEnter={() => open(c.label)}>
-                  <button
-                    type="button"
-                    aria-haspopup="true"
-                    aria-expanded={isThis}
-                    onFocus={() => open(c.label)}
-                    className={`group relative inline-flex items-center gap-1 text-[0.95rem] font-medium transition-colors ${
-                      active || isThis ? "text-text" : "text-text-muted hover:text-text"
-                    }`}
-                  >
-                    {c.label}
-                    <svg
-                      viewBox="0 0 24 24"
-                      className={`h-3 w-3 text-text-faint transition-transform duration-300 ${isThis ? "rotate-180" : ""}`}
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      aria-hidden
+                <li
+                  key={c.label}
+                  onMouseEnter={() => {
+                    open(c.label);
+                    setHoveredTop(c.label);
+                  }}
+                >
+                  <div className="relative">
+                    {pill}
+                    <button
+                      type="button"
+                      aria-haspopup="true"
+                      aria-expanded={isThis}
+                      onFocus={() => {
+                        open(c.label);
+                        setHoveredTop(c.label);
+                      }}
+                      className={`relative z-10 inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
                     >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                    {active && (
-                      <span className="absolute -bottom-2 left-1/2 h-1 w-1 -translate-x-1/2 rounded-full bg-chrome" />
-                    )}
-                  </button>
+                      {c.label}
+                      <svg
+                        viewBox="0 0 24 24"
+                        className={`h-3 w-3 text-text-faint transition-transform duration-300 ${isThis ? "rotate-180" : ""}`}
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        aria-hidden
+                      >
+                        <path d="M6 9l6 6 6-6" />
+                      </svg>
+                    </button>
+                  </div>
                 </li>
               );
             })}
@@ -252,6 +309,7 @@ export default function Nav() {
                           <Link
                             key={it.href}
                             href={it.href}
+                            onMouseEnter={() => setHoveredWork(it.href)}
                             className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.04]"
                           >
                             <span className="flex items-center gap-1.5 text-sm text-text">
@@ -266,29 +324,36 @@ export default function Nav() {
                       </div>
                     </div>
 
-                    <Link
-                      href={current!.featured.href}
-                      className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
-                      }}
-                    >
-                      <div>
-                        <p className="font-display text-lg font-medium tracking-tight text-text">
-                          {current!.featured.title}
-                        </p>
-                        <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
-                          {current!.featured.copy}
-                        </p>
-                      </div>
-                      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
-                        {current!.featured.cta}
-                        <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
-                          →
+                    {current!.label === "Work" ? (
+                      <WorkSpotlight
+                        href={hoveredWork ?? WORK_DEFAULT}
+                        reduce={!!reduce}
+                      />
+                    ) : current!.featured ? (
+                      <Link
+                        href={current!.featured.href}
+                        className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
+                        style={{
+                          backgroundImage:
+                            "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
+                        }}
+                      >
+                        <div>
+                          <p className="font-display text-lg font-medium tracking-tight text-text">
+                            {current!.featured.title}
+                          </p>
+                          <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
+                            {current!.featured.copy}
+                          </p>
+                        </div>
+                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
+                          {current!.featured.cta}
+                          <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
+                            →
+                          </span>
                         </span>
-                      </span>
-                    </Link>
+                      </Link>
+                    ) : null}
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -378,5 +443,55 @@ export default function Nav() {
         </div>
       </div>
     </header>
+  );
+}
+
+function WorkSpotlight({ href, reduce }: { href: string; reduce: boolean }) {
+  const spot = WORK_SPOTLIGHT[href] ?? WORK_SPOTLIGHT[WORK_DEFAULT];
+  return (
+    <div className="overflow-hidden rounded-xl border border-line-strong p-3">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={href}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-line bg-bg-sunken">
+            {spot.ytId ? (
+              <Thumb id={spot.ytId} alt={spot.title} className="brightness-[0.9]" />
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={spot.posterSrc}
+                alt={spot.title}
+                loading="lazy"
+                className="h-full w-full object-cover brightness-[0.9]"
+              />
+            )}
+            <span className="absolute inset-0 grid place-items-center">
+              <span className="grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="h-4 w-4 translate-x-px fill-text"
+                  aria-hidden
+                >
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </span>
+            </span>
+          </div>
+          <div className="px-1 pt-3">
+            <p className="font-display text-base font-medium tracking-tight text-text">
+              {spot.title}
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-text-muted">
+              {spot.line}
+            </p>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 }
