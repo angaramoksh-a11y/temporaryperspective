@@ -13,43 +13,40 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
-      {/* Hero-local stage. The global silk keeps framing the space above and
-          below the centred row, but through the middle band we crush the
-          backdrop toward near-black — that both deepens the lit-room look and
-          calms the silk's noise behind the text so the H1 reads crisp full
-          white. Faded top and bottom so the silk reappears at the seams. All
-          pointer-events-none, GPU-only motion, killed under reduced-motion. */}
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        {/* near-black deepening band through the vertical centre */}
+    <section className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 pb-16 pt-28 sm:pt-32 lg:justify-center lg:px-10 lg:py-24">
+      {/* Hero-local stage. A near-black veil crushes the backdrop behind the
+          headline so the H1 reads crisp full white and the silk noise calms.
+          The whole group is masked to dissolve into the global silk at the top
+          and bottom edges, so the veil reaches exactly the site backdrop where
+          the hero meets the next section: no horizontal seam, no light streak.
+          pointer-events-none, no animation. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0"
+        style={{
+          maskImage:
+            "linear-gradient(to bottom, transparent 0%, #000 16%, #000 82%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 0%, #000 16%, #000 82%, transparent 100%)",
+        }}
+      >
+        {/* uniform near-black veil (edges handled by the group mask) */}
+        <div
+          className="absolute inset-0"
+          style={{ background: "oklch(0.02 0.003 264 / 0.9)" }}
+        />
+        {/* soft key bloom so the lit centre reads dimensional, not a flat fill;
+            radial, so it falls off on its own with no edge of its own */}
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(to bottom, transparent 0%, oklch(0.02 0.003 264 / 0.86) 26%, oklch(0.02 0.003 264 / 0.9) 50%, oklch(0.02 0.003 264 / 0.86) 74%, transparent 100%)",
-          }}
-        />
-        {/* floor beam — long, heavily blurred streak raking the lower scene,
-            a faint horizon so the dark reads as a lit surface, not a flat fill */}
-        <div
-          className="bg-floorbeam absolute bottom-[2%] left-1/2 h-[36vh] w-[155vw] rounded-[50%]"
-          style={{
-            background:
-              "radial-gradient(closest-side, oklch(0.7 0.025 250 / 0.18), transparent 70%)",
-            filter: "blur(64px)",
-          }}
-        />
-        {/* corner vignette — keeps the lit centre dimensional */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "radial-gradient(135% 100% at 50% 30%, transparent 40%, oklch(0.02 0.003 264 / 0.5) 100%)",
+              "radial-gradient(115% 80% at 50% 42%, oklch(0.62 0.02 250 / 0.05), transparent 55%)",
           }}
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-12 px-6 lg:grid-cols-[1.05fr_1.25fr] lg:gap-16 lg:px-10">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-[1.05fr_1.15fr] lg:gap-14">
         {/* text column */}
         <motion.div
           initial="hidden"
@@ -81,7 +78,7 @@ export default function Hero() {
           {/* headline */}
           <motion.h1
             variants={rise}
-            className="mt-8 font-display text-[clamp(2.1rem,4.4vw,3.7rem)] font-medium leading-[1.05] tracking-[-0.02em] text-text"
+            className="mt-8 text-balance font-display text-[clamp(2rem,3.5vw,3.6rem)] font-medium leading-[1.06] tracking-[-0.025em] text-text"
           >
             <span className="block">You&apos;ve built the conversation.</span>
             <span className="block">We build the stage.</span>
@@ -99,7 +96,7 @@ export default function Hero() {
           {/* buttons */}
           <motion.div
             variants={rise}
-            className="mt-10 flex flex-wrap items-center justify-start gap-3"
+            className="mt-9 flex flex-wrap items-center justify-start gap-3"
           >
             <Magnetic>
               <PrimaryButton href="/contact" size="lg">
@@ -112,8 +109,11 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* film */}
-        <HeroFilm id="1197960218" caption="The studio, in 60 seconds." />
+        {/* film — capped on small screens so the 16:9 card never balloons past
+            the fold in the single-column band; full grid cell at lg. */}
+        <div className="w-full max-w-[520px] lg:max-w-none">
+          <HeroFilm id="1197960218" caption="The studio, in 60 seconds." />
+        </div>
       </div>
     </section>
   );
