@@ -118,13 +118,16 @@
 - `Showreel.mp4` (6.57 MB)
 - Branding done for **2 podcasts**: Bharatvaarta, Shutup Beta.
 
-### OPEN — resources needed from user (asked in chat)
-- R2 public base URL (pub-xxxx.r2.dev or custom domain) so asset links resolve.
-- Bharatvaarta branding doc link (user mentioned, left blank).
-- Shutup Beta logo-animation file (format + filename; not in the visible R2 listing).
-- Per-phase proof assets: guest brief sample, production/BTS stills, post before/after + reels, growth numbers / the Vikram Sood tweet.
-- Intended home for `Showreel.mp4`.
-- Strategic: is the page a generic 5-phase explainer, or a real Bharatvaarta end-to-end walkthrough? Does timeline/speed (<7 days) belong here?
+### DECIDED concept (user)
+- **Simple timeline.** Visitor imagines walking through it. Calm, NOT overwhelming (explicitly "not like Sarvam"). A couple of "see the work" links, that's it.
+- **No deep case-study assets here** — Bharatvaarta etc. lives on its own case study page. Don't dump assets on this page.
+- **Mental model = 1 foundation + a repeating engine:** Branding is FOUNDATIONAL / one-time. Then Guest Prep → Production → Post → Growth repeat for **every episode** (current page wrongly flattens all 5 as equal).
+- **Speed is PROMINENT:** most studios ~2 weeks → us **< 7 days** per episode; deliver a full episode + high-retention hook + **8–10 ready-to-post reels** with client approvals.
+- So: drop the "Bharatvaarta as the running example" intro framing; drop the giant glowing-word blocks.
+
+### Remaining light questions (asked in chat)
+- 7-day cadence: detailed day-by-day (Day 1…Day 7) timeline, or just the headline "< 7 days" stat? If day-by-day, need the real rough breakdown.
+- Which 1–2 "see the work" links to surface (or reuse existing /work + "How we shoot remote →"?).
 
 ---
 
