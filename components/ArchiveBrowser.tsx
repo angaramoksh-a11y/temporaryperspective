@@ -1,12 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import {
-  embed,
-  vimeoEmbed,
-  primaryClip,
-  type ResolvedWorkItem,
-} from "@/lib/work";
+import { type ResolvedWorkItem } from "@/lib/work";
 import WorkLightbox from "./WorkLightbox";
 
 const PER_PAGE = 48;
@@ -26,7 +21,6 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
   const [selFormats, setSelFormats] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [active, setActive] = useState<ResolvedWorkItem | null>(null);
-  const [hovered, setHovered] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -118,67 +112,33 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
             No work matches those filters. Try broader filters or clear them.
           </p>
         ) : (
-          <div className="columns-2 gap-3 lg:columns-4 lg:gap-4 [&>*]:mb-3 lg:[&>*]:mb-4 md:columns-3">
-            {shown.map((it) => {
-              const clip = primaryClip(it);
-              const playing = hovered === it.key;
-              const hoverSrc =
-                it.source === "vimeo" && clip
-                  ? vimeoEmbed(clip, { autoplay: true })
-                  : it.yt
-                    ? embed(it.yt, true, true)
-                    : "";
-              return (
-                <figure
-                  key={it.key}
-                  onMouseEnter={() => setHovered(it.key)}
-                  onMouseLeave={() => setHovered(null)}
-                  className="glass sweep group break-inside-avoid rounded-2xl p-2 transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1"
-                >
-                  <button
-                    onClick={() => {
-                      setActive(it);
-                      setHovered(null);
-                    }}
-                    aria-label={`${it.client}, ${it.format}`}
-                    className="relative block w-full overflow-hidden rounded-xl"
-                  >
-                    {/* Original aspect ratio: the thumbnail defines the tile
-                        height, so verticals stay tall and 16:9 stays wide. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={it.thumb}
-                      alt={`${it.client}, ${it.format}`}
-                      loading="lazy"
-                      className="block h-auto w-full brightness-[0.82] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-100"
-                    />
-                    {playing && hoverSrc && (
-                      <iframe
-                        src={hoverSrc}
-                        title={`${it.client}, ${it.format}`}
-                        allow="autoplay; encrypted-media; picture-in-picture"
-                        className="pointer-events-none absolute inset-0 h-full w-full"
-                      />
-                    )}
-                    <span className="absolute inset-0 grid place-items-center opacity-80 transition-opacity duration-300 group-hover:opacity-0">
-                      <span className="grid h-12 w-12 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur">
-                        <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </span>
-                    </span>
-                  </button>
-                  <figcaption className="px-1.5 pb-1 pt-2.5">
-                    <p className="text-sm font-medium leading-snug text-text">
-                      {it.desc ?? it.client}
-                    </p>
-                    <p className="mt-0.5 text-xs text-text-faint">
-                      {it.desc ? `${it.client} · ${it.format}` : it.format}
-                    </p>
-                  </figcaption>
-                </figure>
-              );
-            })}
+          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
+            {shown.map((it) => (
+              <button
+                key={it.key}
+                onClick={() => setActive(it)}
+                aria-label={`Play ${it.client}, ${it.format}`}
+                className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl border border-line"
+              >
+                {/* Lightweight, lazy-loaded thumbnail only. No autoplay: the
+                    archive can hold hundreds of clips, so playback happens in
+                    the lightbox on click. Native aspect ratio = true bento. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={it.thumb}
+                  alt=""
+                  loading="lazy"
+                  className="block h-auto w-full brightness-[0.85] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-100"
+                />
+                <span className="absolute inset-0 grid place-items-center bg-black/0 opacity-0 transition-opacity duration-300 group-hover:bg-black/15 group-hover:opacity-100">
+                  <span className="grid h-14 w-14 place-items-center rounded-full border border-white/30 bg-bg/40 backdrop-blur">
+                    <svg viewBox="0 0 24 24" className="h-5 w-5 translate-x-px fill-text" aria-hidden>
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </span>
+                </span>
+              </button>
+            ))}
           </div>
         )}
 
