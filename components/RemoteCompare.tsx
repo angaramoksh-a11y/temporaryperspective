@@ -38,8 +38,17 @@ const LABELS: Record<Mode, string> = {
 export default function RemoteCompare() {
   const reduce = useReducedMotion();
   const [mode, setMode] = useState<Mode>("with");
-  const [playing, setPlaying] = useState(false);
+  const [played, setPlayed] = useState(false); // reduced-motion: click to start
   const v = VIDS[mode];
+
+  // Default: both clips autoplay muted as ambient, chromeless loops so you can
+  // compare the look at a glance. Under reduced-motion we never autoplay — the
+  // poster waits for a click.
+  const autoplay = !reduce;
+  const showFrame = autoplay || played;
+  const src = autoplay
+    ? embed(v.id, true, true, v.start) // muted, chromeless, looping
+    : embed(v.id, true, false, v.start); // user-started playback, with controls
 
   const pill = reduce
     ? { duration: 0 }
@@ -49,7 +58,7 @@ export default function RemoteCompare() {
   const select = (m: Mode) => {
     if (m === mode) return;
     setMode(m);
-    setPlaying(false); // new clip starts on its poster
+    setPlayed(false);
   };
 
   return (
@@ -93,18 +102,18 @@ export default function RemoteCompare() {
       <div className="glass sweep group mt-5 w-full rounded-2xl p-2.5">
         <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-bg-sunken">
           <AnimatePresence mode="wait">
-            {playing ? (
+            {showFrame ? (
               <motion.iframe
-                key={`play-${mode}`}
+                key={`frame-${mode}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={cross}
-                src={embed(v.id, true, false, v.start)}
+                src={src}
                 title={v.alt}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
-                className="absolute inset-0 h-full w-full"
+                className={`absolute inset-0 h-full w-full ${autoplay ? "pointer-events-none" : ""}`}
               />
             ) : (
               <motion.button
@@ -113,7 +122,7 @@ export default function RemoteCompare() {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={cross}
-                onClick={() => setPlaying(true)}
+                onClick={() => setPlayed(true)}
                 aria-label={`Play, ${v.caption}`}
                 className="absolute inset-0 block h-full w-full"
               >
@@ -127,12 +136,16 @@ export default function RemoteCompare() {
                     ▶
                   </span>
                 </span>
-                <span className="absolute bottom-4 left-4 rounded-full border border-line-strong bg-bg/60 px-3 py-1 text-xs text-text-muted backdrop-blur">
-                  {v.caption}
-                </span>
               </motion.button>
             )}
           </AnimatePresence>
+
+          {/* caption stays pinned over the ambient loop */}
+          {autoplay && (
+            <span className="pointer-events-none absolute bottom-4 left-4 z-10 rounded-full border border-line-strong bg-bg/60 px-3 py-1 text-xs text-text-muted backdrop-blur">
+              {v.caption}
+            </span>
+          )}
         </div>
       </div>
     </div>
