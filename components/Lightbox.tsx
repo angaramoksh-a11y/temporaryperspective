@@ -115,14 +115,14 @@ export default function Lightbox({
                       <button
                         key={o.id}
                         onClick={() => onSelect(o)}
-                        className="group relative overflow-hidden rounded-lg border border-line text-left"
+                        className="sweep group relative overflow-hidden rounded-lg border border-line text-left"
                         aria-label={o.guest}
                       >
                         <div className="aspect-video">
                           <Thumb
                             id={o.id}
                             alt={o.guest}
-                            className="opacity-70 transition-all duration-300 group-hover:scale-105 group-hover:opacity-100"
+                            className="brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-105 group-hover:brightness-100"
                           />
                         </div>
                         <span className="block truncate px-3 py-2.5 text-sm text-text-muted transition-colors group-hover:text-text">

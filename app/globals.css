@@ -326,6 +326,64 @@ body {
   }
 }
 
+/* Ambient rim light. A low, desaturated green travels slowly around the card's
+   rim, with a soft blurred halo bleeding just past the edge. Perpetual, isolated
+   to one element's pseudo-layers; frozen under reduced-motion. */
+@property --rim {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+.rim-glow {
+  position: relative;
+}
+.rim-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--rim),
+    transparent 0deg,
+    oklch(0.74 0.14 155 / 0.4) 34deg,
+    transparent 80deg,
+    transparent 360deg
+  );
+  filter: blur(7px);
+  pointer-events: none;
+  animation: rim-rotate 7s linear infinite;
+}
+.rim-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--rim),
+    transparent 0deg,
+    oklch(0.8 0.13 155 / 0.6) 30deg,
+    transparent 72deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: rim-rotate 7s linear infinite;
+}
+@keyframes rim-rotate {
+  to {
+    --rim: 360deg;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -335,6 +393,8 @@ body {
   .bg-keylight,
   .bg-floorbeam,
   .metallic-logo,
+  .rim-glow::before,
+  .rim-glow::after,
   .sweep::after {
     animation: none;
     transition: none;

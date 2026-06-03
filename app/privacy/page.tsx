@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
-import { contact } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "Privacy — Temporary Perspective",
@@ -10,62 +9,74 @@ export const metadata: Metadata = {
 
 const sections: LegalSection[] = [
   {
-    heading: "Who we are",
-    paras: [
-      "Temporary Perspective LLP is a podcast production studio based in Mumbai, India. This policy explains what information we collect when you visit this site or get in touch, how we use it, and the rights you have over it.",
-      "It applies to this website and to the enquiries you send us. It does not cover the separate platforms where our clients publish their shows, each of which has its own policy.",
-    ],
-  },
-  {
     heading: "What we collect",
-    paras: [
-      "We keep data collection to what a small studio actually needs to talk to you and run this site.",
-    ],
     bullets: [
-      "Contact details you give us: your name, email, company, and anything you write when you book a call or send an enquiry.",
-      "Basic usage data: pages visited and rough, aggregated analytics. We do not build advertising profiles.",
-      "Technical data your browser sends automatically, such as device type and approximate region.",
+      "Your name, email, and phone number, when you fill out a contact form or subscribe to the newsletter.",
+      "Anything you share with us voluntarily over email, call, or message.",
+      "Basic technical data (IP address, browser type, device info) through cookies and analytics tools.",
     ],
   },
   {
     heading: "How we use it",
-    paras: [
-      "We use your information to reply to you, to plan and deliver work if we end up collaborating, and to understand which parts of this site are useful. We do not sell your data, and we do not share it except with the service providers listed below who help us operate.",
+    bullets: [
+      "To respond to you and keep a conversation going.",
+      "To deliver and improve the services you've engaged us for.",
+      "To send occasional updates, only if you've opted in.",
+      "To understand how the site is used, so we can make it better.",
     ],
   },
   {
-    heading: "Third-party services",
+    heading: "Cookies and analytics",
     paras: [
-      "A few tools process limited data on our behalf. Each is bound by its own privacy terms.",
+      "We may use cookies and third-party analytics tools (like Google Analytics or Meta Pixel) to see how people interact with the site. This helps us improve. You can disable cookies in your browser settings if you'd rather not be tracked.",
     ],
-    bullets: [
-      "Cal.com handles call scheduling. When you book, it processes your name, email, and chosen time.",
-      "Formspree handles enquiry forms, passing the message you send through to us by email.",
-      "Privacy-respecting analytics give us aggregate traffic numbers without tracking you across the web.",
+  },
+  {
+    heading: "Who we share it with",
+    paras: [
+      "We don't sell, trade, or rent your data. Ever.",
+      "We may share information with trusted service providers who help us run the business, only when necessary, and only under confidentiality agreements (for example, our calendar booking tool, email service, or form handler).",
+    ],
+  },
+  {
+    heading: "How we keep it safe",
+    paras: [
+      "We use reasonable security measures: encryption, access controls, regular monitoring. No online system is bulletproof, but we treat your data the way we'd want ours treated.",
     ],
   },
   {
     heading: "Your rights",
     paras: [
-      "Under India's Digital Personal Data Protection Act, 2023, and the EU General Data Protection Regulation where it applies, you can ask us to show you the data we hold about you, correct it, or delete it. You can also withdraw consent for us to contact you at any time.",
-      "We keep enquiry data only as long as we need it to respond and, if we work together, to keep our records straight. To make any of these requests, email us and we will act on it promptly.",
+      "Under India's Digital Personal Data Protection Act 2023, and the EU's GDPR where it applies, you can ask us to:",
+    ],
+    bullets: [
+      "Show you what data we have on you.",
+      "Update or delete it.",
+      "Stop sending you anything.",
+      "Explain how your data is being used.",
     ],
   },
   {
-    heading: "Contact",
+    heading: "External links",
     paras: [
-      `For anything about this policy or your data, write to ${contact.email}. We read every message ourselves.`,
+      "The site links out to YouTube, Instagram, Vimeo, X, and other platforms. We're not responsible for how those platforms handle your data, so check their policies.",
     ],
+  },
+  {
+    heading: "Updates to this policy",
+    paras: [
+      "We may update this policy from time to time. The latest version always lives here, with the updated date at the top.",
+    ],
+  },
+  {
+    heading: "Get in touch",
+    paras: ["Questions about your privacy?"],
+    bullets: ["Email: hey@temporaryperspective.com", "Phone: +91 99204 21611"],
   },
 ];
 
 export default function PrivacyPage() {
   return (
-    <LegalPage
-      title="Privacy."
-      lastUpdated="May 2026"
-      intro="We collect as little as we can, use it only to talk to you and run the studio, and never sell it. The details are below."
-      sections={sections}
-    />
+    <LegalPage title="Privacy." lastUpdated="6 June 2026" sections={sections} />
   );
 }

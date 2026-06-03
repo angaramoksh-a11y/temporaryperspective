@@ -109,10 +109,15 @@ export default function Nav() {
         initial={{ borderRadius: 12 }}
         animate={{ borderRadius: isOpen ? 18 : 12 }}
         transition={smooth}
-        className="glass edge-gradient mx-auto max-w-[1080px] overflow-hidden"
+        className="glass edge-gradient relative mx-auto max-w-[1080px] overflow-hidden"
       >
+        {/* darken the glass so the links stay legible over a bright backdrop */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-bg/55"
+        />
         {/* top bar */}
-        <div className="relative flex h-[58px] items-center justify-between gap-4 pl-5 pr-4">
+        <div className="relative z-10 flex h-[58px] items-center justify-between gap-4 pl-5 pr-4">
           <Link
             href="/"
             aria-label="Temporary Perspective, home"
@@ -226,7 +231,7 @@ export default function Nav() {
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={smooth}
-              className="hidden lg:block"
+              className="relative z-10 hidden lg:block"
             >
               <div className="border-t border-line px-5 py-5">
                 <AnimatePresence mode="wait">

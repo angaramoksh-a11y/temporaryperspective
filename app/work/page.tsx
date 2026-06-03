@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
-import WorkBackdrop from "@/components/WorkBackdrop";
 import WorkGrid from "@/components/WorkGrid";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider } from "@/components/ui";
@@ -17,7 +16,6 @@ export default function WorkPage() {
   return (
     <>
       <Nav />
-      <WorkBackdrop />
       <main>
         <div className="relative">
           <PageHero

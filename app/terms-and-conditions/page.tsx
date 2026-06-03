@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
-import { contact } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "Terms and conditions — Temporary Perspective",
@@ -10,70 +9,87 @@ export const metadata: Metadata = {
 
 const sections: LegalSection[] = [
   {
-    heading: "Agreement",
+    heading: "Who we are",
     paras: [
-      "These terms govern your use of the Temporary Perspective website and the relationship between you and Temporary Perspective LLP. By using this site or engaging us, you accept them. If you do not, please do not use the site.",
+      "Temporary Perspective is a podcast production studio based in Mumbai. We run shows end-to-end: brand, guest prep, shoot, edit, and growth. These terms apply to anyone using this site or working with us.",
     ],
   },
   {
-    heading: "The studio and the show",
+    heading: "What we do",
     paras: [
-      "We build the studio; the show stays yours. The editorial direction, the guests, and the conversation are owned and controlled by the client. We provide production: brand, shoot, edit, and growth, in whatever scope we agree on.",
+      "Every show is scoped differently. Cinematography, editing, color grading, creative direction, social cuts, channel growth: we build the engagement around what your show actually needs. The exact deliverables, timeline, and pricing for your project will be written down in a project agreement before we start.",
     ],
   },
   {
-    heading: "Scope of work",
+    heading: "What we need from you",
     paras: [
-      "The specific work we do for you, its timeline, and its price are set out in a separate proposal or statement of work, not on this site. Where those documents and these terms conflict, the signed proposal governs the engagement.",
+      "Honest communication and timely feedback. Most production delays come from slow approvals or missing assets on the client side, not from us. If you're slow, the show is slow.",
     ],
   },
   {
-    heading: "Fees and payment",
+    heading: "Timelines",
     paras: [
-      "We do not publish rates. Fees are scoped per engagement and confirmed in writing before work begins. Unless agreed otherwise, invoices are due within the period stated on them, and work may pause if an invoice is significantly overdue.",
+      "Timelines we share are estimates. We hit them when we can. Scope changes, extra feedback rounds, and creative complexity can shift delivery by roughly ±20%. We'll flag delays as soon as we see them: we don't sit on bad news.",
     ],
   },
   {
-    heading: "Intellectual property",
-    paras: [
-      "On full payment, ownership of the final delivered episodes and assets passes to the client. We retain ownership of our underlying methods, templates, and project files, and the right to be credited as the studio behind the work unless we agree otherwise.",
+    heading: "Payments",
+    paras: ["Unless your project agreement says otherwise:"],
+    bullets: [
+      "50% of the project cost is due upfront to confirm the booking.",
+      "The remaining 50% is due on final delivery.",
+      "Once work has started, payments are non-refundable.",
+      "Late payments may carry additional fees.",
     ],
   },
   {
-    heading: "Showing our work",
+    heading: "Revisions",
     paras: [
-      "We may reference completed work in our portfolio and marketing, including on this site and our social channels, unless you ask us in writing to keep an engagement private. We will always respect a confidentiality request.",
+      "Most projects include up to two rounds of revisions at each major stage: scripting, editing, color grading. More than that can be quoted separately. Clear, batched feedback gets you better revisions than scattered notes.",
+    ],
+  },
+  {
+    heading: "Ownership and usage",
+    paras: [
+      "Final deliverables are licensed for your use as agreed in the project agreement. We retain the right to show finished work in our portfolio, on social media, and in promotional material, unless your agreement says otherwise.",
+      "Raw files (project timelines, full footage, editable source files) are not included unless your agreement specifically covers them.",
     ],
   },
   {
     heading: "Confidentiality",
     paras: [
-      "Anything you share with us in confidence stays in confidence. We will not disclose your non-public business information to third parties except the service providers needed to deliver the work, and we expect the same discretion from you regarding our methods and pricing.",
+      "Anything sensitive you share with us during a project stays between us. We don't disclose it unless the law requires us to.",
     ],
   },
   {
-    heading: "Your responsibilities",
+    heading: "Cancellation",
     paras: [
-      "Delivery depends on you too. You are responsible for booking guests, securing their consent to be recorded, approving cuts in good time, and giving us the access and materials we need. Delays on these can move timelines.",
+      "If you cancel after work has begun, the upfront payment is non-refundable.",
+      "If we have to cancel (rare, but possible), we'll issue a fair, proportionate refund for unfinished work.",
     ],
   },
   {
-    heading: "Liability",
+    heading: "Things outside our control",
     paras: [
-      "We deliver our work with care, but to the extent the law allows, our total liability for any engagement is limited to the fees paid for that engagement. We are not liable for indirect or consequential losses, or for outcomes outside our control, such as platform performance or audience numbers.",
+      "Natural disasters, power outages, equipment failure, third-party platform disruptions: if something genuinely unforeseen affects your timeline, we'll do our best to recover, but we can't be held responsible for it.",
+    ],
+  },
+  {
+    heading: "Updates to these terms",
+    paras: [
+      "We may revise these terms. The latest version always lives here, with the updated date at the top. Continuing to use the site or our services means you accept the current version.",
     ],
   },
   {
     heading: "Governing law",
     paras: [
-      "These terms are governed by the laws of India, and any dispute falls under the exclusive jurisdiction of the courts of Mumbai, Maharashtra. We will always try to resolve things in conversation first.",
+      "These terms are governed by the laws of India. Any disputes are subject to the jurisdiction of the courts in Mumbai, Maharashtra.",
     ],
   },
   {
-    heading: "Changes and contact",
-    paras: [
-      `We may update these terms as the studio grows; the date above reflects the current version. For any question about them, write to ${contact.email}.`,
-    ],
+    heading: "Get in touch",
+    paras: ["Questions about these terms?"],
+    bullets: ["Email: hey@temporaryperspective.com", "Phone: +91 99204 21611"],
   },
 ];
 
@@ -81,8 +97,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Terms and conditions."
-      lastUpdated="May 2026"
-      intro="The plain version: we build the studio, the show stays yours, and we scope every engagement in writing. The full terms are below."
+      lastUpdated="6 June 2026"
       sections={sections}
     />
   );

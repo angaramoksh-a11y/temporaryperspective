@@ -78,6 +78,13 @@ single-column until the assets land. Each item notes where it slots.
 
 ## Work archive — /work/archive
 
+- [ ] **Thumbnail pipeline upgrade.** Vimeo posters are resolved at build time
+      via the free public oEmbed endpoint (`resolveThumb` in `lib/work.ts`), with
+      `vumbnail.com/{id}.jpg` as the fallback. This is the "for now" approach.
+      Later, harden it: switch to the Vimeo API (token, official thumbnails, sizes)
+      or self-host poster frames in `public/`, and keep vumbnail only as a
+      last-resort fallback. Unlisted clips depend on oEmbed accepting the `/hash`
+      URL, so spot-check those posters when the archive ships.
 - [ ] **PDF artifact tiles.** The grid currently shows video episodes only. The
       spec also wants PDF artifacts (brand guides, decks) as 16:9 tiles with a
       page-1 thumbnail that open in a PDF lightbox viewer. Needs: the PDFs + their

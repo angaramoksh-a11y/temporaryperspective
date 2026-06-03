@@ -79,6 +79,168 @@ export const workLibrary: Episode[] = [
   { id: "nsVBqVg3ipo", guest: "Medha Bhaskaran — Forgotten Genocide", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
 ];
 
+// ── Unified work catalog ────────────────────────────────────────────────────
+// The full body of work across sources, formats and orientations, for /work and
+// /work/archive. Vimeo clips carry an `h` (horizontal) and/or `v` (vertical)
+// cut, each an id + optional unlisted hash; long-form podcasts carry a YouTube
+// id. Search tokenizes over client + format + desc, so no titles are needed.
+
+export type Orientation = "horizontal" | "vertical";
+export type VimeoClip = { id: string; hash?: string };
+
+export type WorkItem = {
+  client: string;
+  format: string;
+  source: "vimeo" | "youtube";
+  orientation: Orientation;
+  h?: VimeoClip; // horizontal cut (vimeo)
+  v?: VimeoClip; // vertical cut (vimeo)
+  yt?: string; // youtube id (long-form podcasts)
+  desc?: string;
+  caseStudy?: string;
+};
+
+// Clients that have a dedicated case-study page (drives the lightbox link).
+const CASE_STUDY: Record<string, string> = {
+  Bharatvaarta: "/case-studies/bharatvaarta",
+  Bureau: "/case-studies/bureau",
+  Qapita: "/case-studies/qapita",
+};
+
+const vimeoItems: WorkItem[] = (
+  [
+    // Testimonials about TP (surfaced on /about, not in the work archive)
+    { client: "Bharatvaarta", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1169858825" }, desc: "Roshan Cariappa (host) on TP" },
+    { client: "Tarini Shah", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1169859676" }, desc: "500k+ followers, on TP's cinematic storytelling" },
+    { client: "Ettara", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1169859867" }, desc: "Meet, founder of Ettara, on TP's ownership and care" },
+    { client: "Bureau", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1195342176" }, desc: "Rahi (Content Head), on industry knowledge and flexibility" },
+    { client: "Qapita", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1196195127" }, desc: "Brendan Marshall, on TP's production ownership" },
+
+    // Bureau Fraud Forum
+    { client: "Bureau", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195301877", hash: "843cb7b206" }, desc: "Bureau Fraud Forum sizzle reel" },
+    { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195303497", hash: "5a1aae3ea4" }, v: { id: "1195303501", hash: "c81e8c9d92" }, desc: "Sandesh (CTO) at Bureau Fraud Forum" },
+    { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301878", hash: "78a173b6ee" }, v: { id: "1195303110", hash: "325b0b4083" }, desc: "Ranjan Reddy (Founder) at Bureau Fraud Forum" },
+    { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301876", hash: "c6150cd478" }, v: { id: "1195301875", hash: "482906e52d" }, desc: "Deepak Sharma (Investor) at Bureau Fraud Forum" },
+
+    { client: "Ignosis", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195304346", hash: "79f1fb2591" }, desc: "Event edit" },
+
+    // My Fin short-form (vertical)
+    { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169859907" }, desc: "Outfits" },
+    { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169860021" }, desc: "EMI" },
+    { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169859962" }, desc: "90 days" },
+    { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169860087" }, desc: "Spent close to a decade" },
+
+    // ORMH perfume product films
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169858512" }, desc: "Perfume, high-end product edit" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169857371" }, desc: "Perfume" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169857410" }, desc: "Perfume" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169857686" }, desc: "Perfume" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169857461" }, desc: "Perfume" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169856436" }, desc: "Perfume" },
+    { client: "ORMH", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169859817" }, desc: "Perfume" },
+
+    // Beena product films
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860644" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860819" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860759" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860937" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860866" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860464" } },
+    { client: "Beena", format: "Product video", source: "vimeo", orientation: "horizontal", h: { id: "1169860692" } },
+    { client: "Beena", format: "Commercial", source: "vimeo", orientation: "horizontal", h: { id: "1169858565" }, desc: "A young woman using the product" },
+
+    { client: "Read Reels", format: "Commercial", source: "vimeo", orientation: "horizontal", h: { id: "1172800968" }, desc: "Quirky service-launch video with motion graphics" },
+    { client: "BD Software", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1197344755" }, desc: "Corporate talking head, shot outdoors at an event" },
+  ] as WorkItem[]
+).map((it) => ({ ...it, caseStudy: CASE_STUDY[it.client] }));
+
+// Long-form podcasts (YouTube), reusing the existing library.
+const podcastItems: WorkItem[] = workLibrary.map((e) => ({
+  client: e.client,
+  format: "Long-form podcast",
+  source: "youtube",
+  orientation: "horizontal",
+  yt: e.id,
+  desc: e.guest,
+  caseStudy: e.caseStudy,
+}));
+
+export const workCatalog: WorkItem[] = [...podcastItems, ...vimeoItems];
+
+// Catalog minus testimonials (those live on /about).
+export const archiveItems = workCatalog.filter((i) => i.format !== "Testimonial");
+export const clientTestimonials = workCatalog.filter(
+  (i) => i.format === "Testimonial",
+);
+
+const FORMAT_ORDER = [
+  "Long-form podcast",
+  "Talking head",
+  "Event coverage / Sizzle reel",
+  "Short-form reel",
+  "Product video",
+  "Commercial",
+];
+export const workClients = [...new Set(archiveItems.map((i) => i.client))].sort();
+export const workFormats = [...new Set(archiveItems.map((i) => i.format))].sort(
+  (a, b) => FORMAT_ORDER.indexOf(a) - FORMAT_ORDER.indexOf(b),
+);
+
+// Stable key for an item (no titles, so build one from source + ids).
+export function workItemKey(i: WorkItem): string {
+  return i.yt ?? i.h?.id ?? i.v?.id ?? `${i.client}-${i.format}`;
+}
+
+// Primary clip (horizontal preferred) for the grid tile + default lightbox cut.
+export function primaryClip(i: WorkItem): VimeoClip | undefined {
+  return i.h ?? i.v;
+}
+
+// Vimeo player embed; carries the unlisted `h` hash when present.
+export function vimeoEmbed(
+  clip: VimeoClip,
+  { autoplay = false, muted = autoplay }: { autoplay?: boolean; muted?: boolean } = {},
+) {
+  const params = new URLSearchParams({ title: "0", byline: "0", portrait: "0", dnt: "1" });
+  if (clip.hash) params.set("h", clip.hash);
+  if (autoplay) params.set("autoplay", "1");
+  if (muted) params.set("muted", "1");
+  return `https://player.vimeo.com/video/${clip.id}?${params.toString()}`;
+}
+
+// Public Vimeo link for the "Watch on Vimeo" action.
+export function vimeoLink(clip: VimeoClip) {
+  return clip.hash
+    ? `https://vimeo.com/${clip.id}/${clip.hash}`
+    : `https://vimeo.com/${clip.id}`;
+}
+
+// Resolve a poster thumbnail for a catalog item. YouTube uses the predictable
+// thumbnail URL; Vimeo uses the free public oEmbed endpoint (works for unlisted
+// clips via the hash), cached for a day, falling back to vumbnail.com.
+// TODO(thumbnails): vumbnail is only a fallback today. Revisit a more robust
+// poster pipeline (self-hosted frames or the Vimeo API) once the archive ships.
+export async function resolveThumb(i: WorkItem): Promise<string> {
+  if (i.source === "youtube" && i.yt) {
+    return `https://i.ytimg.com/vi/${i.yt}/maxresdefault.jpg`;
+  }
+  const clip = primaryClip(i);
+  if (!clip) return "";
+  try {
+    const src = vimeoLink(clip);
+    const res = await fetch(
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(src)}&width=640`,
+      { next: { revalidate: 86400 } },
+    );
+    if (!res.ok) throw new Error(String(res.status));
+    const data = (await res.json()) as { thumbnail_url?: string };
+    if (data.thumbnail_url) return data.thumbnail_url;
+    throw new Error("no thumbnail");
+  } catch {
+    return `https://vumbnail.com/${clip.id}.jpg`;
+  }
+}
+
 export type CaseStudy = {
   client: string;
   href: string;

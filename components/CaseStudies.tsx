@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { caseStudies, vimeo } from "@/lib/work";
-import { EdgeDivider, SectionLabel } from "./ui";
+import { EdgeDivider } from "./ui";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -20,13 +20,16 @@ export default function CaseStudies() {
     <section className="relative py-24 lg:py-32">
       <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <SectionLabel>Testimonials</SectionLabel>
-        <h2 className="mt-5 max-w-md font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-light leading-[1.1] tracking-tight">
-          What our clients say about us.
+        <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+          Testimonials
         </h2>
+        <p className="mt-5 max-w-md font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-light leading-[1.1] tracking-tight text-text">
+          What our clients say about us.
+        </p>
 
-        {/* one card: stacks on mobile, video + controls side-by-side on desktop */}
-        <div className="glass mt-10 w-full rounded-2xl p-3 sm:p-4 lg:grid lg:grid-cols-[1.45fr_1fr] lg:gap-6 lg:p-5">
+        {/* one card: stacks on mobile, video + controls side-by-side on desktop.
+            A low green ambient light travels around its rim. */}
+        <div className="glass rim-glow mt-10 w-full rounded-2xl p-3 sm:p-4 lg:grid lg:grid-cols-[1.45fr_1fr] lg:gap-6 lg:p-5">
           {/* video */}
           <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-line bg-bg-sunken">
             <motion.iframe

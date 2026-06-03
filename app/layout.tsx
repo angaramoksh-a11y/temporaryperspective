@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Anton, Geist, Geist_Mono } from "next/font/google";
 import BottomBlur from "@/components/BottomBlur";
+import SiteBackdrop from "@/components/SiteBackdrop";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,6 +44,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${thunder.variable} h-full antialiased`}
     >
       <body className="min-h-full text-text">
+        <SiteBackdrop />
         {children}
         <BottomBlur strength={1} />
       </body>
