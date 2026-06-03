@@ -8,6 +8,8 @@
 2. The only file I write to is **this one** (`reviewer.md`) — my notes, findings, drafts, and storage.
 3. My output to the team is **handoff prompts**: copy-paste instructions the user gives to the website developer (a separate Claude Code chat). I never make the change myself.
 4. A separate Claude Code chat owns all real edits. I stay read-only on the site (preview/inspect only).
+5. **Every handoff prompt must include the actual links / data / asset URLs / context inline** — never "the file" or "the doc" abstractly. The dev chat has zero context of our conversation; spell out exact URLs, IDs, filenames, routes.
+6. **Scope each handoff tightly to the section/page named.** Don't bundle unrelated section changes into one prompt.
 
 ---
 
@@ -95,34 +97,67 @@
 
 ---
 
+## PROCESS PAGE (/process) — IN PROGRESS
+
+### What's there now
+- Hero: "The process." + "How we run a podcast, end to end. **Bharatvaarta as the running example.**"
+- Sticky stepper: Branding (FOUNDATIONAL) · Guest Prep · Production · Post · Growth (PER EPISODE).
+- Five stacked sections, each = number + kicker + GIANT glowing word (BRANDING, GUEST PREP…) + one paragraph. Nothing else.
+- Final CTA "Let's talk about your show."
+
+### Diagnosis — why it "looks the worst"
+- **Five identical text-only blocks** on the same muddy gradient. Zero rhythm, zero proof.
+- The giant **blurred/glowing word** reads like a render bug, not intent.
+- Says "Bharatvaarta as the running example" then shows **nothing** from Bharatvaarta — no brand boards, no stills, no clips, no numbers.
+- It's the page most about craft, showing the least craft. Pure tell.
+- Same root cause as the home "process" accordion: text where proof should be.
+
+### Known assets (Cloudflare R2, bucket `tp-assets`, Public Access = ENABLED)
+- `BV - Branding_compressed.pdf` (3.07 MB) — Bharatvaarta brand book
+- `Shut-up Beta Branding_compressed.pdf` (2.34 MB) — Shutup Beta brand book (this one had a **logo animation**)
+- `Showreel.mp4` (6.57 MB)
+- Branding done for **2 podcasts**: Bharatvaarta, Shutup Beta.
+
+### OPEN — resources needed from user (asked in chat)
+- R2 public base URL (pub-xxxx.r2.dev or custom domain) so asset links resolve.
+- Bharatvaarta branding doc link (user mentioned, left blank).
+- Shutup Beta logo-animation file (format + filename; not in the visible R2 listing).
+- Per-phase proof assets: guest brief sample, production/BTS stills, post before/after + reels, growth numbers / the Vikram Sood tweet.
+- Intended home for `Showreel.mp4`.
+- Strategic: is the page a generic 5-phase explainer, or a real Bharatvaarta end-to-end walkthrough? Does timeline/speed (<7 days) belong here?
+
+---
+
 ## DEV HANDOFF PROMPTS (give these to the website developer)
 
 > Handoffs #1 and #2 are superseded by the consolidated **#3** below.
 
-### Handoff #3 — Home page updates (FINAL, given to dev)
-> Context: home page of a B2B podcast-studio site (Temporary Perspective). Keep the existing Silk/dark aesthetic, `motion` for animation, and current component patterns. Honor `prefers-reduced-motion` everywhere. Read the relevant Next.js guide before writing code.
+### Handoff #3 — Home HERO ONLY (FINAL, given to dev)
+> Context: home page **hero** of Temporary Perspective (B2B podcast studio). Keep the existing Silk/dark aesthetic, `motion`, and current hero component patterns. Honor `prefers-reduced-motion`. **Only modify the hero — leave every other section and page untouched.** Read the relevant Next.js guide before writing code.
 >
-> **1) HERO — rebuild as a two-column layout (text left, film right)**
 > Copy (use exactly):
-> - Proof line above the headline (replaces the old "See case studies" pill): `100+ episodes shipped →` — links to the work/case-studies page.
+> - Proof line above the headline (replaces the "See case studies →" pill): `100+ episodes shipped →` — link it to the existing work/case-studies route.
 > - H1: `You've built the conversation. We build the stage.`
 > - Subhead: `Cinema-grade podcasts for India's hardest-to-book guests — shot, edited, and live in under a week.`
-> - Exactly two buttons: primary `Book a call`, secondary `See our work`. Remove any other hero CTAs.
+> - Exactly two buttons: primary `Book a call` (keep its current destination), secondary `See our work` (existing work route). Remove any other hero CTAs.
 >
-> Film (right column):
-> - Embed Vimeo `https://vimeo.com/1197960218` (16:9, 61s, narrated).
-> - Text left column, generous 16:9 video card right column, vertically centered; Silk frames the space above/below (intentional, not stretched). On mobile stack: text first, then film.
-> - Behavior: muted ambient loop (Vimeo `background=1`) + clear play affordance. On click, restart from 0 and play WITH sound (inline unmute + setCurrentTime(0) + play via Vimeo Player SDK, or lightbox; inline preferred).
-> - Play button label: `▶ Play with sound · 60s`. Caption under card: `The studio, in 60 seconds.`
-> - `prefers-reduced-motion`: no autoplay — show poster + play button.
+> Layout: two columns — text left, a generous 16:9 video card right, vertically centered; Silk frames the space above/below. Mobile: stack text then video.
 >
-> **2) TEXTURE** — deepen hero bg toward near-black, reduce grain/noise, crisp full-white H1. Keep Silk but calmer. Goal: Resend/Sarvam crispness.
+> Video (the pitch film):
+> - Vimeo ID `1197960218` ("Products - Pitch", 16:9, 61s, **narrated**).
+> - Resting state = muted ambient loop: `https://player.vimeo.com/video/1197960218?background=1&muted=1&loop=1&autoplay=1` (no controls).
+> - Play affordance over it labeled `▶ Play with sound · 60s`. On click, play WITH sound from the start — load `https://player.vimeo.com/video/1197960218?autoplay=1&muted=0` or use the Vimeo Player SDK (`player.setCurrentTime(0); player.setVolume(1); player.play()`). Inline preferred; lightbox acceptable.
+> - Caption under the card: `The studio, in 60 seconds.`
+> - `prefers-reduced-motion`: no autoplay — show the Vimeo poster thumbnail + play button.
 >
-> **3) TESTIMONIALS heading** — replace H2 "What our clients say about us." with `The people we make it for.` (keep any "TESTIMONIALS" kicker).
+> Hero background ONLY: deepen toward near-black and reduce grain/noise so the H1 reads crisp full-white. Do not touch backgrounds anywhere else.
 >
-> **4) STRUCTURE (lower priority)** — move "From the newsletter" lower (just above final CTA/footer); move "Where the guest is" remote section up to right after the work carousel.
->
-> Don't change other pages. Keep all existing links/routes working.
+> Do NOT change: work carousel, process section, testimonials, newsletter, FAQ, footer, or any other page.
+
+### Backlog (NOT yet handed off — deferred per user; hero only for now)
+- Testimonials H2 "What our clients say about us." → `The people we make it for.`
+- Move "From the newsletter" lower; move "Where the guest is" up after the work carousel.
+- Global texture crispness pass (Resend/Sarvam level).
 
 ---
 
