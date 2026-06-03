@@ -67,12 +67,20 @@ export function ProjectLinks({ items }: { items: TestimonialProject[] }) {
         <span key={p.label} className="inline-flex items-center gap-2">
           {i > 0 && <span aria-hidden>·</span>}
           {p.href ? (
-            <Link
-              href={p.href}
-              className="transition-colors hover:text-text"
-            >
-              {p.label}
-            </Link>
+            p.href.startsWith("http") ? (
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noreferrer"
+                className="transition-colors hover:text-text"
+              >
+                {p.label}
+              </a>
+            ) : (
+              <Link href={p.href} className="transition-colors hover:text-text">
+                {p.label}
+              </Link>
+            )
           ) : (
             <span>{p.label}</span>
           )}

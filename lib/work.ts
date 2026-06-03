@@ -278,10 +278,10 @@ export const testimonialCategories: TestimonialCategory[] = [
   "Content creators / Brands",
 ];
 
-// TODO(testimonials): missing credential URLs to add: Rahi (personal + Bureau
-// LinkedIn), Ettara website, LinkedIn for the creators, and verify the
-// Bharatvaarta YouTube URL. Project thumbnails are text links for now (no
-// per-project posters yet). Tarini's transcript is the cleaned partial cut.
+// TODO(testimonials): Tarini's transcript is the cleaned partial cut (a fuller
+// cut is pending, one-line swap when it lands). Verify the @Bharatvaarta YouTube
+// handle is canonical. Creator project links point at /work/archive; deep-linking
+// to the exact entry would need URL-driven archive filters.
 export const siteTestimonials: SiteTestimonial[] = [
   {
     category: "Podcasters",
@@ -329,10 +329,21 @@ export const siteTestimonials: SiteTestimonial[] = [
       "When you work in an industry where you're doing collaborations and videos, especially in B2B, it's important that the team you work with understands you. You give them a project brief, and every time you go back to them on the same or similar projects, their understanding is intuitive, it becomes instinctive. You don't have to sit for an hour or two going over the nitty-gritty. There's a level of understanding where your team gets the nuances, understands who the audience is, and it just gets easier every time you do something with them.",
       "I don't think the goal should be reducing workload, the quality of the output should be excellent, and that should be mutually beneficial for both parties. Even though the workload hasn't reduced, your team has been extremely flexible, and that's given us the opportunity to demand excellence, to expect it, and to put forward requests that, even though they increase the workload, we know will make the project that much better. Flexibility and understanding is something that, on a day-to-day basis, has made it really easy to work with you.",
       "We work with you on testimonials, and on our brand IP, the Bureau Fraud Forum, where we interview people from the industry on how fraud works, what their go-to tech is, their biggest concerns. The video output runs into hours, and knowing your team understands the nuances and can edit it down to its most polished, clean version, where the end result is the most valuable part of everything we shot, that matters. Unless you know the industry, know about fraud prevention and B2B and people who work in tech, I don't think you'd have been able to do that.",
-      "I'd always say: work on a smaller project first. We started with one small event, a banking breakfast for the Bureau Fraud Forum. When I saw the quality of the output, and how easy it was to discuss deliverables, timelines, commercials, everything is a negotiation, it's never everybody-happy on the first shot, just making it easy to go back and forth, and a space where ideas and flexibility and innovation from both sides are encouraged. That two-way process is valuable. Start small, see how it goes, see how you like the team, and then go ahead.",
+      "I'd always say, work on a smaller project first. We started with one small event, a banking breakfast for the Bureau Fraud Forum. When I saw the quality of the output, and how easy it was to discuss deliverables, timelines, commercials, everything is a negotiation, it's never everybody-happy on the first shot, just making it easy to go back and forth, and a space where ideas and flexibility and innovation from both sides are encouraged. That two-way process is valuable. Start small, see how it goes, see how you like the team, and then go ahead.",
       "And apart from the work, we also happily banter with the team. For me, that's a plus, I like that I can be professional and also have fun with the team.",
     ],
-    credentials: [],
+    credentials: [
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/rahi-bhattacharjee-3a4456135/",
+        icon: "linkedin",
+      },
+      {
+        label: "Bureau",
+        href: "https://www.linkedin.com/company/bureauidentity/",
+        icon: "linkedin",
+      },
+    ],
     projects: [
       { label: "Bureau Fraud Forum", href: "/case-studies/bureau" },
       { label: "Bureau Backyard", href: "/case-studies/bureau" },
@@ -353,14 +364,19 @@ export const siteTestimonials: SiteTestimonial[] = [
     credentials: [
       {
         label: "@tarini_shah",
-        href: "https://instagram.com/tarini_shah",
+        href: "https://www.instagram.com/tarini_shah/",
         icon: "instagram",
+      },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/tarini-shah-043b042a4/",
+        icon: "linkedin",
       },
     ],
     projects: [
-      { label: "How I Met You" },
-      { label: "Google Pixel commercial" },
-      { label: "L'Oréal commercial" },
+      { label: "How I Met You", href: "/work/archive" },
+      { label: "Google Pixel commercial", href: "/work/archive" },
+      { label: "L'Oréal commercial", href: "/work/archive" },
     ],
     preview: true,
   },
@@ -374,19 +390,24 @@ export const siteTestimonials: SiteTestimonial[] = [
     transcript: [
       "Hi, my name is Ishpreet Balbir, and I've worked with Temporary Perspective, which is Manav and Moksh, for five videos, and I've had the best time working with them. I worked on two amazing series on Instagram: one is Ishi Ki Khushi, and the other is How I Met You. Across those five videos, our experience had its highs and lows, going through different challenges and working together, especially because each video was very different. We were shooting in public spaces, with different people featuring in them; one of them was an A-list Bollywood actor. Keeping all those variables in mind and making sure things were executed in the time we had, both of them were utterly professional.",
       "We had a lot of fun editing, too. Whenever you shoot this kind of video, you're shooting far more than the final product, going from three or four minutes down to a minute and a half or two. When you're editing and so many people are involved, there's always some creative opinion that each person carries. In most cases we were all in sync on what we wanted, and we all wanted the best product for the audience. From an audience point of view, people loved each and every video we created.",
-      "Both of them are supremely talented, and especially at the age they are, both in their early twenties, for them to have that creative vision and, more importantly, the understanding of the challenges and always looking out for the final product rather than what I want versus what he wants, that's extremely important in the space we're in. I really wish them all the best, and I really hope anyone watching this and wondering whether they should collaborate with Temporary Perspective, they definitely should.",
+      "Both of them are supremely talented, and especially at the age they are, both in their early twenties, for them to have that creative vision and, more importantly, the understanding of the challenges and always looking out for the final product rather than “what I want versus what he wants”, that's extremely important in the space we're in. I really wish them all the best, and I really hope anyone watching this and wondering whether they should collaborate with Temporary Perspective, they definitely should.",
     ],
     credentials: [
       {
         label: "@ishpreetbalbir",
-        href: "https://instagram.com/ishpreetbalbir",
+        href: "https://www.instagram.com/ishpreetbalbir/",
         icon: "instagram",
+      },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/ishpreetbalbir/",
+        icon: "linkedin",
       },
     ],
     projects: [
-      { label: "Ishi Ki Khushi (Eps 5-8)" },
-      { label: "Good Things Take Time" },
-      { label: "How I Met You (Eps 1-2)" },
+      { label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive" },
+      { label: "Good Things Take Time", href: "/work/archive" },
+      { label: "How I Met You (Eps 1-2)", href: "/work/archive" },
     ],
   },
   {
@@ -400,16 +421,21 @@ export const siteTestimonials: SiteTestimonial[] = [
     transcript: [
       "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Hi, my name is Khushbu Chandarana, also known as chashmishkhushi. I worked with Moksh and Manav on a series called Ishi Ki Khushi. We shot at my home, across Mumbai, and at the beach. There was a lot of Mumbai heat, but a lot of hope too.",
       "Through it all, these guys were always calm, creative, and somehow excited, even when my head and the wind clearly weren't getting along. They weren't just DOPs; they were co-directors, idea partners, and even mood stabilisers. We even pulled off a final shoot with Imran Khan, and it was magical. They didn't just want it to look good, they wanted it to feel right. They also made sure I was always in sync with the process, the edits, and the final cuts, even though I had like 56 opinions. (I did.)",
-      "If you're a creator looking for a team that just gets your vibe, matches your madness, and doesn't cry whenever you say let's shoot on the beach, these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
+      "If you're a creator looking for a team that just gets your vibe, matches your madness, and doesn't cry whenever you say “let's shoot on the beach”, these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
     ],
     credentials: [
       {
         label: "@chashmishkhushi",
-        href: "https://instagram.com/chashmishkhushi",
+        href: "https://www.instagram.com/chashmishkhushi/",
         icon: "instagram",
       },
+      {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/in/khushbuchandarana/",
+        icon: "linkedin",
+      },
     ],
-    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)" }],
+    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive" }],
   },
   {
     category: "Content creators / Brands",
@@ -421,8 +447,16 @@ export const siteTestimonials: SiteTestimonial[] = [
     transcript: [
       "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks. They've been so involved in every part of the process, they've helped us think, ideate, and plan for the shoots, and then finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care this much, who take ownership of someone else's project to this extent, not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments, that's what sets them apart for me.",
     ],
-    credentials: [],
-    projects: [{ label: "Website content shoot" }, { label: "BTS reel" }],
+    credentials: [
+      { label: "Ettara", href: "https://ettara.co/", icon: "website" },
+    ],
+    projects: [
+      { label: "Website content shoot", href: "/work/archive" },
+      {
+        label: "BTS reel",
+        href: "https://www.instagram.com/reel/DNBFk15yCSM/",
+      },
+    ],
   },
 ];
 

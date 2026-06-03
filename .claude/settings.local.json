@@ -54,7 +54,9 @@
       "Bash(git config *)",
       "Bash(echo \"EXIT: $?\")",
       "Bash(git show *)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "WebFetch(domain:vimeo.com)",
+      "Bash(git commit *)"
     ]
   }
 }
