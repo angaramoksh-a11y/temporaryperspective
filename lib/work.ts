@@ -244,6 +244,204 @@ export async function resolveThumb(i: WorkItem): Promise<string> {
   }
 }
 
+// ── Testimonials ────────────────────────────────────────────────────────────
+// Richer than the catalog testimonials: each carries a category, role, a pull
+// quote, credential links, and the projects it relates to. Used on /testimonials
+// and (a 3-pick preview) on /about.
+
+export type TestimonialCategory =
+  | "Podcasters"
+  | "Fintech"
+  | "Content creators / Brands";
+export type CredIcon = "instagram" | "linkedin" | "youtube" | "website";
+export type Credential = { label: string; href: string; icon: CredIcon };
+export type TestimonialProject = { label: string; href?: string };
+
+export type SiteTestimonial = {
+  category: TestimonialCategory;
+  name: string;
+  note?: string; // e.g. handle shown beside the name
+  role: string;
+  vimeoId: string;
+  quote: string; // the pull quote shown prominently
+  transcript: string[]; // full transcript, one entry per paragraph
+  credentials: Credential[];
+  projects: TestimonialProject[];
+  preview?: boolean; // surfaced on the /about preview row
+};
+
+export type ResolvedTestimonial = SiteTestimonial & { thumb: string };
+
+export const testimonialCategories: TestimonialCategory[] = [
+  "Podcasters",
+  "Fintech",
+  "Content creators / Brands",
+];
+
+// TODO(testimonials): missing credential URLs to add: Rahi (personal + Bureau
+// LinkedIn), Ettara website, LinkedIn for the creators, and verify the
+// Bharatvaarta YouTube URL. Project thumbnails are text links for now (no
+// per-project posters yet). Tarini's transcript is the cleaned partial cut.
+export const siteTestimonials: SiteTestimonial[] = [
+  {
+    category: "Podcasters",
+    name: "Brendan Marshall",
+    role: "Host, The Catapult Code · Advisor, Qapita",
+    vimeoId: "1196195127",
+    quote:
+      "Everyone on this team cares. They care about the product they're making, and the people who are part of that, including our guest. Great people to work with.",
+    transcript: [
+      "My name is Brendan Marshall and I'm an advisor to Qapita. I spent the last few days with Temporary Perspective, had a wonderful time, learnt a lot about how to deliver a great show on a podcast. And I think what's really clear is that everyone on this team cares. They care about the product they're making, but also the people who were part of that, including our guest. They're very meticulous about all those details, and great people to work with.",
+    ],
+    credentials: [
+      { label: "Qapita", href: "https://www.qapita.com", icon: "website" },
+    ],
+    projects: [{ label: "The Catapult Code", href: "/case-studies/qapita" }],
+    preview: true,
+  },
+  {
+    category: "Podcasters",
+    name: "Roshan Cariappa",
+    role: "Host, Bharatvaarta",
+    vimeoId: "1169858825",
+    quote:
+      "Moksh and team are fantastic, really committed to the art and science of production. Not your run-of-the-mill production team.",
+    transcript: [
+      "Hey, it's been amazing working with Temporary Perspective. Moksh and team are fantastic, really committed to the art and science of production, which I really appreciate. They really care about the outcomes as well. Not your run-of-the-mill production team that will just get the camera, audio, video, sound, and so on. I really like that. We've had a great time working with them, and look forward to working with them again in future.",
+    ],
+    credentials: [
+      {
+        label: "@Bharatvaarta",
+        href: "https://www.youtube.com/@Bharatvaarta",
+        icon: "youtube",
+      },
+    ],
+    projects: [{ label: "Bharatvaarta", href: "/case-studies/bharatvaarta" }],
+  },
+  {
+    category: "Fintech",
+    name: "Rahi Bhattacharjee",
+    role: "Content Head, Bureau",
+    vimeoId: "1195342176",
+    quote:
+      "Your team understands the nuances. The output is something that is the most valuable out of the entire thing we shot. It just gets easier every single project we do.",
+    transcript: [
+      "When you work in an industry where you're doing collaborations and videos, especially in B2B, it's important that the team you work with understands you. You give them a project brief, and every time you go back to them on the same or similar projects, their understanding is intuitive, it becomes instinctive. You don't have to sit for an hour or two going over the nitty-gritty. There's a level of understanding where your team gets the nuances, understands who the audience is, and it just gets easier every time you do something with them.",
+      "I don't think the goal should be reducing workload, the quality of the output should be excellent, and that should be mutually beneficial for both parties. Even though the workload hasn't reduced, your team has been extremely flexible, and that's given us the opportunity to demand excellence, to expect it, and to put forward requests that, even though they increase the workload, we know will make the project that much better. Flexibility and understanding is something that, on a day-to-day basis, has made it really easy to work with you.",
+      "We work with you on testimonials, and on our brand IP, the Bureau Fraud Forum, where we interview people from the industry on how fraud works, what their go-to tech is, their biggest concerns. The video output runs into hours, and knowing your team understands the nuances and can edit it down to its most polished, clean version, where the end result is the most valuable part of everything we shot, that matters. Unless you know the industry, know about fraud prevention and B2B and people who work in tech, I don't think you'd have been able to do that.",
+      "I'd always say: work on a smaller project first. We started with one small event, a banking breakfast for the Bureau Fraud Forum. When I saw the quality of the output, and how easy it was to discuss deliverables, timelines, commercials, everything is a negotiation, it's never everybody-happy on the first shot, just making it easy to go back and forth, and a space where ideas and flexibility and innovation from both sides are encouraged. That two-way process is valuable. Start small, see how it goes, see how you like the team, and then go ahead.",
+      "And apart from the work, we also happily banter with the team. For me, that's a plus, I like that I can be professional and also have fun with the team.",
+    ],
+    credentials: [],
+    projects: [
+      { label: "Bureau Fraud Forum", href: "/case-studies/bureau" },
+      { label: "Bureau Backyard", href: "/case-studies/bureau" },
+      { label: "Testimonials", href: "/case-studies/bureau" },
+    ],
+    preview: true,
+  },
+  {
+    category: "Content creators / Brands",
+    name: "Tarini Shah",
+    role: "Content creator · 540k+ followers",
+    vimeoId: "1169859676",
+    quote:
+      "The vision and the sense of filmmaking that they have will bring your idea to life. They add their own touch, to bring the best out of your idea and create something just magical.",
+    transcript: [
+      "The first project I shot with these guys wasn't my own hire, it was with Ishpreet Balbir's. It was one of the longest, craziest days I've ever had, but the result turned out so good. We did a lot of jugaad on set, but the creative lens we got from it shaped how I wanted to work. That's something Temporary Perspective brings to the picture, no matter what, the vision and sense of filmmaking they have will bring your idea to life. The best part is the mix of things they bring: you have an idea, they understand your perspective, and it doesn't end there, they add their own touch from their sense of filmmaking. They're ready to learn and tweak everything you want, but also add to it, which is what makes them unique. They bring the best out of your idea and the best of what they have to create something magical. Would I collaborate again? Oh, yes, for sure, as long as they have time.",
+    ],
+    credentials: [
+      {
+        label: "@tarini_shah",
+        href: "https://instagram.com/tarini_shah",
+        icon: "instagram",
+      },
+    ],
+    projects: [
+      { label: "How I Met You" },
+      { label: "Google Pixel commercial" },
+      { label: "L'Oréal commercial" },
+    ],
+    preview: true,
+  },
+  {
+    category: "Content creators / Brands",
+    name: "Ishpreet Balbir",
+    role: "Content creator · 230k+ followers",
+    vimeoId: "1197937165",
+    quote:
+      "They are very well headed. The understanding of the challenges, always looking out for the final product. Anyone wondering whether they should collaborate with Temporary Perspective, they definitely should.",
+    transcript: [
+      "Hi, my name is Ishpreet Balbir, and I've worked with Temporary Perspective, which is Manav and Moksh, for five videos, and I've had the best time working with them. I worked on two amazing series on Instagram: one is Ishi Ki Khushi, and the other is How I Met You. Across those five videos, our experience had its highs and lows, going through different challenges and working together, especially because each video was very different. We were shooting in public spaces, with different people featuring in them; one of them was an A-list Bollywood actor. Keeping all those variables in mind and making sure things were executed in the time we had, both of them were utterly professional.",
+      "We had a lot of fun editing, too. Whenever you shoot this kind of video, you're shooting far more than the final product, going from three or four minutes down to a minute and a half or two. When you're editing and so many people are involved, there's always some creative opinion that each person carries. In most cases we were all in sync on what we wanted, and we all wanted the best product for the audience. From an audience point of view, people loved each and every video we created.",
+      "Both of them are supremely talented, and especially at the age they are, both in their early twenties, for them to have that creative vision and, more importantly, the understanding of the challenges and always looking out for the final product rather than what I want versus what he wants, that's extremely important in the space we're in. I really wish them all the best, and I really hope anyone watching this and wondering whether they should collaborate with Temporary Perspective, they definitely should.",
+    ],
+    credentials: [
+      {
+        label: "@ishpreetbalbir",
+        href: "https://instagram.com/ishpreetbalbir",
+        icon: "instagram",
+      },
+    ],
+    projects: [
+      { label: "Ishi Ki Khushi (Eps 5-8)" },
+      { label: "Good Things Take Time" },
+      { label: "How I Met You (Eps 1-2)" },
+    ],
+  },
+  {
+    category: "Content creators / Brands",
+    name: "Khushbu Chandarana",
+    note: "chashmishkhushi",
+    role: "Content creator · 180k+ followers",
+    vimeoId: "1197937167",
+    quote:
+      "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Temporary Perspective might just be their name, but my recommendation: permanently solid.",
+    transcript: [
+      "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Hi, my name is Khushbu Chandarana, also known as chashmishkhushi. I worked with Moksh and Manav on a series called Ishi Ki Khushi. We shot at my home, across Mumbai, and at the beach. There was a lot of Mumbai heat, but a lot of hope too.",
+      "Through it all, these guys were always calm, creative, and somehow excited, even when my head and the wind clearly weren't getting along. They weren't just DOPs; they were co-directors, idea partners, and even mood stabilisers. We even pulled off a final shoot with Imran Khan, and it was magical. They didn't just want it to look good, they wanted it to feel right. They also made sure I was always in sync with the process, the edits, and the final cuts, even though I had like 56 opinions. (I did.)",
+      "If you're a creator looking for a team that just gets your vibe, matches your madness, and doesn't cry whenever you say let's shoot on the beach, these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
+    ],
+    credentials: [
+      {
+        label: "@chashmishkhushi",
+        href: "https://instagram.com/chashmishkhushi",
+        icon: "instagram",
+      },
+    ],
+    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)" }],
+  },
+  {
+    category: "Content creators / Brands",
+    name: "Meet",
+    role: "Founder, Ettara (D2C brand)",
+    vimeoId: "1169859867",
+    quote:
+      "It's never only been about finishing the job. They've been so involved in each and every part of the process. It feels like they're a part of Team Ettara.",
+    transcript: [
+      "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks. They've been so involved in every part of the process, they've helped us think, ideate, and plan for the shoots, and then finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care this much, who take ownership of someone else's project to this extent, not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments, that's what sets them apart for me.",
+    ],
+    credentials: [],
+    projects: [{ label: "Website content shoot" }, { label: "BTS reel" }],
+  },
+];
+
+// Vimeo poster for a public clip (oEmbed, cached, vumbnail fallback).
+export async function vimeoPoster(id: string): Promise<string> {
+  try {
+    const res = await fetch(
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(`https://vimeo.com/${id}`)}&width=900`,
+      { next: { revalidate: 86400 } },
+    );
+    if (!res.ok) throw new Error(String(res.status));
+    const data = (await res.json()) as { thumbnail_url?: string };
+    if (data.thumbnail_url) return data.thumbnail_url;
+    throw new Error("no thumbnail");
+  } catch {
+    return `https://vumbnail.com/${id}.jpg`;
+  }
+}
+
 export type CaseStudy = {
   client: string;
   href: string;

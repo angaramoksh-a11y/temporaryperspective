@@ -6,7 +6,7 @@ import Beliefs from "@/components/Beliefs";
 import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
 import { EdgeDivider, SectionLabel } from "@/components/ui";
-import { clientTestimonials, resolveThumb, team, workItemKey } from "@/lib/work";
+import { siteTestimonials, team, vimeoPoster } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "The studio — Temporary Perspective",
@@ -24,11 +24,9 @@ function monogram(name: string) {
 
 export default async function AboutPage() {
   const testimonials = await Promise.all(
-    clientTestimonials.map(async (t) => ({
-      ...t,
-      thumb: await resolveThumb(t),
-      key: workItemKey(t),
-    })),
+    siteTestimonials
+      .filter((t) => t.preview)
+      .map(async (t) => ({ ...t, thumb: await vimeoPoster(t.vimeoId) })),
   );
 
   return (
@@ -125,6 +123,20 @@ export default async function AboutPage() {
           </div>
         </section>
 
+        {/* 2.5 What people say (testimonial preview) */}
+        <section className="relative py-24 lg:py-28">
+          <EdgeDivider />
+          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+            <div className="mb-12 flex flex-col gap-4">
+              <SectionLabel>Testimonials</SectionLabel>
+              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
+                What people say.
+              </h2>
+            </div>
+            <Testimonials items={testimonials} />
+          </div>
+        </section>
+
         {/* 3. What we believe */}
         <section className="relative py-24 lg:py-32">
           <EdgeDivider />
@@ -136,20 +148,6 @@ export default async function AboutPage() {
               </h2>
             </div>
             <Beliefs />
-          </div>
-        </section>
-
-        {/* 4. Testimonials, the people we work with */}
-        <section className="relative py-24 lg:py-28">
-          <EdgeDivider />
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <div className="mb-12 flex flex-col gap-4">
-              <SectionLabel>Testimonials</SectionLabel>
-              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
-                From the people we work with.
-              </h2>
-            </div>
-            <Testimonials items={testimonials} />
           </div>
         </section>
 

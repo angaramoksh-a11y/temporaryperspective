@@ -7,6 +7,7 @@ const primary = [
   { label: "Process", href: "/process" },
   { label: "Newsletter", href: "/newsletter" },
   { label: "About", href: "/about" },
+  { label: "Testimonials", href: "/testimonials" },
   { label: "Contact", href: "/contact" },
   { label: "FAQ", href: "/faq" },
 ];
