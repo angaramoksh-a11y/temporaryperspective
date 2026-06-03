@@ -100,6 +100,9 @@ export type WorkItem = {
   caseStudy?: string;
 };
 
+// A WorkItem with its poster resolved + a stable key, ready for the client.
+export type ResolvedWorkItem = WorkItem & { thumb: string; key: string };
+
 // Clients that have a dedicated case-study page (drives the lightbox link).
 const CASE_STUDY: Record<string, string> = {
   Bharatvaarta: "/case-studies/bharatvaarta",
