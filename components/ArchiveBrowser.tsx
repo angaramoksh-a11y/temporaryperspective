@@ -105,45 +105,65 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
         )}
       </div>
 
-      {/* masonry grid — native aspect ratios via CSS columns */}
-      <div className="mx-auto max-w-[1400px] px-6 py-12 lg:px-10 lg:py-16">
+      {/* uniform 16:9 wall — calm, evenly-sized tiles with the caption below
+          each, per the studio's film-strip tile spec. Smaller cards, more per
+          row. Posters are lazy; playback (and any vertical cut) happens in the
+          lightbox so the wall stays light even at hundreds of clips. */}
+      <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-10 lg:py-14">
         {shown.length === 0 ? (
           <p className="py-24 text-center text-text-faint">
             No work matches those filters. Try broader filters or clear them.
           </p>
         ) : (
-          <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>*]:mb-5">
-            {shown.map((it) => (
-              <button
-                key={it.key}
-                onClick={() => setActive(it)}
-                aria-label={`Play ${it.client}, ${it.format}`}
-                className="group relative block w-full break-inside-avoid overflow-hidden rounded-2xl border border-line"
-              >
-                {/* Lightweight, lazy-loaded thumbnail only. No autoplay: the
-                    archive can hold hundreds of clips, so playback happens in
-                    the lightbox on click. Native aspect ratio = true bento. */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={it.thumb}
-                  alt=""
-                  loading="lazy"
-                  className="block h-auto w-full brightness-[0.85] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-100"
-                />
-                <span className="absolute inset-0 grid place-items-center bg-black/0 opacity-0 transition-opacity duration-300 group-hover:bg-black/15 group-hover:opacity-100">
-                  <span className="grid h-14 w-14 place-items-center rounded-full border border-white/30 bg-bg/40 backdrop-blur">
-                    <svg viewBox="0 0 24 24" className="h-5 w-5 translate-x-px fill-text" aria-hidden>
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
+          <>
+            <p className="mb-6 text-sm text-text-faint">
+              {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
+            </p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-5 2xl:grid-cols-5">
+              {shown.map((it) => {
+                const title = it.desc ?? it.client;
+                const sub = it.desc ? `${it.client} · ${it.format}` : it.format;
+                return (
+                  <button
+                    key={it.key}
+                    onClick={() => setActive(it)}
+                    aria-label={`Play ${it.client}, ${it.format}`}
+                    className="group block text-left"
+                  >
+                    <div className="relative aspect-video overflow-hidden rounded-xl border border-line bg-bg-sunken">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={it.thumb}
+                        alt=""
+                        loading="lazy"
+                        className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
+                      />
+                      {it.orientation === "vertical" && (
+                        <span className="absolute left-2 top-2 rounded-full border border-white/20 bg-bg/55 px-2 py-0.5 text-[0.6rem] font-medium uppercase tracking-wider text-text-muted backdrop-blur">
+                          Reel
+                        </span>
+                      )}
+                      <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <span className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-bg/45 backdrop-blur">
+                          <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </span>
+                      </span>
+                    </div>
+                    <p className="mt-2.5 truncate text-sm text-text transition-colors group-hover:text-white">
+                      {title}
+                    </p>
+                    <p className="mt-0.5 truncate text-xs text-text-faint">{sub}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </>
         )}
 
         {pageCount > 1 && (
-          <div className="mt-12 flex items-center justify-center gap-2">
+          <div className="mt-14 flex items-center justify-center gap-2">
             {Array.from({ length: pageCount }, (_, i) => (
               <button
                 key={i}
@@ -162,7 +182,12 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
         )}
       </div>
 
-      <WorkLightbox item={active} onClose={() => setActive(null)} />
+      <WorkLightbox
+        items={filtered}
+        active={active}
+        onSelect={setActive}
+        onClose={() => setActive(null)}
+      />
     </section>
   );
 }

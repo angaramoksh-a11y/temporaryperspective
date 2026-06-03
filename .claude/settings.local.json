@@ -57,7 +57,22 @@
       "Read(//tmp/**)",
       "WebFetch(domain:vimeo.com)",
       "Bash(git commit *)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(git -C /Users/angara/v12 status --short)",
+      "Bash(mkdir -p /Users/angara/tp-review/.claude)",
+      "Bash(git checkout *)",
+      "Bash(cp /Users/angara/v12/reviewer.md /Users/angara/tp-review/reviewer.md)",
+      "Bash(git -C /Users/angara/v12 rm --quiet reviewer.md)",
+      "Bash(git -C /Users/angara/v12 commit --quiet -m 'Remove reviewer.md from website repo \\(moved to separate reviewer workspace\\) *)",
+      "Bash(git -C /Users/angara/v12 log --oneline -1)",
+      "Bash(git -C /Users/angara/v12 rm -f --quiet reviewer.md)",
+      "Bash(git -C /Users/angara/v12 show --stat --oneline 9b389a7)",
+      "Bash(git -C /Users/angara/v12 log --oneline -4)",
+      "Bash(git -C /Users/angara/v12 status --short components/Hero.tsx)",
+      "Bash(git -C /Users/angara/v12 diff .claude/settings.local.json)",
+      "Bash(git -C /Users/angara/v12 diff --stat components/)",
+      "Bash(git -C /Users/angara/v12 diff components/ArchiveBrowser.tsx)",
+      "Bash(git -C /Users/angara/v12 diff components/WorkLightbox.tsx)"
     ]
   }
 }
