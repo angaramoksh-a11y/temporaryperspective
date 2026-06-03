@@ -72,7 +72,13 @@
       "Bash(git -C /Users/angara/v12 diff .claude/settings.local.json)",
       "Bash(git -C /Users/angara/v12 diff --stat components/)",
       "Bash(git -C /Users/angara/v12 diff components/ArchiveBrowser.tsx)",
-      "Bash(git -C /Users/angara/v12 diff components/WorkLightbox.tsx)"
+      "Bash(git -C /Users/angara/v12 diff components/WorkLightbox.tsx)",
+      "Bash(sed -n '40,110p' components/CaseStudies.tsx)",
+      "Bash(sed -n '1,120p' components/ui.tsx)",
+      "Bash(sed -n '1,30p' app/work/page.tsx)",
+      "Bash(sed -n '1,30p' app/work/archive/page.tsx)",
+      "Bash(sed -n '1,20p' app/case-studies/page.tsx)",
+      "WebFetch(domain:www.youtube.com)"
     ]
   }
 }
