@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
 import { caseStudies, vimeo } from "@/lib/work";
-import { EdgeDivider } from "./ui";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -18,12 +17,11 @@ export default function CaseStudies() {
 
   return (
     <section className="relative py-24 lg:py-32">
-      <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+        <h2 className="font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium leading-[1.1] tracking-tight">
           Testimonials
         </h2>
-        <p className="mt-5 max-w-md font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-light leading-[1.1] tracking-tight text-text">
+        <p className="mt-4 max-w-md leading-relaxed text-text-muted">
           What our clients say about us.
         </p>
 

@@ -16,7 +16,7 @@
   --font-display:
     -apple-system, "SF Pro Display", BlinkMacSystemFont,
     var(--font-geist-sans), system-ui, sans-serif;
-  --font-thunder: var(--font-thunder), "Arial Narrow", sans-serif;
+  --font-thunder: var(--font-display);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
@@ -337,23 +337,6 @@ body {
 .rim-glow {
   position: relative;
 }
-.rim-glow::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  z-index: -1;
-  border-radius: inherit;
-  background: conic-gradient(
-    from var(--rim),
-    transparent 0deg,
-    oklch(0.74 0.14 155 / 0.4) 34deg,
-    transparent 80deg,
-    transparent 360deg
-  );
-  filter: blur(7px);
-  pointer-events: none;
-  animation: rim-rotate 7s linear infinite;
-}
 .rim-glow::after {
   content: "";
   position: absolute;
@@ -393,7 +376,6 @@ body {
   .bg-keylight,
   .bg-floorbeam,
   .metallic-logo,
-  .rim-glow::before,
   .rim-glow::after,
   .sweep::after {
     animation: none;

@@ -36,21 +36,23 @@ export default async function AboutPage() {
       <Nav />
       <main>
         {/* 1. Studio statement */}
-        <section className="relative flex min-h-[70vh] flex-col items-center justify-center px-6 py-28 text-center lg:px-10">
-          <h1 className="font-thunder text-[clamp(3.5rem,15vw,12rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-            The studio.
-          </h1>
-          <div className="mx-auto mt-10 max-w-[720px] space-y-6">
-            <p className="text-[clamp(1.125rem,1.7vw,1.4rem)] leading-[1.6] text-text">
-              Temporary Perspective is a podcast studio in Mumbai, built for B2B
-              founders who want a show worth taking seriously.
-            </p>
-            <p className="text-[clamp(1.0625rem,1.5vw,1.25rem)] leading-[1.7] text-text-muted">
-              100+ episodes shipped. Politics, fintech, and the kind of long-form
-              conversation most studios don&apos;t attempt. We handle the whole
-              thing: brand, shoot, edit, growth. So the founder can focus on the
-              conversation, not the production behind it.
-            </p>
+        <section className="relative px-6 pb-20 pt-36 lg:px-10 lg:pb-28 lg:pt-48">
+          <div className="mx-auto max-w-[1400px]">
+            <h1 className="font-display text-[clamp(2.75rem,7vw,5.5rem)] font-light leading-[1.02] tracking-tight">
+              The studio.
+            </h1>
+            <div className="mt-8 max-w-2xl space-y-5">
+              <p className="text-[clamp(1.25rem,1.9vw,1.6rem)] leading-[1.5] text-text">
+                Temporary Perspective is a podcast studio in Mumbai, built for B2B
+                founders who want a show worth taking seriously.
+              </p>
+              <p className="text-[clamp(1rem,1.5vw,1.15rem)] leading-relaxed text-text-muted">
+                100+ episodes shipped. Politics, fintech, and the kind of
+                long-form conversation most studios don&apos;t attempt. We handle
+                the whole thing: brand, shoot, edit, growth. So the founder can
+                focus on the conversation, not the production behind it.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -127,8 +129,11 @@ export default async function AboutPage() {
         <section className="relative py-24 lg:py-32">
           <EdgeDivider />
           <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <div className="mb-16 flex justify-center">
-              <SectionLabel>What we believe</SectionLabel>
+            <div className="mb-12 flex flex-col gap-4">
+              <SectionLabel>Beliefs</SectionLabel>
+              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
+                What we believe.
+              </h2>
             </div>
             <Beliefs />
           </div>

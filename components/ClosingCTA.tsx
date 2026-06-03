@@ -2,10 +2,16 @@ import { CAL_LINK } from "@/lib/work";
 import MetallicLogo from "./MetallicLogo";
 import { EdgeDivider, Magnetic, PrimaryButton } from "./ui";
 
-export default function ClosingCTA({ subline }: { subline?: string }) {
+export default function ClosingCTA({
+  subline,
+  divider = true,
+}: {
+  subline?: string;
+  divider?: boolean;
+}) {
   return (
     <section className="relative">
-      <EdgeDivider />
+      {divider && <EdgeDivider />}
       <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-8 px-6 py-28 text-center lg:px-10 lg:py-36">
         <div className="flex flex-col items-center gap-5">
           <MetallicLogo className="mb-2 w-40 md:w-44" />

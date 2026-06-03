@@ -97,7 +97,7 @@ export default function Process() {
           transition={{ duration: 0.6, ease }}
           className="lg:sticky lg:top-32 lg:self-start"
         >
-          <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-light tracking-tight">
+          <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-medium tracking-tight">
             The process.
           </h2>
           <p className="mt-4 max-w-sm text-lg leading-relaxed text-text-muted">

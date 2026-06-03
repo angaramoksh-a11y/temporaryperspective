@@ -27,7 +27,7 @@ function Line({ text, index }: { text: string; index: number }) {
 
 export default function Beliefs() {
   return (
-    <div className="mx-auto flex max-w-[760px] flex-col gap-12 lg:gap-14">
+    <div className="flex max-w-[820px] flex-col gap-12 lg:gap-14">
       {beliefs.map((b, i) => (
         <Line key={i} text={b} index={i} />
       ))}

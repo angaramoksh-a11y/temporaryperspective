@@ -1,11 +1,10 @@
 import Link from "next/link";
 import { newsletterPosts } from "@/lib/work";
-import { ArrowLink, EdgeDivider, SectionLabel } from "./ui";
+import { ArrowLink, SectionLabel } from "./ui";
 
 export default function Newsletter() {
   return (
     <section className="relative py-24 lg:py-28">
-      <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>

@@ -21,7 +21,7 @@ export default function Home() {
         <VirtualCallout />
         <Newsletter />
         <CommonQuestions />
-        <ClosingCTA />
+        <ClosingCTA divider={false} />
       </main>
       <Footer />
     </>

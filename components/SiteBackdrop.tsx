@@ -14,22 +14,22 @@ export default function SiteBackdrop() {
       aria-hidden
       className="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
     >
-      <div className="absolute inset-0 opacity-[0.12]">
+      <div className="absolute inset-0 opacity-[0.28]">
         <Silk
-          speed={1.1}
+          speed={1.2}
           scale={0.6}
-          color="#8f95a1"
+          color="#9aa0ac"
           noiseIntensity={1.8}
           rotation={0}
         />
       </div>
-      {/* vignette: a faint top sheen that falls off fast to near-black, so body
-          copy on text-heavy pages always reads over a dark, calm surface. */}
+      {/* vignette: lets the silk sheen read across the page, then deepens toward
+          the edges and bottom so body copy still sits on a calm, darker base. */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            "radial-gradient(125% 90% at 50% 12%, transparent 8%, oklch(0.085 0.004 264 / 0.72) 46%, oklch(0.085 0.004 264 / 0.96) 100%)",
+            "radial-gradient(125% 100% at 50% 22%, transparent 30%, oklch(0.085 0.004 264 / 0.45) 60%, oklch(0.085 0.004 264 / 0.82) 100%)",
         }}
       />
     </div>

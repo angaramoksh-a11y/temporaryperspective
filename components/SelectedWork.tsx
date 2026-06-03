@@ -80,7 +80,7 @@ export default function SelectedWork() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="mb-12 flex items-start justify-between gap-6">
           <div className="max-w-xl">
-            <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
+            <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
               Some of our work
             </h2>
             <p className="mt-4 text-base leading-relaxed text-text-muted">

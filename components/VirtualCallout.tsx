@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { embed } from "@/lib/work";
-import { ArrowLink, EdgeDivider, SectionLabel } from "./ui";
+import { ArrowLink, SectionLabel } from "./ui";
 import Thumb from "./Thumb";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -14,7 +14,6 @@ export default function VirtualCallout() {
 
   return (
     <section className="relative py-24 lg:py-28">
-      <EdgeDivider />
       <div className="mx-auto grid max-w-[1400px] items-center gap-12 px-6 lg:grid-cols-2 lg:gap-16 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
