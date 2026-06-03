@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import PageHero from "@/components/PageHero";
 import ArchiveBrowser from "@/components/ArchiveBrowser";
 import ClosingCTA from "@/components/ClosingCTA";
 import { archiveItems, resolveThumb, workItemKey } from "@/lib/work";
@@ -26,12 +25,6 @@ export default async function ArchivePage() {
     <>
       <Nav />
       <main>
-        <PageHero
-          title="The archive."
-          subcopy="Every episode, every piece. The full library."
-          size="sm"
-          minH="short"
-        />
         <ArchiveBrowser items={items} />
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>

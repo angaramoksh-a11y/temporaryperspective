@@ -1,43 +1,69 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { type ResolvedWorkItem } from "@/lib/work";
+import { type ResolvedWorkItem, type Orientation } from "@/lib/work";
 import WorkLightbox from "./WorkLightbox";
 
 const PER_PAGE = 48;
 
 export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] }) {
-  const clients = useMemo(
-    () => [...new Set(items.map((i) => i.client))].sort(),
-    [items],
-  );
-  const formats = useMemo(
-    () => [...new Set(items.map((i) => i.format))],
+  // The wall splits by shape so every tile keeps its true aspect ratio: a
+  // landscape view of 16:9 work and a vertical view of 9:16 work, switched by
+  // the glass toggle. Mixing both in one grid is what made it read as noise.
+  const counts = useMemo(
+    () => ({
+      horizontal: items.filter((i) => i.orientation === "horizontal").length,
+      vertical: items.filter((i) => i.orientation === "vertical").length,
+    }),
     [items],
   );
 
+  const [orient, setOrient] = useState<Orientation>("horizontal");
   const [query, setQuery] = useState("");
   const [selClients, setSelClients] = useState<string[]>([]);
   const [selFormats, setSelFormats] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [active, setActive] = useState<ResolvedWorkItem | null>(null);
 
+  const inView = useMemo(
+    () => items.filter((i) => i.orientation === orient),
+    [items, orient],
+  );
+
+  // Filter options are scoped to the current shape so you never pick a client
+  // or format that has nothing to show in this view.
+  const clients = useMemo(
+    () => [...new Set(inView.map((i) => i.client))].sort(),
+    [inView],
+  );
+  const formats = useMemo(
+    () => [...new Set(inView.map((i) => i.format))],
+    [inView],
+  );
+
   const filtered = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    return items.filter((it) => {
+    return inView.filter((it) => {
       const hay = `${it.client} ${it.format} ${it.desc ?? ""}`.toLowerCase();
       const matchQ = tokens.every((t) => hay.includes(t));
       const matchClient = !selClients.length || selClients.includes(it.client);
       const matchFormat = !selFormats.length || selFormats.includes(it.format);
       return matchQ && matchClient && matchFormat;
     });
-  }, [items, query, selClients, selFormats]);
+  }, [inView, query, selClients, selFormats]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const current = Math.min(page, pageCount - 1);
   const shown = filtered.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
 
   const reset = () => setPage(0);
+  const switchOrient = (o: Orientation) => {
+    if (o === orient) return;
+    setOrient(o);
+    setPage(0);
+    setSelClients([]);
+    setSelFormats([]);
+  };
   const toggle =
     (set: typeof setSelClients) => (v: string) => {
       reset();
@@ -51,75 +77,102 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
     ...selFormats.map((f) => ({ label: f, remove: () => toggleFormat(f) })),
   ];
 
+  const vertical = orient === "vertical";
+
   return (
     <section className="relative">
-      {/* search + filters */}
-      <div className="sticky top-[76px] z-30 border-y border-line bg-bg/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-[1400px] flex-col gap-3 px-6 py-3 sm:flex-row sm:items-center lg:px-10">
-          <input
-            value={query}
-            onChange={(e) => {
-              reset();
-              setQuery(e.target.value);
-            }}
-            placeholder="Search by client, format, or topic…"
-            className="h-11 w-full rounded-[var(--radius-btn)] border border-line bg-bg-sunken/60 px-4 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-white/25 sm:max-w-[40%]"
+      {/* header */}
+      <header className="mx-auto max-w-[1400px] px-6 pb-2 pt-28 lg:px-10 lg:pt-36">
+        <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <h1 className="font-display text-[clamp(2.25rem,4.5vw,3.25rem)] font-light leading-[1.03] tracking-tight text-text">
+              The archive.
+            </h1>
+            <p className="mt-4 max-w-md text-[clamp(1rem,1.4vw,1.15rem)] leading-relaxed text-text-muted">
+              Every episode, every piece. The full library.
+            </p>
+          </div>
+          <OrientToggle
+            orient={orient}
+            counts={counts}
+            onSwitch={switchOrient}
           />
-          <div className="flex items-center gap-2 sm:ml-auto">
-            <FilterMenu
-              label="Filter by client"
-              options={clients}
-              selected={selClients}
-              onToggle={toggleClient}
-              onClear={() => {
-                reset();
-                setSelClients([]);
-              }}
-            />
-            <FilterMenu
-              label="Filter by format"
-              options={formats}
-              selected={selFormats}
-              onToggle={toggleFormat}
-              onClear={() => {
-                reset();
-                setSelFormats([]);
-              }}
-            />
-          </div>
         </div>
+      </header>
 
-        {chips.length > 0 && (
-          <div className="mx-auto flex max-w-[1400px] flex-wrap gap-2 px-6 pb-3 lg:px-10">
-            {chips.map((chip) => (
-              <button
-                key={chip.label}
-                onClick={chip.remove}
-                className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1 text-xs text-text-muted transition-colors hover:text-text"
-              >
-                {chip.label}
-                <span className="text-text-faint">✕</span>
-              </button>
-            ))}
+      {/* sticky controls */}
+      <div className="sticky top-[72px] z-30 mt-7 bg-bg/70 backdrop-blur-xl">
+        <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+          <div className="flex flex-col gap-3 border-b border-line py-4 sm:flex-row sm:items-center">
+            <input
+              value={query}
+              onChange={(e) => {
+                reset();
+                setQuery(e.target.value);
+              }}
+              placeholder="Search by client, format, or topic…"
+              className="h-11 w-full rounded-[var(--radius-btn)] border border-line bg-bg-sunken/60 px-4 text-sm text-text outline-none transition-colors placeholder:text-text-faint focus:border-white/25 sm:max-w-[360px]"
+            />
+            <div className="flex items-center gap-2 sm:ml-auto">
+              <FilterMenu
+                label="Client"
+                options={clients}
+                selected={selClients}
+                onToggle={toggleClient}
+                onClear={() => {
+                  reset();
+                  setSelClients([]);
+                }}
+              />
+              <FilterMenu
+                label="Format"
+                options={formats}
+                selected={selFormats}
+                onToggle={toggleFormat}
+                onClear={() => {
+                  reset();
+                  setSelFormats([]);
+                }}
+              />
+            </div>
           </div>
-        )}
+
+          {chips.length > 0 && (
+            <div className="flex flex-wrap gap-2 py-3">
+              {chips.map((chip) => (
+                <button
+                  key={chip.label}
+                  onClick={chip.remove}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1 text-xs text-text-muted transition-colors hover:text-text"
+                >
+                  {chip.label}
+                  <span className="text-text-faint">✕</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* uniform 16:9 wall — calm, evenly-sized tiles with the caption below
-          each, per the studio's film-strip tile spec. Smaller cards, more per
-          row. Posters are lazy; playback (and any vertical cut) happens in the
-          lightbox so the wall stays light even at hundreds of clips. */}
+      {/* the wall — tiles in their native aspect, caption below each */}
       <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-10 lg:py-14">
         {shown.length === 0 ? (
           <p className="py-24 text-center text-text-faint">
-            No work matches those filters. Try broader filters or clear them.
+            No {vertical ? "vertical" : "landscape"} work matches those filters.
+            Try broader filters or clear them.
           </p>
         ) : (
           <>
             <p className="mb-6 text-sm text-text-faint">
               {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
             </p>
-            <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-5 2xl:grid-cols-5">
+            <div
+              className={
+                vertical
+                  ? "grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-5 2xl:grid-cols-6"
+                  : "grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-5 2xl:grid-cols-5"
+              }
+            >
               {shown.map((it) => {
                 const title = it.desc ?? it.client;
                 const sub = it.desc ? `${it.client} · ${it.format}` : it.format;
@@ -130,7 +183,11 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                     aria-label={`Play ${it.client}, ${it.format}`}
                     className="group block text-left"
                   >
-                    <div className="relative aspect-video overflow-hidden rounded-xl border border-line bg-bg-sunken">
+                    <div
+                      className={`relative overflow-hidden rounded-xl border border-line bg-bg-sunken ${
+                        vertical ? "aspect-[9/16]" : "aspect-video"
+                      }`}
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={it.thumb}
@@ -138,14 +195,13 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                         loading="lazy"
                         className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
                       />
-                      {it.orientation === "vertical" && (
-                        <span className="absolute left-2 top-2 rounded-full border border-white/20 bg-bg/55 px-2 py-0.5 text-[0.6rem] font-medium uppercase tracking-wider text-text-muted backdrop-blur">
-                          Reel
-                        </span>
-                      )}
                       <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <span className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-bg/45 backdrop-blur">
-                          <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-4 w-4 translate-x-px fill-text"
+                            aria-hidden
+                          >
                             <path d="M8 5v14l11-7z" />
                           </svg>
                         </span>
@@ -154,7 +210,9 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                     <p className="mt-2.5 truncate text-sm text-text transition-colors group-hover:text-white">
                       {title}
                     </p>
-                    <p className="mt-0.5 truncate text-xs text-text-faint">{sub}</p>
+                    <p className="mt-0.5 truncate text-xs text-text-faint">
+                      {sub}
+                    </p>
                   </button>
                 );
               })}
@@ -189,6 +247,57 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
         onClose={() => setActive(null)}
       />
     </section>
+  );
+}
+
+function OrientToggle({
+  orient,
+  counts,
+  onSwitch,
+}: {
+  orient: Orientation;
+  counts: Record<Orientation, number>;
+  onSwitch: (o: Orientation) => void;
+}) {
+  const opts: { key: Orientation; label: string }[] = [
+    { key: "horizontal", label: "Landscape" },
+    { key: "vertical", label: "Vertical" },
+  ];
+  return (
+    <div className="glass edge-gradient inline-flex shrink-0 gap-1 self-start rounded-full p-1 text-sm lg:self-auto">
+      {opts.map((o) => {
+        const on = orient === o.key;
+        return (
+          <button
+            key={o.key}
+            onClick={() => onSwitch(o.key)}
+            aria-pressed={on}
+            className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors ${
+              on ? "bg-white/[0.1] text-text" : "text-text-muted hover:text-text"
+            }`}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              className="h-3.5 w-3.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth={1.6}
+              aria-hidden
+            >
+              {o.key === "horizontal" ? (
+                <rect x="3" y="6.5" width="18" height="11" rx="2" />
+              ) : (
+                <rect x="6.5" y="3" width="11" height="18" rx="2" />
+              )}
+            </svg>
+            {o.label}
+            <span className={on ? "text-text-faint" : "text-text-faint/70"}>
+              {counts[o.key]}
+            </span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
 
@@ -242,7 +351,7 @@ function FilterMenu({
           >
             <div className="flex items-center justify-between px-3 py-1.5">
               <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-text-faint">
-                {label.replace("Filter by ", "")}
+                {label}
               </span>
               {selected.length > 0 && (
                 <button

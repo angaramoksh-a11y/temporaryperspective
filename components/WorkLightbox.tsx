@@ -136,7 +136,7 @@ export default function WorkLightbox({
       <div
         className={
           vertical
-            ? "mx-auto aspect-[9/16] h-[58vh] max-h-[560px] lg:h-full lg:max-h-none"
+            ? "mx-auto aspect-[9/16] h-[58vh] max-h-[560px] lg:h-[78vh] lg:max-h-[660px]"
             : "aspect-video w-full"
         }
       >
@@ -186,7 +186,7 @@ export default function WorkLightbox({
               transition={{ duration: 0.3, ease }}
               className={
                 vertical
-                  ? "chrome-card relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden lg:h-[80vh] lg:max-h-[700px] lg:max-w-[820px] lg:flex-row lg:items-stretch"
+                  ? "chrome-card relative z-10 flex max-h-[92vh] w-full flex-col overflow-hidden lg:w-auto lg:max-w-[840px] lg:flex-row lg:items-stretch"
                   : "chrome-card relative z-10 flex max-h-[92vh] w-full max-w-[1060px] flex-col overflow-hidden"
               }
             >
@@ -199,10 +199,12 @@ export default function WorkLightbox({
               </button>
 
               {vertical ? (
-                // vertical: tall player left, browse-more rail stacked right
+                // vertical: tall player hugs the left, browse-more rail right
                 <>
-                  <div className="shrink-0 lg:flex lg:flex-1">{player}</div>
-                  <div className="flex min-h-0 w-full flex-col overflow-y-auto lg:w-[340px] lg:shrink-0 lg:overflow-hidden lg:border-l lg:border-line">
+                  <div className="shrink-0 bg-black lg:flex lg:flex-none lg:items-stretch">
+                    {player}
+                  </div>
+                  <div className="flex w-full min-w-0 flex-col lg:w-[340px] lg:shrink-0 lg:border-l lg:border-line">
                     <div className="p-5 lg:p-6">{meta}</div>
                     {rest.length > 0 && (
                       <BrowseMore
@@ -272,7 +274,13 @@ function BrowseMore({
           >
             <span
               className={`relative shrink-0 overflow-hidden rounded-md border border-line bg-bg-sunken ${
-                rail ? "aspect-video w-24" : "block aspect-video w-full"
+                rail
+                  ? it.orientation === "vertical"
+                    ? "aspect-[9/16] w-12"
+                    : "aspect-video w-24"
+                  : it.orientation === "vertical"
+                    ? "block aspect-[9/16] w-[88px]"
+                    : "block aspect-video w-full"
               }`}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
