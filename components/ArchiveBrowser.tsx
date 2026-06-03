@@ -101,7 +101,7 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
       </header>
 
       {/* sticky controls */}
-      <div className="sticky top-[72px] z-30 mt-7 bg-bg/70 backdrop-blur-xl">
+      <div className="sticky top-[80px] z-30 mt-7 bg-bg/70 backdrop-blur-xl">
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <div className="flex flex-col gap-3 border-b border-line py-4 sm:flex-row sm:items-center">
             <input

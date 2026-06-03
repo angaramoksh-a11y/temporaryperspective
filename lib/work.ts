@@ -933,28 +933,28 @@ export type QA = { q: string; a: string };
 // Six surfaced on the home page; the full set lives on /faq.
 export const homeFaqs: QA[] = [
   {
-    q: "What does it cost?",
-    a: "We don't send quotes. We learn what your show needs on the first call, then come back with a plan and pricing built around it, not a number pulled from a rate card.",
+    q: "We've never run a podcast. Can you handle the whole thing?",
+    a: "Yes, from format and positioning to shoot, edit, color, clips, and publishing. You show up and talk; we handle everything before and after.",
   },
   {
-    q: "Do you only work with B2B companies?",
-    a: "It's where we do our best work: founders, fintech, SaaS, the kind of show with a serious guest list. We've done other formats, but B2B is the focus.",
+    q: "How much of my time does this realistically take?",
+    a: "Just the conversation. We handle prep, setup, direction on the day, and all post. Most founders are in and out in a half-day per shoot.",
   },
   {
-    q: "Can you shoot if my guest is in another city?",
-    a: "Yes. We produce remotely: your city, the guest's, or split across both. The show looks the same wherever it's shot.",
+    q: "How fast do I get my episodes back?",
+    a: "Full production (multi-cam, color, clips) in 4 to 7 days; lighter work (events, testimonials) in 1 to 2 days.",
   },
   {
-    q: "Do you handle editing only, or full production?",
-    a: "Either. Some clients take the full pipeline; others come to us only for the edit. We'll scope it to what you actually need.",
+    q: "Is this going to get me views, or actual business?",
+    a: "We build shows around positioning, not vanity. The full episode builds authority; the clips put you in front of founders, operators, and LPs where they already scroll.",
   },
   {
-    q: "How long until my first episode is live?",
-    a: "Depends on scope, but a typical first episode moves from shoot to published in a few weeks. We'll give you a real timeline on the call.",
+    q: "What do you cost?",
+    a: "Every show is scoped differently, so we quote per project, no one-size box. Tell us what you're building and we'll come back with a clear, itemized number.",
   },
   {
-    q: "Do you write the questions or book the guests?",
-    a: "No. The guests and the conversation are yours. That's your relationship and your vision. We help with prep and structure, but the editorial call is always the host's.",
+    q: "What makes you different from a cheaper studio or a freelance editor?",
+    a: "We already understand your category (no time wasted explaining your business), and we own the full pipeline: strategy, shoot, edit, clips, publishing. A freelancer cuts a video; we build a show that compounds.",
   },
 ];
 

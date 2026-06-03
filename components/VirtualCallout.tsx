@@ -1,10 +1,16 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowLink, SectionLabel } from "./ui";
+import { ArrowLink } from "./ui";
 import RemoteCompare from "./RemoteCompare";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+
+const POINTS = [
+  "Crew at both ends",
+  "Recorded properly, locally",
+  "Cut as one conversation",
+];
 
 export default function VirtualCallout() {
   return (
@@ -16,16 +22,23 @@ export default function VirtualCallout() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
         >
-          <SectionLabel>Remote production</SectionLabel>
-          <h2 className="mt-5 max-w-md font-display text-[clamp(1.75rem,3.4vw,2.6rem)] font-light leading-[1.12] tracking-tight">
-            Your guest is in another city. It shouldn&apos;t look like it.
+          <h2 className="text-metal-static max-w-md font-display text-[clamp(1.75rem,3.4vw,2.6rem)] font-medium leading-[1.12] tracking-tight">
+            A remote shoot that doesn&apos;t look remote.
           </h2>
           <p className="mt-5 max-w-md leading-relaxed text-text-muted">
-            Most remote episodes give away the distance — soft webcam, flat
-            sound, a host shrunk into a laptop corner. We put a crew at both
-            ends, light and record each room properly, and cut it into one
-            conversation that looks like it happened in the same studio.
+            Host in Mumbai, guest in Delhi? We send a crew to both, real
+            cameras, real light, real sound in each room, and cut it into one
+            conversation. Not a webcam call dressed up. An actual shoot, in two
+            places at once.
           </p>
+          <ul className="mt-6 flex flex-col gap-2.5">
+            {POINTS.map((p) => (
+              <li key={p} className="flex items-center gap-2.5 text-sm text-text-muted">
+                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-text-faint" aria-hidden />
+                {p}
+              </li>
+            ))}
+          </ul>
           <div className="mt-8">
             <ArrowLink href="/virtual">See how it works</ArrowLink>
           </div>

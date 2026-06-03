@@ -1,15 +1,18 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: oklch(0.085 0.004 264);
-  --color-bg-raised: oklch(0.135 0.005 264);
-  --color-bg-sunken: oklch(0.065 0.004 264);
-  --color-text: oklch(0.96 0.004 264);
-  --color-text-muted: oklch(0.7 0.006 264);
-  --color-text-faint: oklch(0.55 0.006 264);
-  --color-line: oklch(1 0 0 / 0.08);
-  --color-line-strong: oklch(1 0 0 / 0.16);
+  --color-bg: oklch(0.02 0.003 264);
+  --color-bg-raised: oklch(0.125 0.005 264);
+  --color-bg-sunken: oklch(0.04 0.003 264);
+  --color-text: oklch(0.985 0.002 264);
+  --color-text-muted: oklch(0.79 0.006 264);
+  --color-text-faint: oklch(0.66 0.006 264);
+  --color-line: oklch(1 0 0 / 0.1);
+  --color-line-strong: oklch(1 0 0 / 0.2);
   --color-chrome: oklch(0.99 0.002 264);
+  /* Sparse record-light red, used <3% of surface (LED, selection, focus). The
+     UI itself stays monochrome chrome; the only colour ambience is a faint
+     green rim-light on a card edge, never a fill. */
   --color-accent: oklch(0.64 0.21 25);
   --color-gold: oklch(0.82 0.085 85);
 
@@ -54,19 +57,73 @@ body {
   color: var(--color-text);
 }
 
-/* Metallic glass surface: frosted, hairline-lit, for small floating chrome */
+:focus-visible {
+  outline: 2px solid oklch(0.99 0.002 264 / 0.65);
+  outline-offset: 2px;
+}
+
+/* Metallic glass surface: dark, frosted, hairline-lit. Opaque enough that text
+   on it stays legible (>= 4.5:1), with a visible border and an inset top
+   highlight so it reads as a real machined surface, not a muddy wash. */
 .glass {
-  background: linear-gradient(
-    180deg,
-    oklch(1 0 0 / 0.06),
-    oklch(1 0 0 / 0.02)
-  );
-  backdrop-filter: blur(12px) saturate(1.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.2);
-  border: 1px solid oklch(1 0 0 / 0.1);
+  background: oklch(0.13 0 0 / 0.7);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  border: 1px solid oklch(1 0 0 / 0.14);
   box-shadow:
-    inset 0 1px 0 0 oklch(1 0 0 / 0.12),
-    0 1px 2px 0 oklch(0 0 0 / 0.4);
+    inset 0 1px 0 0 oklch(1 0 0 / 0.16),
+    inset 0 0 0 1px oklch(1 0 0 / 0.02),
+    0 8px 30px -12px oklch(0 0 0 / 0.7);
+}
+
+/* Metallic "breathing" headline. A brushed-chrome gradient clipped to the text;
+   the band drifts across over ~6s. Hero H1 uses the animated form; other
+   headings use the static gradient. Frozen under reduced-motion. This is the
+   studio's signature display treatment (same vocabulary as the logomark). */
+.text-metal,
+.text-metal-static {
+  background: linear-gradient(100deg, #fff, #cfd2d6, #fff, #9fa3a9, #fff);
+  background-size: 200% auto;
+  background-position: 0% center;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.text-metal {
+  animation: text-metal 6s linear infinite;
+}
+@keyframes text-metal {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* The one divider in the system: a short centred hairline that fades up at both
+   ends, with a small chrome node + soft glow at its centre. */
+.divider-node {
+  position: relative;
+  height: 1px;
+  width: 100px;
+  margin-inline: auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-line-strong) 50%,
+    transparent
+  );
+}
+.divider-node::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: var(--color-chrome);
+  box-shadow: 0 0 10px 2px oklch(0.99 0.002 264 / 0.45);
 }
 
 /* Chromium edge-light divider */
@@ -376,6 +433,7 @@ body {
   .bg-keylight,
   .bg-floorbeam,
   .metallic-logo,
+  .text-metal,
   .rim-glow::after,
   .sweep::after {
     animation: none;

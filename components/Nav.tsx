@@ -136,11 +136,25 @@ export default function Nav() {
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-4">
+      {/* full-page backdrop blur + dim behind an open megamenu (desktop) */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            aria-hidden
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.3 }}
+            onMouseEnter={scheduleClose}
+            className="fixed inset-0 -z-10 hidden bg-bg/55 backdrop-blur-md lg:block"
+          />
+        )}
+      </AnimatePresence>
       <motion.div
         onMouseEnter={() => clearTimeout(closeTimer.current)}
         onMouseLeave={scheduleClose}
-        initial={{ borderRadius: 12 }}
-        animate={{ borderRadius: isOpen ? 18 : 12 }}
+        initial={{ borderRadius: 14 }}
+        animate={{ borderRadius: isOpen ? 20 : 14 }}
         transition={smooth}
         className="glass edge-gradient relative mx-auto max-w-[1080px] overflow-hidden"
       >
@@ -148,7 +162,7 @@ export default function Nav() {
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-bg/55" />
 
         {/* top bar */}
-        <div className="relative z-10 flex h-[58px] items-center justify-between gap-4 pl-5 pr-4">
+        <div className="relative z-10 flex h-[66px] items-center justify-between gap-4 pl-5 pr-4">
           <Link
             href="/"
             aria-label="Temporary Perspective, home"
@@ -173,7 +187,7 @@ export default function Nav() {
                 <motion.span
                   layoutId="nav-pill"
                   transition={pillT}
-                  className="absolute inset-0 rounded-full border border-line-strong bg-bg-raised shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08)]"
+                  className="absolute inset-0 rounded-[var(--radius-btn)] border border-line-strong bg-white/[0.07] shadow-[inset_0_1px_0_0_oklch(1_0_0/0.14)]"
                 />
               );
 
@@ -190,7 +204,7 @@ export default function Nav() {
                       {pill}
                       <Link
                         href={c.href}
-                        className={`relative z-10 block rounded-full px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
+                        className={`relative z-10 block rounded-[var(--radius-btn)] px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
                       >
                         {c.label}
                       </Link>
@@ -218,7 +232,7 @@ export default function Nav() {
                         open(c.label);
                         setHoveredTop(c.label);
                       }}
-                      className={`relative z-10 inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
+                      className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
                     >
                       {c.label}
                       <svg

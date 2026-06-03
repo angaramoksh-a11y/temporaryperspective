@@ -57,7 +57,7 @@ export default function Hero() {
           {/* proof line */}
           <motion.div variants={rise}>
             <Link
-              href="/work"
+              href="/case-studies"
               className="glass edge-gradient sweep group relative inline-flex items-center gap-2 rounded-full py-1.5 pl-4 pr-3 text-sm text-text-muted transition-colors hover:text-text"
             >
               <span
@@ -68,17 +68,17 @@ export default function Hero() {
                     "radial-gradient(closest-side, oklch(0.99 0.002 264 / 0.18), oklch(0.99 0.002 264 / 0))",
                 }}
               />
-              100+ episodes shipped
+              See case studies
               <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5">
                 →
               </span>
             </Link>
           </motion.div>
 
-          {/* headline */}
+          {/* headline — metallic breathing chrome (the studio's display signature) */}
           <motion.h1
             variants={rise}
-            className="mt-8 text-balance font-display text-[clamp(2rem,3.5vw,3.6rem)] font-medium leading-[1.06] tracking-[-0.025em] text-text"
+            className="text-metal mt-8 text-balance font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.05] tracking-[-0.02em]"
           >
             <span className="block">You&apos;ve built the conversation.</span>
             <span className="block">We build the stage.</span>
