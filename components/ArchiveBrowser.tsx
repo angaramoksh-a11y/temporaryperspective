@@ -9,7 +9,7 @@ import {
 } from "@/lib/work";
 import WorkLightbox from "./WorkLightbox";
 
-const PER_PAGE = 24;
+const PER_PAGE = 48;
 
 export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] }) {
   const clients = useMemo(
@@ -129,30 +129,28 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                     ? embed(it.yt, true, true)
                     : "";
               return (
-                <button
+                <figure
                   key={it.key}
-                  onClick={() => {
-                    setActive(it);
-                    setHovered(null);
-                  }}
                   onMouseEnter={() => setHovered(it.key)}
                   onMouseLeave={() => setHovered(null)}
-                  aria-label={`${it.client}, ${it.format}`}
-                  className="group relative block w-full break-inside-avoid overflow-hidden rounded-xl border border-line text-left"
+                  className="glass sweep group break-inside-avoid rounded-2xl p-2 transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1"
                 >
-                  <div
-                    className={
-                      it.orientation === "vertical"
-                        ? "aspect-[9/16]"
-                        : "aspect-video"
-                    }
+                  <button
+                    onClick={() => {
+                      setActive(it);
+                      setHovered(null);
+                    }}
+                    aria-label={`${it.client}, ${it.format}`}
+                    className="relative block w-full overflow-hidden rounded-xl"
                   >
+                    {/* Original aspect ratio: the thumbnail defines the tile
+                        height, so verticals stay tall and 16:9 stays wide. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={it.thumb}
                       alt={`${it.client}, ${it.format}`}
                       loading="lazy"
-                      className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
+                      className="block h-auto w-full brightness-[0.82] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-100"
                     />
                     {playing && hoverSrc && (
                       <iframe
@@ -162,16 +160,23 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                         className="pointer-events-none absolute inset-0 h-full w-full"
                       />
                     )}
-                  </div>
-                  <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent p-3 pt-10 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                    <span className="block text-sm font-medium text-text">
-                      {it.client}
+                    <span className="absolute inset-0 grid place-items-center opacity-80 transition-opacity duration-300 group-hover:opacity-0">
+                      <span className="grid h-12 w-12 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur">
+                        <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </span>
                     </span>
-                    <span className="block text-xs text-text-faint">
-                      {it.format}
-                    </span>
-                  </span>
-                </button>
+                  </button>
+                  <figcaption className="px-1.5 pb-1 pt-2.5">
+                    <p className="text-sm font-medium leading-snug text-text">
+                      {it.desc ?? it.client}
+                    </p>
+                    <p className="mt-0.5 text-xs text-text-faint">
+                      {it.desc ? `${it.client} · ${it.format}` : it.format}
+                    </p>
+                  </figcaption>
+                </figure>
               );
             })}
           </div>

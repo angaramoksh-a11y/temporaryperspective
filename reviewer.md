@@ -84,23 +84,45 @@
   - 16:9 landscape → text-left / generous 16:9 film-card-right, vertically centered; Silk frames the space intentionally.
   - Narrated → **muted ambient loop + play button → click restarts WITH sound** (inline or lightbox). Do not leave it muted-only.
 
-**OPEN — user is choosing the H1 direction:**
-- ① *(recommended)* **You've built the conversation. We build the stage.** — sub: "Cinema-grade podcasts for India's hardest-to-book guests — shot, edited, and live in under a week."
-- ② **Most podcasts don't fail on content. They fail on context.**
-- ③ **Double the quality. Half the time.** — sub: "...plus 8–10 ready-to-post reels, in under seven days."
-- ④ Keep "For podcast conversations you only get to have once." + concrete subhead.
+**DECIDED — H1 direction ① (user agreed, "go for your likings"):**
+- Pill: `100+ episodes shipped →`
+- H1: **You've built the conversation. We build the stage.**
+- Sub: **Cinema-grade podcasts for India's hardest-to-book guests — shot, edited, and live in under a week.**
+- CTAs: primary **Book a call**, secondary **See our work**.
+- Play button label: `▶ Play with sound · 60s` · caption: `The studio, in 60 seconds.`
+
+(Rejected: ② context/content hook, ③ double-quality-half-time, ④ keep old poetic line — all logged above for reuse elsewhere, e.g. ② could open a pricing/process page.)
 
 ---
 
 ## DEV HANDOFF PROMPTS (give these to the website developer)
 
-### Handoff #1 — Hero CTAs + structure (ready; headline pending pick)
-> In the home hero: remove the "See case studies →" pill and replace it with a small proof line above the headline reading "100+ episodes shipped →" (links to the work/case-studies page). Keep exactly two buttons below the subhead: primary "Book a call", secondary "See our work". Do not change the headline yet.
+> Handoffs #1 and #2 are superseded by the consolidated **#3** below.
 
-### Handoff #2 — Embed pitch film in hero right (ready)
-> Add the Vimeo pitch film (vimeo.com/1197960218, 16:9, 61s, narrated) to the right side of the home hero. Layout: text on the left, a generous 16:9 video card on the right, vertically centered; let the Silk background frame the space above/below. Behavior: show a muted ambient loop with a clear play button; on click, restart the video from the beginning WITH sound (inline unmute or lightbox). This replaces the need for a separate showreel.
-
-*(Headline handoff added once the user picks a direction.)*
+### Handoff #3 — Home page updates (FINAL, given to dev)
+> Context: home page of a B2B podcast-studio site (Temporary Perspective). Keep the existing Silk/dark aesthetic, `motion` for animation, and current component patterns. Honor `prefers-reduced-motion` everywhere. Read the relevant Next.js guide before writing code.
+>
+> **1) HERO — rebuild as a two-column layout (text left, film right)**
+> Copy (use exactly):
+> - Proof line above the headline (replaces the old "See case studies" pill): `100+ episodes shipped →` — links to the work/case-studies page.
+> - H1: `You've built the conversation. We build the stage.`
+> - Subhead: `Cinema-grade podcasts for India's hardest-to-book guests — shot, edited, and live in under a week.`
+> - Exactly two buttons: primary `Book a call`, secondary `See our work`. Remove any other hero CTAs.
+>
+> Film (right column):
+> - Embed Vimeo `https://vimeo.com/1197960218` (16:9, 61s, narrated).
+> - Text left column, generous 16:9 video card right column, vertically centered; Silk frames the space above/below (intentional, not stretched). On mobile stack: text first, then film.
+> - Behavior: muted ambient loop (Vimeo `background=1`) + clear play affordance. On click, restart from 0 and play WITH sound (inline unmute + setCurrentTime(0) + play via Vimeo Player SDK, or lightbox; inline preferred).
+> - Play button label: `▶ Play with sound · 60s`. Caption under card: `The studio, in 60 seconds.`
+> - `prefers-reduced-motion`: no autoplay — show poster + play button.
+>
+> **2) TEXTURE** — deepen hero bg toward near-black, reduce grain/noise, crisp full-white H1. Keep Silk but calmer. Goal: Resend/Sarvam crispness.
+>
+> **3) TESTIMONIALS heading** — replace H2 "What our clients say about us." with `The people we make it for.` (keep any "TESTIMONIALS" kicker).
+>
+> **4) STRUCTURE (lower priority)** — move "From the newsletter" lower (just above final CTA/footer); move "Where the guest is" remote section up to right after the work carousel.
+>
+> Don't change other pages. Keep all existing links/routes working.
 
 ---
 
