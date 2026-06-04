@@ -195,6 +195,7 @@ const vimeoSeeds: WorkSeed[] = (
 
     { client: "Read Reels", format: "Commercial", source: "vimeo", orientation: "horizontal", h: { id: "1172800968" }, desc: "Quirky service-launch video with motion graphics" },
     { client: "BD Software", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1197344755" }, desc: "Corporate talking head, shot outdoors at an event" },
+    { slug: "bureau-backyard", title: "Bureau Backyard", client: "Bureau", format: "Long-form podcast", source: "vimeo", orientation: "horizontal", h: { id: "1198374453" }, desc: "Bureau's podcast series", tags: ["podcast", "fraud", "fintech"] },
 
     // ── New projects (handoff) ───────────────────────────────────────────────
     { slug: "gmorn-valentines-reel", title: "Gmorn — Valentine's reel", client: "Gmorn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169861256" }, tags: ["brand", "valentines", "ads"] },

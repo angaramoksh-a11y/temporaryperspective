@@ -81,7 +81,7 @@ const CONFIG: Record<
       {
         heading: "More",
         items: [
-          { label: "Bureau Backyard Podcast", media: v("1172800968"), placeholder: true },
+          { label: "Bureau Backyard Podcast", media: v("1198374453") },
           { label: "IndMoney Testimonial", media: v("1172800968"), placeholder: true },
         ],
       },
