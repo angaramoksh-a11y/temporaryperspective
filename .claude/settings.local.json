@@ -87,7 +87,8 @@
       "Bash(python3 scripts/search.py \"gallery lightbox dark cinematic portfolio video\" --domain style -n 5)",
       "Bash(python3 scripts/search.py \"dialog focus keyboard aria modal\" --domain web -n 6)",
       "Bash(awk '{print $5, $9}')",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "WebFetch(domain:resend.com)"
     ]
   }
 }
