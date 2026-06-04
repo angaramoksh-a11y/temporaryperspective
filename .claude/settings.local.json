@@ -88,7 +88,12 @@
       "Bash(python3 scripts/search.py \"dialog focus keyboard aria modal\" --domain web -n 6)",
       "Bash(awk '{print $5, $9}')",
       "Bash(git mv *)",
-      "WebFetch(domain:resend.com)"
+      "WebFetch(domain:resend.com)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.scripts,null,2\\)\\); console.log\\('deps:', Object.keys\\(p.dependencies||{}\\).join\\(', '\\)\\)\")",
+      "Bash(npx eslint *)",
+      "Bash(head -n 248 batch-3-bharatvaarta-casestudy.md)",
+      "Bash(printf '\\\\n---\\\\n\\\\n## Round 5+ refinements → moved to `batch-4-refinements.md` \\(testimonials page · nav · remote alignment\\).\\\\n')",
+      "Bash(mv /tmp/b3.md batch-3-bharatvaarta-casestudy.md)"
     ]
   }
 }

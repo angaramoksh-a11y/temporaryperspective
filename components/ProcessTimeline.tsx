@@ -46,7 +46,7 @@ function Strip({ active }: { active: string }) {
                   </span>
                 </span>
                 <span
-                  className={`hidden font-mono text-[0.6rem] uppercase tracking-[0.18em] transition-colors duration-300 sm:block ${
+                  className={`hidden text-[0.8125rem] font-medium uppercase tracking-[0.18em] transition-colors duration-300 sm:block ${
                     gold ? "text-gold/80" : "text-text-faint"
                   } ${on ? "opacity-100" : "opacity-60"}`}
                 >
@@ -87,7 +87,7 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
             {String(index + 1).padStart(2, "0")}
           </span>
           <span
-            className={`inline-flex items-center gap-1.5 font-mono text-[0.65rem] uppercase tracking-[0.2em] ${
+            className={`inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] ${
               gold ? "text-gold" : "text-text-faint"
             }`}
           >

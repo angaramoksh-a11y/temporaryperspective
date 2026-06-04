@@ -101,80 +101,88 @@ export default function TestimonialsHandbook({ rows }: { rows: HandbookRow[] }) 
 
             {/* content */}
             <div className="mt-4 flex flex-col lg:mt-0 lg:justify-center">
-              <h2 className="font-display text-xl font-medium tracking-tight text-text">
-                {row.name}
-                {row.note && (
-                  <span className="ml-2 text-sm font-normal text-text-faint">
-                    {row.note}
-                  </span>
-                )}
-              </h2>
-              <p className="mt-1 text-sm text-text-faint">{row.role}</p>
-
-              {row.credentials.length > 0 && (
-                <div className="mt-3">
-                  <CredChips items={row.credentials} />
+              {/* identity — who's speaking, with quiet social marks */}
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <h2 className="font-display text-xl font-medium tracking-tight text-text">
+                    {row.name}
+                  </h2>
+                  <p className="mt-0.5 text-sm text-text-faint">{row.role}</p>
                 </div>
-              )}
-
-              <p className="mt-4 text-[0.95rem] italic leading-relaxed text-text-muted">
-                “{row.quote}”
-              </p>
-
-              <div className="mt-5 flex flex-col gap-3">
-                {row.caseStudy && (
-                  <Link
-                    href={row.caseStudy}
-                    className="sweep inline-flex h-9 w-fit items-center rounded-[var(--radius-btn)] border border-line-strong px-3.5 text-sm font-medium transition-colors hover:bg-white/[0.04]"
-                  >
-                    View case study →
-                  </Link>
+                {row.credentials.length > 0 && (
+                  <CredChips items={row.credentials} iconOnly />
                 )}
+              </div>
 
-                {row.groups.map((g, gi) => (
-                  <div key={gi}>
-                    {g.heading && (
-                      <p className="mb-1.5 font-mono text-[0.65rem] uppercase tracking-[0.14em] text-text-faint">
-                        {g.heading}
-                      </p>
-                    )}
-                    <div className="flex flex-wrap gap-2">
-                      {g.items.map((it) => {
-                        const cls = `inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1 text-xs transition-colors hover:border-white/30 hover:text-text ${
-                          it.placeholder ? "text-text-faint" : "text-text-muted"
-                        }`;
-                        if (it.media) {
-                          return (
-                            <button
+              {/* their words — the focal point of the card */}
+              <blockquote className="mt-5 border-l-2 border-line pl-4 font-display text-[1.05rem] italic leading-relaxed text-text">
+                “{row.quote}”
+              </blockquote>
+
+              {/* the work — quiet, secondary to the words */}
+              {(row.caseStudy || row.groups.length > 0) && (
+                <div className="mt-6 flex flex-col gap-3.5">
+                  {row.caseStudy && (
+                    <Link
+                      href={row.caseStudy}
+                      className="sweep inline-flex h-9 w-fit items-center rounded-[var(--radius-btn)] border border-line-strong px-3.5 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+                    >
+                      View case study →
+                    </Link>
+                  )}
+
+                  {row.groups.map((g, gi) => (
+                    <div key={gi} className="flex flex-col gap-1.5">
+                      {g.heading && (
+                        <p className="text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
+                          {g.heading}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+                        {g.items.map((it) => {
+                          const cls = `inline-flex items-center gap-1.5 text-sm underline-offset-4 transition-colors hover:text-text hover:underline ${
+                            it.placeholder ? "text-text-faint" : "text-text-muted"
+                          }`;
+                          if (it.media) {
+                            return (
+                              <button
+                                key={it.label}
+                                onClick={() => openProject(row, it)}
+                                title={it.placeholder ? "Placeholder, to be updated" : undefined}
+                                className={cls}
+                              >
+                                <svg
+                                  viewBox="0 0 24 24"
+                                  className="h-2.5 w-2.5 fill-current opacity-70"
+                                  aria-hidden
+                                >
+                                  <path d="M8 5v14l11-7z" />
+                                </svg>
+                                {it.label}
+                              </button>
+                            );
+                          }
+                          return it.external ? (
+                            <a
                               key={it.label}
-                              onClick={() => openProject(row, it)}
-                              title={it.placeholder ? "Placeholder, to be updated" : undefined}
+                              href={it.href}
+                              target="_blank"
+                              rel="noreferrer"
                               className={cls}
                             >
-                              {it.label}
-                            </button>
+                              {it.label} ↗
+                            </a>
+                          ) : (
+                            <Link key={it.label} href={it.href ?? "#"} className={cls}>
+                              {it.label} →
+                            </Link>
                           );
-                        }
-                        return it.external ? (
-                          <a
-                            key={it.label}
-                            href={it.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className={cls}
-                          >
-                            {it.label} ↗
-                          </a>
-                        ) : (
-                          <Link key={it.label} href={it.href ?? "#"} className={cls}>
-                            {it.label} →
-                          </Link>
-                        );
-                      })}
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.article>
         ))}

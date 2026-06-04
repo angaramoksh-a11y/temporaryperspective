@@ -63,7 +63,7 @@ function Meta({ t }: { t: ResolvedTestimonial }) {
             </span>
           )}
         </h3>
-        <p className="mt-1.5 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-faint">
+        <p className="mt-1.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
           {t.role}
         </p>
       </div>

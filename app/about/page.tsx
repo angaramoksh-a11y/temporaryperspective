@@ -92,7 +92,7 @@ export default async function AboutPage() {
                   <h3 className="mt-5 font-thunder text-[clamp(1.5rem,2vw,1.875rem)] uppercase leading-none tracking-tight">
                     {m.name}
                   </h3>
-                  <span className="mt-2 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-text-faint">
+                  <span className="mt-2 text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
                     {m.role}
                   </span>
                   <p className="mt-3 flex-1 text-sm leading-relaxed text-text-muted">

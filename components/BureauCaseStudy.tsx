@@ -21,7 +21,7 @@ export default function BureauCaseStudy() {
             <p className="mt-4 text-[clamp(1.125rem,1.8vw,1.375rem)] text-text-muted">
               {c.producedWith}
             </p>
-            <p className="mt-3 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+            <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
               {c.tagline}
             </p>
           </div>
@@ -38,7 +38,7 @@ export default function BureauCaseStudy() {
         {/* Pull quote */}
         <section className="relative px-6 py-12 lg:px-10 lg:py-16">
           <figure className="mx-auto max-w-[760px] border-l border-line-strong pl-7 lg:pl-9">
-            <blockquote className="font-display text-[clamp(1.75rem,4vw,2.75rem)] font-light italic leading-[1.25] tracking-[-0.01em]">
+            <blockquote className="font-display text-[clamp(1.5rem,2.8vw,2.1rem)] font-light italic leading-[1.3] tracking-[-0.01em]">
               “{c.quote.text}”
             </blockquote>
             <figcaption className="mt-6 text-sm text-text-muted">

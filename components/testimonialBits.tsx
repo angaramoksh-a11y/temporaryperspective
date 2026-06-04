@@ -39,8 +39,35 @@ function CredIconSvg({ name }: { name: CredIcon }) {
   );
 }
 
-export function CredChips({ items }: { items: Credential[] }) {
+export function CredChips({
+  items,
+  iconOnly = false,
+}: {
+  items: Credential[];
+  iconOnly?: boolean;
+}) {
   if (!items.length) return null;
+
+  // Icon-only: a quiet row of social marks, no pill/border — just the glyphs.
+  if (iconOnly)
+    return (
+      <div className="flex flex-wrap items-center gap-1">
+        {items.map((c) => (
+          <a
+            key={c.href}
+            href={c.href}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={c.label}
+            title={c.label}
+            className="inline-grid h-7 w-7 place-items-center rounded-full text-text-faint transition-colors hover:bg-white/[0.06] hover:text-text"
+          >
+            <CredIconSvg name={c.icon} />
+          </a>
+        ))}
+      </div>
+    );
+
   return (
     <div className="flex flex-wrap gap-2">
       {items.map((c) => (
@@ -62,7 +89,7 @@ export function CredChips({ items }: { items: Credential[] }) {
 export function ProjectLinks({ items }: { items: TestimonialProject[] }) {
   if (!items.length) return null;
   return (
-    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 font-mono text-[0.7rem] uppercase tracking-[0.14em] text-text-faint">
+    <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-text-faint">
       {items.map((p, i) => (
         <span key={p.label} className="inline-flex items-center gap-2">
           {i > 0 && <span aria-hidden>·</span>}

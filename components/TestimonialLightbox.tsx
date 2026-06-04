@@ -79,7 +79,7 @@ export default function TestimonialLightbox({
                     </span>
                   )}
                 </h2>
-                <p className="mt-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-faint">
+                <p className="mt-1 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                   {item.role}
                 </p>
                 <p className="mt-5 max-w-2xl font-display text-lg italic leading-relaxed text-text">

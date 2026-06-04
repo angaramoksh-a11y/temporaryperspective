@@ -52,7 +52,7 @@ export default function NewsletterPage() {
                   <span className="pointer-events-none absolute right-3 top-2 font-thunder text-5xl leading-none text-line-strong">
                     {String(newsletterPosts.length - i).padStart(2, "0")}
                   </span>
-                  <span className="relative font-mono text-[0.6rem] uppercase tracking-[0.18em] text-text-faint">
+                  <span className="relative font-mono text-[0.75rem] uppercase tracking-[0.18em] text-text-faint">
                     {post.date}
                   </span>
                 </div>
@@ -64,7 +64,7 @@ export default function NewsletterPage() {
                   <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-text-muted">
                     {post.excerpt}
                   </p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-2 font-mono text-[0.7rem] uppercase tracking-[0.15em] text-text-faint">
+                  <div className="mt-3 flex flex-wrap items-center gap-x-2 font-mono text-[0.75rem] uppercase tracking-[0.15em] text-text-faint">
                     <span>{post.author}</span>
                     <span aria-hidden>·</span>
                     <span>{post.dateLong}</span>

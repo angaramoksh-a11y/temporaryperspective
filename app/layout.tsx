@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import BottomBlur from "@/components/BottomBlur";
+import Vignette from "@/components/Vignette";
 import SiteBackdrop from "@/components/SiteBackdrop";
 import "./globals.css";
 
@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className="min-h-full text-text">
         <SiteBackdrop />
         {children}
-        <BottomBlur strength={1} />
+        <Vignette />
       </body>
     </html>
   );

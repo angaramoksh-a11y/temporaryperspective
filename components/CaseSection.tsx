@@ -54,7 +54,7 @@ export default function CaseSection({
       <h2 className="font-thunder text-[clamp(2.5rem,7vw,8rem)] uppercase leading-[0.85] tracking-[-0.01em] text-text">
         {name}
       </h2>
-      <p className="mt-4 font-mono text-xs uppercase tracking-[0.22em] text-text-faint">
+      <p className="mt-4 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
         {tag}
       </p>
       <p className="mt-8 max-w-md text-[clamp(1.25rem,1.6vw,1.5rem)] leading-snug text-text">

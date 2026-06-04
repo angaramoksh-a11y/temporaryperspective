@@ -43,7 +43,7 @@ export default function Testimonials({
             <div className="flex flex-1 flex-col gap-2 px-1.5 pb-1 pt-3.5">
               <div>
                 <p className="font-medium leading-snug">{t.name}</p>
-                <p className="mt-0.5 font-mono text-[0.65rem] uppercase tracking-[0.16em] text-text-faint">
+                <p className="mt-0.5 text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
                   {t.role}
                 </p>
               </div>

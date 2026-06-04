@@ -8,6 +8,7 @@ import TestimonialVideo from "@/components/TestimonialVideo";
 import CaseWorkRow from "@/components/CaseWorkRow";
 import BureauCaseStudy from "@/components/BureauCaseStudy";
 import QapitaCaseStudy from "@/components/QapitaCaseStudy";
+import BharatvaartaCaseStudy from "@/components/BharatvaartaCaseStudy";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider, SectionLabel } from "@/components/ui";
 import { CaseBackLink, CaseProse, RelatedCases } from "@/components/caseParts";
@@ -50,6 +51,7 @@ export default async function CaseStudyPage({
   const cs = find(client);
   if (!cs) notFound();
 
+  if (client === "bharatvaarta") return <BharatvaartaCaseStudy />;
   if (client === "bureau") return <BureauCaseStudy />;
   if (client === "qapita") return <QapitaCaseStudy />;
 
@@ -162,7 +164,7 @@ function RichCaseStudy({
             <p className="mt-4 text-[clamp(1.125rem,1.8vw,1.375rem)] text-text-muted">
               {content.producedWith}
             </p>
-            <p className="mt-3 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+            <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
               {content.tagline}
             </p>
           </div>

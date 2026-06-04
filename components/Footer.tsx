@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { EdgeDivider } from "./ui";
+import { EdgeDivider, PrimaryButton } from "./ui";
 
 const primary = [
   { label: "Work", href: "/portfolio" },
@@ -44,6 +44,9 @@ export default function Footer() {
             <p className="mt-4 text-sm leading-relaxed text-text-faint">
               Podcasts for serious shows. Mumbai, India.
             </p>
+            <PrimaryButton href="/contact" size="sm" className="mt-6">
+              Book a call
+            </PrimaryButton>
           </div>
 
           <nav className="flex flex-col gap-3 text-sm">
@@ -83,8 +86,8 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* Lifted above the fixed BottomBlur (z-30) so the legal line stays
-            crisp at the foot of the page instead of dissolving into the blur. */}
+        {/* Lifted above the fixed Vignette (z-30) so the legal line stays crisp
+            at the foot of the page instead of dissolving into the frame. */}
         <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© Temporary Perspective LLP, {year}.</span>
           <span>Mumbai, India</span>

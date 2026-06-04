@@ -85,6 +85,7 @@ export const workLibrary: Episode[] = [
   { id: "FKA-b5KXha8", guest: "Ananthan Ayyasamy", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "560sRbXiyGA", guest: "Dr. Uday S. Kulkarni", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "nsVBqVg3ipo", guest: "Medha Bhaskaran — Forgotten Genocide", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
+  { id: "56LqTXT3jeo", guest: "Medha Bhaskaran", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
 ];
 
 // ── Unified work catalog ────────────────────────────────────────────────────
@@ -595,35 +596,10 @@ export type CaseContent = {
   related: { client: string; tag: string; href: string }[];
 };
 
-export const caseStudyContent: Record<string, CaseContent> = {
-  bharatvaarta: {
-    producedWith: "Produced with Roshan Cariappa",
-    tagline: "Politics · Policy · Culture",
-    testimonialId: "ilqq-eyj80M",
-    testimonialName: "Roshan Cariappa · Bharatvaarta",
-    aboutShow: [
-      "Bharatvaarta is a long-form show on Indian politics, policy, and culture. The longer, harder conversations, taken seriously. Guests have included former R&AW chief Vikram Sood, Saurabh Mukherjea, Manish Sabharwal, and Medha Bhaskaran.",
-      "It isn't built for views. It's built for the people who want the full conversation, and it's stayed that way because that's how Roshan runs it. We're glad to still be on the project.",
-    ],
-    ourRole: [
-      "We handle the production end to end. Brand and visual identity, the shoot, the master edit, the colour grade and lighting tuned to each conversation, clipping, and distribution. When the host needed to record on location, we brought the studio to him.",
-      "The show, the guests, and the editorial direction are Roshan's. Our job is to make sure the production never gets in the way of the conversation, and that an hour worth watching looks like one.",
-    ],
-    showcase: [
-      { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta" },
-      { id: "W6odY9EG6Jk", guest: "Saurabh Mukherjea", client: "Bharatvaarta" },
-      { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta" },
-      { id: "Ef5bn6AWxUQ", guest: "Amish Tripathi", client: "Bharatvaarta" },
-      { id: "QTH0goRHdn0", guest: "Medha Bhaskaran", client: "Bharatvaarta" },
-      { id: "SwF6KbsbITc", guest: "Ami Ganatra", client: "Bharatvaarta" },
-      { id: "qpIIH89FepQ", guest: "Aabhas Maldahiyar", client: "Bharatvaarta" },
-    ],
-    related: [
-      { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
-      { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
-    ],
-  },
-};
+// Generic rich-template registry, for any future client that only needs the
+// simple template. Clients with a dedicated component (Bureau, Qapita,
+// Bharatvaarta) are dispatched before this map is consulted.
+export const caseStudyContent: Record<string, CaseContent> = {};
 
 // Bureau: bespoke, organised by production format rather than a single show.
 export type FormatBlock = {
@@ -695,6 +671,68 @@ export const qapitaContent = {
   related: [
     { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },
     { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
+  ],
+};
+
+// Bharatvaarta: a bespoke 8-section case study with its own component. A case
+// study should feel like one: lean on proof, keep the prose tight.
+export type ShowcaseTile = { id: string; title: string; guest?: string };
+
+export const bharatvaartaContent = {
+  eyebrow: "Politics · Policy · Culture",
+  host: "by Roshan Cariappa",
+  testimonialVimeoId: "1169858825",
+  testimonialName: "Roshan Cariappa, host of Bharatvaarta",
+  // The existing pull-quote stays (from siteTestimonials).
+  quote:
+    "Moksh and team are fantastic, really committed to the art and science of production. Not your run-of-the-mill production team.",
+  aboutShow: [
+    "Bharatvaarta is a long-form show on Indian politics, policy, and culture: the longer, harder conversations, taken seriously. Guests have included former R&AW chief Vikram Sood, Saurabh Mukherjea, Manish Sabharwal, and Medha Bhaskaran.",
+    "It isn't built for views. It's built for the people who want the full conversation, and it's stayed that way because that's how Roshan runs it. We're grateful Roshan still trusts us with it.",
+  ],
+  ourRole: [
+    "We handle the production end to end: brand and visual identity, the shoot, the master edit, colour grade and lighting tuned to each conversation, clipping, and distribution. When the host needed to record on location, we brought the studio to him.",
+    "The show, the guests, and the editorial direction are Roshan's. Our job is to make sure the production never gets in the way of the conversation, and that an hour worth watching looks like one.",
+  ],
+  channel: {
+    href: "https://www.youtube.com/@Bharatvaarta",
+    handle: "@Bharatvaarta",
+    posterId: "TomnFVq3Bt4", // Vikram Sood frame: a recognizable, on-brand still
+  },
+  // Before / after: same studio, regraded and relit, three angles. Both start
+  // wide for a fair comparison. YouTube ids + start seconds.
+  compare: {
+    label: "Since we came on",
+    line: "Same room, same host. We just made it look like what it always was.",
+    before: { id: "f3_qOvKrP8Y", start: 75 },
+    after: { id: "FKA-b5KXha8", start: 133 },
+  },
+  // Someone externally noticing the production jump.
+  tweet: {
+    line: "Noticed from the outside.",
+    url: "https://x.com/PatkarSumedh/status/2013494631724634552",
+  },
+  // The full body of work, conveyed by quantity. Reuses the workLibrary ids and
+  // adds the third Medha episode. Marquee on desktop, static row when reduced.
+  marquee: [
+    { id: "ZDDBFbaSxoY", title: "Neelkanth Podcast" },
+    { id: "QTH0goRHdn0", title: "Medha Bhaskaran" },
+    { id: "SwF6KbsbITc", title: "1 God or 33 Crore?", guest: "Ami Ganatra" },
+    { id: "560sRbXiyGA", title: "When Marathas (Almost) Ruled India", guest: "Dr. Uday S. Kulkarni" },
+    { id: "qpIIH89FepQ", title: "Nazi Germany & the Palestinian Cause", guest: "Aabhas Maldahiyar" },
+    { id: "TomnFVq3Bt4", title: "Understanding the Deep State", guest: "Vikram Sood, former R&AW chief" },
+    { id: "Ef5bn6AWxUQ", title: "Amish Tripathi" },
+    { id: "f1hRTb6MIZ8", title: "Deregulation, Civil Service Reform & India's Growth", guest: "Manish Sabharwal" },
+    { id: "b4l3-RO4A9c", title: "Nilesh Oak" },
+    { id: "56LqTXT3jeo", title: "Medha Bhaskaran" },
+    { id: "7srevoi1THs", title: "IPS Amit Lodha" },
+    { id: "FKA-b5KXha8", title: "The Ananthan Ayyasamy Story" },
+    { id: "nsVBqVg3ipo", title: "The Forgotten Genocide That Sparked Swaraj", guest: "Medha Bhaskaran" },
+    { id: "W6odY9EG6Jk", title: "Saurabh Mukherjea" },
+  ] as ShowcaseTile[],
+  related: [
+    { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
+    { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
   ],
 };
 

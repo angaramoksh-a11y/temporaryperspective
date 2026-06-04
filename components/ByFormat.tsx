@@ -63,7 +63,7 @@ export default function ByFormat({ blocks }: { blocks: FormatBlock[] }) {
                   <h3 className="font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-normal tracking-tight">
                     {block.heading}
                   </h3>
-                  <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-text-faint">
+                  <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                     {block.label}
                   </span>
                 </div>

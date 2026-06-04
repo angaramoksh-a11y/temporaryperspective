@@ -11,9 +11,9 @@
   --color-line-strong: oklch(1 0 0 / 0.2);
   --color-chrome: oklch(0.99 0.002 264);
   /* A light, desaturated green, used as a quiet tint only: archive grid hover +
-     active chips, the divider node, focus rings, the process meter fill. Never
-     on the nav, CTAs, or headings. It should read as barely-there, never a
-     brand-colour takeover. */
+     active chips, the divider node, and focus rings. Never on the nav, CTAs,
+     headings, or the process meter (that meter is chromium/metallic glow). It
+     should read as barely-there, never a brand-colour takeover. */
   --color-accent: oklch(0.8 0.08 150);
   --color-gold: oklch(0.82 0.085 85);
 
@@ -425,6 +425,28 @@ body {
   }
 }
 
+/* Continuous logo-slider marquee. The track carries two identical copies of the
+   row, each item spaced with a trailing margin (not `gap`) so translating by
+   exactly -50% lands seamlessly on the second copy. Hovering the viewport slows
+   it so a tile is easy to click. Frozen under reduced-motion, where the
+   component instead renders a static, scrollable row. */
+.marquee-viewport {
+  overflow: hidden;
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 64s linear infinite;
+}
+.marquee-viewport:hover .marquee-track {
+  animation-duration: 150s;
+}
+@keyframes marquee {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -435,6 +457,7 @@ body {
   .bg-floorbeam,
   .metallic-logo,
   .text-metal,
+  .marquee-track,
   .rim-glow::after,
   .sweep::after {
     animation: none;

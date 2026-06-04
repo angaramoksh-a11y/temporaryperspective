@@ -107,7 +107,7 @@ export default function Lightbox({
 
               {others.length > 0 && (
                 <div className="mt-8 border-t border-line pt-6">
-                  <p className="mb-4 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+                  <p className="mb-4 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                     Browse more
                   </p>
                   <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-3">

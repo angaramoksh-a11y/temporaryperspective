@@ -14,6 +14,7 @@ export function EdgeDivider({ className = "" }: { className?: string }) {
 }
 
 const sizes = {
+  sm: "h-9 px-4 text-sm",
   md: "h-11 px-5 text-[0.95rem]",
   lg: "h-12 px-6 text-base",
 };
@@ -70,7 +71,7 @@ export function ArrowLink({
 
 export function SectionLabel({ children }: { children: ReactNode }) {
   return (
-    <span className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+    <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
       {children}
     </span>
   );

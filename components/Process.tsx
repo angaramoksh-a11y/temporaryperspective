@@ -107,11 +107,11 @@ export default function Process() {
             <div className="mt-6">
               <div className="flex items-center justify-between text-xs text-text-faint">
                 <span>Start</span>
-                <span>Published · &lt; 7 days</span>
+                <span>Day 7</span>
               </div>
               <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
                 <motion.div
-                  className="h-full rounded-full bg-accent"
+                  className="h-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]"
                   initial={{ width: 0 }}
                   animate={inView ? { width: "100%" } : { width: 0 }}
                   transition={{ duration: reduce ? 0 : 1.1, ease, delay: 0.15 }}

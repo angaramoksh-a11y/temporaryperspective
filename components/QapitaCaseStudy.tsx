@@ -21,7 +21,7 @@ export default function QapitaCaseStudy() {
             <p className="mt-4 text-[clamp(1.125rem,1.8vw,1.375rem)] text-text-muted">
               {c.producedWith}
             </p>
-            <p className="mt-3 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+            <p className="mt-3 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
               {c.tagline}
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function QapitaCaseStudy() {
         <section className="relative py-24 lg:py-32">
           <EdgeDivider />
           <div className="mx-auto flex max-w-[1400px] flex-col items-center px-6 text-center lg:px-10">
-            <span className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+            <span className="inline-flex items-center gap-2 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
               <span className="chrome-breathe h-1.5 w-1.5 rounded-full bg-chrome" />
               Status
             </span>

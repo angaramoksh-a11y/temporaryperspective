@@ -35,7 +35,7 @@ export default function ContactPage() {
                 className="h-[680px] w-full"
               />
             </div>
-            <p className="mt-3 text-center font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-faint">
+            <p className="mt-3 text-center font-mono text-[0.75rem] uppercase tracking-[0.18em] text-text-faint">
               30 minutes · with Moksh
             </p>
           </div>
@@ -45,7 +45,7 @@ export default function ContactPage() {
         <section className="relative px-6 py-16 lg:px-10 lg:py-20">
           <div className="mx-auto flex max-w-[720px] flex-col gap-12">
             <div>
-              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+              <h2 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-medium tracking-tight text-text">
                 What to expect
               </h2>
               <p className="mt-5 text-[clamp(1.125rem,1.6vw,1.375rem)] leading-[1.65] text-text">
@@ -56,7 +56,7 @@ export default function ContactPage() {
               </p>
             </div>
             <div>
-              <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-text-faint">
+              <h2 className="font-display text-[clamp(1.5rem,2.5vw,2rem)] font-medium tracking-tight text-text">
                 What we don&apos;t do
               </h2>
               <p className="mt-5 text-[clamp(1.125rem,1.6vw,1.375rem)] leading-[1.65] text-text">
@@ -85,7 +85,7 @@ export default function ContactPage() {
                 {contact.email}
               </a>
             </div>
-            <p className="mt-8 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-faint">
+            <p className="mt-8 text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
               {contact.location}
             </p>
           </div>

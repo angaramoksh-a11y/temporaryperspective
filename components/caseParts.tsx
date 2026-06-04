@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EdgeDivider, SectionLabel } from "./ui";
+import { EdgeDivider } from "./ui";
 
 export function CaseBackLink() {
   return (
@@ -21,9 +21,11 @@ export function CaseProse({
 }) {
   return (
     <section className="relative px-6 py-16 lg:px-10 lg:py-20">
-      <div className="mx-auto max-w-[720px]">
-        <SectionLabel>{label}</SectionLabel>
-        <div className="mt-6 space-y-6">
+      <div className="mx-auto max-w-[1200px]">
+        <h2 className="font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight text-text">
+          {label}
+        </h2>
+        <div className="mt-6 max-w-[720px] space-y-6">
           {paragraphs.map((p, i) => (
             <p
               key={i}
@@ -49,7 +51,9 @@ export function RelatedCases({
     <section className="relative py-20 lg:py-24">
       <EdgeDivider />
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <SectionLabel>{label}</SectionLabel>
+        <h2 className="font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight text-text">
+          {label}
+        </h2>
         <div className="mt-8 grid gap-5 sm:grid-cols-2">
           {related.map((r) => (
             <Link

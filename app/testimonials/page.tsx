@@ -14,15 +14,16 @@ export const metadata: Metadata = {
     "In their own words: podcasters, founders, and creators on working with Temporary Perspective.",
 };
 
-// Page order, by testimonial video id.
+// Page order, by testimonial video id. Founders/B2B lead, then creators —
+// Meet (a founder) sits with that first block, above Ishpreet & Khushbu.
 const ORDER = [
   "1169858825", // Bharatvaarta · Roshan
   "1196195127", // Qapita · Brendan
   "1195342176", // Bureau · Rahi
+  "1169859867", // Ettara · Meet
   "1169859676", // Tarini
   "1197937165", // Ishpreet
   "1197937167", // Khushbu
-  "1169859867", // Ettara · Meet
 ];
 
 const v = (id: string, hash?: string) =>
@@ -39,31 +40,19 @@ const CONFIG: Record<
   string,
   { client: string; caseStudy?: string; groups: HandbookRow["groups"] }
 > = {
+  // The @Bharatvaarta YouTube link already shows as a credential icon; no
+  // second copy here under a different name.
   "1169858825": {
     client: "Bharatvaarta",
     caseStudy: "/case-studies/bharatvaarta",
-    groups: [
-      {
-        items: [
-          {
-            label: "Bharatvaarta (the podcast)",
-            href: "https://www.youtube.com/@Bharatvaarta",
-            external: true,
-          },
-        ],
-      },
-    ],
+    groups: [],
   },
+  // "The Catapult Code" case study is the View-case-study button; no duplicate
+  // chip to the same page.
   "1196195127": {
     client: "Qapita",
     caseStudy: "/case-studies/qapita",
-    groups: [
-      {
-        items: [
-          { label: "The Catapult Code (in production)", href: "/case-studies/qapita" },
-        ],
-      },
-    ],
+    groups: [],
   },
   "1195342176": {
     client: "Bureau",
@@ -142,6 +131,7 @@ const CONFIG: Record<
       },
     ],
   },
+  // ettara.co already shows as the credential icon; only unique work links here.
   "1169859867": {
     client: "Ettara",
     groups: [
@@ -153,7 +143,6 @@ const CONFIG: Record<
             href: "https://www.instagram.com/reel/DNBFk15yCSM/",
             external: true,
           },
-          { label: "ettara.co", href: "https://ettara.co/", external: true },
         ],
       },
     ],
@@ -210,7 +199,7 @@ export default async function TestimonialsPage() {
     <>
       <Nav />
       <main>
-        <PageHeroWord word="Testimonials" eyebrow="In their own words" />
+        <PageHeroWord word="Testimonials" eyebrow="In their own words" staticGlow />
         <TestimonialsHandbook rows={rows} />
         <ClosingCTA subline="The work behind these words is the work we'd do for your show." />
       </main>

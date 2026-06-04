@@ -93,7 +93,7 @@ export default function WorkLightbox({
           ))}
         </div>
       )}
-      <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-text-faint">
+      <p className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
         {active.client} · {active.format}
       </p>
       <h2 className="mt-2 font-display text-xl font-medium leading-snug tracking-tight text-text">
@@ -251,7 +251,7 @@ function BrowseMore({
           : "border-t border-line px-5 pb-5 pt-4 lg:px-6"
       }
     >
-      <p className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-text-faint">
+      <p className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
         Browse more
       </p>
       <div

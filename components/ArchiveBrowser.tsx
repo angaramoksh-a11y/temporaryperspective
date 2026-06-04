@@ -319,7 +319,7 @@ function FilterMenu({
             }}
           >
             <div className="flex items-center justify-between px-3 py-1.5">
-              <span className="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-text-faint">
+              <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                 {label}
               </span>
               {selected.length > 0 && (

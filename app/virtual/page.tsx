@@ -3,7 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import ClosingCTA from "@/components/ClosingCTA";
-import RemoteCompare from "@/components/RemoteCompare";
+import RemoteCompare, { REMOTE_SIDES } from "@/components/RemoteCompare";
 import { SectionLabel } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -45,7 +45,10 @@ export default function VirtualPage() {
         {/* the with / without comparison */}
         <section className="relative px-6 pb-6 lg:px-10">
           <div className="mx-auto max-w-[1080px]">
-            <RemoteCompare />
+            <RemoteCompare
+              ariaLabel="Compare remote production"
+              sides={REMOTE_SIDES}
+            />
           </div>
         </section>
 
@@ -59,7 +62,7 @@ export default function VirtualPage() {
             <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
               {STEPS.map((s) => (
                 <div key={s.n} className="flex flex-col bg-bg p-7 lg:p-8">
-                  <span className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-text-faint">
+                  <span className="font-mono text-[0.75rem] uppercase tracking-[0.2em] text-text-faint">
                     {s.n}
                   </span>
                   <h3 className="mt-4 font-display text-xl font-normal tracking-tight text-text">

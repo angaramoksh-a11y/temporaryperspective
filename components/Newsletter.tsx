@@ -24,7 +24,7 @@ export default function Newsletter() {
               href={`/newsletter/${post.slug}`}
               className="sweep group flex flex-col bg-bg p-7 transition-colors hover:bg-bg-raised"
             >
-              <div className="flex items-center gap-2 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-text-faint">
+              <div className="flex items-center gap-2 font-mono text-[0.75rem] uppercase tracking-[0.18em] text-text-faint">
                 <span>{post.date}</span>
                 <span aria-hidden>·</span>
                 <span>{post.readingTime}</span>
