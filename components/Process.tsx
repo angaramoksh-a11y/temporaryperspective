@@ -1,12 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { useState } from "react";
 import { GhostButton } from "./ui";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
-
-const ease = [0.16, 1, 0.3, 1] as const;
 
 const REPEAT = [
   { id: "guest-prep", title: "Guest Prep", body: "Briefs both sides. No cold starts." },
@@ -15,18 +12,26 @@ const REPEAT = [
   { id: "growth", title: "Growth", body: "Published, and grown." },
 ];
 
-const BRAND_BOOK: LightboxItem = {
-  title: "Bharatvaarta — brand book",
-  client: "Branding",
-  desc: "Logo, palette, typography, and the show's full visual system.",
-  media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
-};
+// Two brand books in the shared lightbox (prev/next), so the work doesn't read
+// as a single-client, BV-only site. Served locally (the R2 bucket isn't
+// CORS/frame-accessible, so it renders blank in an iframe).
+const BRAND_BOOKS: LightboxItem[] = [
+  {
+    title: "Bharatvaarta — brand book",
+    client: "Branding",
+    desc: "Logo, palette, typography, and the show's full visual system.",
+    media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
+  },
+  {
+    title: "Shut Up Beta — brand book",
+    client: "Branding",
+    desc: "A second identity system, built from the ground up for a different show.",
+    media: { kind: "pdf", src: "/assets/shutup-beta-branding.pdf" },
+  },
+];
 
 export default function Process() {
-  const reduce = useReducedMotion();
-  const [pdfOpen, setPdfOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.35 });
+  const [pdf, setPdf] = useState<number | null>(null);
 
   return (
     <section className="relative py-24 lg:py-28">
@@ -42,16 +47,13 @@ export default function Process() {
         </div>
 
         {/* timeline */}
-        <div
-          ref={ref}
-          className="mt-12 flex flex-col gap-4 lg:mt-14 lg:flex-row lg:items-stretch"
-        >
-          {/* Branding — the one-time Foundation node; opens the brand book */}
+        <div className="mt-12 flex flex-col gap-4 lg:mt-14 lg:flex-row lg:items-stretch">
+          {/* Branding — the one-time Foundation node; opens the brand books */}
           <button
-            onClick={() => setPdfOpen(true)}
+            onClick={() => setPdf(0)}
             className="group glass rim-glow relative flex flex-col rounded-2xl p-5 text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1 lg:w-[248px] lg:shrink-0"
           >
-            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-text">
+            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-[0.7rem] font-medium uppercase tracking-[0.14em] text-text">
               Once
             </span>
             <h3 className="mt-4 font-display text-xl font-medium tracking-tight text-text">
@@ -61,7 +63,7 @@ export default function Process() {
               Logo, palette, the show&apos;s whole identity.
             </p>
             <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-text">
-              View the brand book
+              View the brand books
               <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
                 →
               </span>
@@ -103,19 +105,14 @@ export default function Process() {
               ))}
             </ol>
 
-            {/* Start → Published meter; fills once when in view */}
+            {/* Start → Day 7 meter; chromium, kept full (no progress animation) */}
             <div className="mt-6">
               <div className="flex items-center justify-between text-xs text-text-faint">
                 <span>Start</span>
                 <span>Day 7</span>
               </div>
               <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]"
-                  initial={{ width: 0 }}
-                  animate={inView ? { width: "100%" } : { width: 0 }}
-                  transition={{ duration: reduce ? 0 : 1.1, ease, delay: 0.15 }}
-                />
+                <div className="h-full w-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]" />
               </div>
             </div>
           </div>
@@ -137,9 +134,10 @@ export default function Process() {
       </div>
 
       <MediaLightbox
-        items={[BRAND_BOOK]}
-        index={pdfOpen ? 0 : null}
-        onClose={() => setPdfOpen(false)}
+        items={BRAND_BOOKS}
+        index={pdf}
+        onClose={() => setPdf(null)}
+        onIndex={setPdf}
       />
     </section>
   );

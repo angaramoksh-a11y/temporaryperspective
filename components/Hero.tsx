@@ -13,7 +13,7 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] flex-col overflow-hidden px-6 pb-16 pt-28 sm:pt-32 lg:justify-center lg:px-10 lg:py-24">
+    <section className="relative flex min-h-[100svh] flex-col overflow-hidden pb-16 pt-28 sm:pt-32 lg:justify-center lg:py-24">
       {/* Hero-local stage. A near-black veil crushes the backdrop behind the
           headline so the H1 reads crisp full white and the silk noise calms.
           The whole group is masked to dissolve into the global silk at the top
@@ -33,7 +33,7 @@ export default function Hero() {
         {/* uniform near-black veil (edges handled by the group mask) */}
         <div
           className="absolute inset-0"
-          style={{ background: "oklch(0.02 0.003 264 / 0.9)" }}
+          style={{ background: "oklch(0.02 0.003 264 / 0.66)" }}
         />
         {/* soft key bloom so the lit centre reads dimensional, not a flat fill;
             radial, so it falls off on its own with no edge of its own */}
@@ -46,7 +46,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 sm:gap-12 lg:grid-cols-[1.05fr_1.15fr] lg:gap-14">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 px-6 sm:gap-12 lg:grid-cols-[minmax(0,560px)_minmax(0,640px)] lg:justify-center lg:gap-12 lg:px-10">
         {/* text column */}
         <motion.div
           initial="hidden"
@@ -78,10 +78,10 @@ export default function Hero() {
           {/* headline — metallic breathing chrome (the studio's display signature) */}
           <motion.h1
             variants={rise}
-            className="text-metal mt-8 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.05] tracking-[-0.02em]"
+            className="text-metal mt-8 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]"
           >
             <span className="block">You&apos;ve built the conversation.</span>
-            <span className="block">We build the stage.</span>
+            <span className="block lg:pl-[1.4em]">We build the stage.</span>
           </motion.h1>
 
           {/* sub-headline */}

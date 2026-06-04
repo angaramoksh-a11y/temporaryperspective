@@ -15,7 +15,7 @@ const POINTS = [
 export default function VirtualCallout() {
   return (
     <section className="relative py-24 lg:py-28">
-      <div className="mx-auto grid max-w-[1400px] items-center gap-8 px-6 lg:grid-cols-2 lg:gap-12 lg:px-10">
+      <div className="mx-auto grid max-w-[1400px] items-start gap-8 px-6 lg:grid-cols-[minmax(0,420px)_minmax(0,660px)] lg:justify-start lg:gap-12 lg:px-10">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}

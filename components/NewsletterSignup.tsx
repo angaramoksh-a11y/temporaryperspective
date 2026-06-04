@@ -34,7 +34,7 @@ export default function NewsletterSignup({
       <form
         onSubmit={submit}
         noValidate
-        className={`glass flex items-center gap-2 rounded-full p-1.5 transition-colors ${
+        className={`glass flex items-center gap-2 rounded-2xl p-1.5 transition-colors ${
           error ? "ring-1 ring-accent/60" : ""
         }`}
       >
@@ -56,7 +56,7 @@ export default function NewsletterSignup({
         <button
           type="submit"
           disabled={done}
-          className={`sweep group inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full font-medium transition-[transform,background,color] duration-300 ease-[var(--ease-out-quart)] ${
+          className={`sweep group inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl font-medium transition-[transform,background,color] duration-300 ease-[var(--ease-out-quart)] ${
             done
               ? "bg-text text-bg"
               : "bg-text text-bg hover:scale-[1.02] hover:bg-white"

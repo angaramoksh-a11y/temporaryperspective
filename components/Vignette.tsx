@@ -12,7 +12,7 @@ export default function Vignette({ zIndex = 30 }: { zIndex?: number }) {
       style={{
         zIndex,
         background:
-          "radial-gradient(120% 130% at 50% 48%, transparent 56%, oklch(0.02 0.003 264 / 0.38) 84%, oklch(0.02 0.003 264 / 0.72) 100%)",
+          "radial-gradient(120% 130% at 50% 48%, transparent 62%, oklch(0.02 0.003 264 / 0.24) 86%, oklch(0.02 0.003 264 / 0.5) 100%)",
       }}
     />
   );

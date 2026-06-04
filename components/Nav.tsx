@@ -16,10 +16,9 @@ import { Magnetic, PrimaryButton } from "./ui";
 // desktop Menu toggle; mobile falls back to a hamburger accordion overlay.
 
 type Item = { label: string; href: string; desc: string };
-type Featured = { title: string; copy: string; href: string; cta: string };
 type Category =
-  | { label: string; items: Item[]; featured?: Featured; href?: never }
-  | { label: string; href: string; items?: never; featured?: never };
+  | { label: string; items: Item[]; href?: never }
+  | { label: string; href: string; items?: never };
 
 const categories: Category[] = [
   {
@@ -38,12 +37,6 @@ const categories: Category[] = [
       { label: "What clients say", href: "/testimonials", desc: "Proof, from the people we make it for." },
       { label: "About us", href: "/about", desc: "Who runs the studio." },
     ],
-    featured: {
-      title: "Start with a call",
-      copy: "Tell us about your show. We handle the rest.",
-      href: "/contact",
-      cta: "Book a call",
-    },
   },
   { label: "Newsletter", href: "/newsletter" },
 ];
@@ -58,24 +51,25 @@ type Preview = {
   vertical?: boolean;
 };
 const WORK_PREVIEWS: Record<string, Preview[]> = {
-  // Work tab, nothing hovered: one case study + one portfolio piece.
-  default: [
-    { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "Case study" },
-    { ytId: "TomnFVq3Bt4", href: "/portfolio", title: "Vikram Sood", line: "Portfolio" },
-  ],
+  // Work tab, nothing hovered: show nothing.
+  default: [],
+  // Portfolio → three works.
   "/portfolio": [
     { ytId: "TomnFVq3Bt4", href: "/portfolio", title: "Vikram Sood", line: "Bharatvaarta" },
     { ytId: "Wd5h0gl5Cj0", href: "/portfolio", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
+    { ytId: "f1hRTb6MIZ8", href: "/portfolio", title: "Manish Sabharwal", line: "Bharatvaarta" },
   ],
-  // mixed orientations: one vertical reel + two horizontal podcasts.
+  // Full archive → a bento: one vertical reel + two horizontal cuts.
   "/portfolio/archive": [
-    { posterSrc: "https://vumbnail.com/1169859907.jpg", href: "/portfolio/archive", title: "My Fin", line: "Short-form reel", vertical: true },
+    { posterSrc: "https://vumbnail.com/1197947260.jpg", href: "/portfolio/archive", title: "Mudrex", line: "Short-form reel", vertical: true },
+    { posterSrc: "https://vumbnail.com/1172800968.jpg", href: "/portfolio/archive", title: "Read Reels", line: "Commercial" },
     { ytId: "f1hRTb6MIZ8", href: "/portfolio/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
-    { ytId: "_RR2a1bh1T0", href: "/portfolio/archive", title: "Bureau Podcast", line: "Bureau" },
   ],
+  // Case studies → all three.
   "/case-studies": [
     { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
-    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
+    { ytId: "TomnFVq3Bt4", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
+    { posterSrc: "https://vumbnail.com/1195342176.jpg", href: "/case-studies/bureau", title: "Bureau", line: "Fraud Forum" },
   ],
 };
 const WORK_DEFAULT = "default";
@@ -165,7 +159,7 @@ export default function Nav() {
         initial={{ borderRadius: 12 }}
         animate={{ borderRadius: isOpen ? 16 : 12 }}
         transition={smooth}
-        className="glass edge-gradient relative mx-auto max-w-[1080px] overflow-hidden"
+        className="glass relative mx-auto w-full max-w-[1400px] overflow-hidden lg:w-[88%]"
       >
         {/* darken the glass so the links stay legible over a bright backdrop */}
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-bg/55" />
@@ -250,7 +244,7 @@ export default function Nav() {
                       {pill}
                       <Link
                         href={c.href}
-                        className={`relative z-10 block rounded-[var(--radius-btn)] px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
+                        className={`relative z-10 block rounded-[var(--radius-btn)] px-4 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
                       >
                         {c.label}
                       </Link>
@@ -278,7 +272,7 @@ export default function Nav() {
                         open(c.label);
                         setHoveredTop(c.label);
                       }}
-                      className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-3.5 py-1.5 text-[0.95rem] font-medium transition-colors ${textCls}`}
+                      className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-4 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
                     >
                       {c.label}
                       <svg
@@ -342,49 +336,22 @@ export default function Nav() {
                         reduce={!!reduce}
                       />
                     ) : (
-                      <div className="grid grid-cols-[1fr_300px] gap-6">
-                        <div className="grid grid-cols-2 gap-1 self-start">
-                          {current!.items.map((it) => (
-                            <Link
-                              key={it.href}
-                              href={it.href}
-                              className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.04]"
-                            >
-                              <span className="flex items-center gap-1.5 text-sm text-text">
-                                {it.label}
-                                <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
-                                  →
-                                </span>
-                              </span>
-                              <span className="text-xs text-text-faint">{it.desc}</span>
-                            </Link>
-                          ))}
-                        </div>
-                        {current!.featured && (
+                      <div className="grid max-w-[820px] auto-rows-fr grid-cols-2 gap-x-10 gap-y-2">
+                        {current!.items.map((it) => (
                           <Link
-                            href={current!.featured.href}
-                            className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
-                            style={{
-                              backgroundImage:
-                                "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
-                            }}
+                            key={it.href}
+                            href={it.href}
+                            className="group/item flex h-full flex-col justify-center gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.04]"
                           >
-                            <div>
-                              <p className="font-display text-lg font-medium tracking-tight text-text">
-                                {current!.featured.title}
-                              </p>
-                              <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
-                                {current!.featured.copy}
-                              </p>
-                            </div>
-                            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
-                              {current!.featured.cta}
-                              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
+                            <span className="flex items-center gap-1.5 text-base font-medium text-text">
+                              {it.label}
+                              <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
                                 →
                               </span>
                             </span>
+                            <span className="text-sm text-text-faint">{it.desc}</span>
                           </Link>
-                        )}
+                        ))}
                       </div>
                     )}
                   </motion.div>
@@ -496,7 +463,7 @@ function WorkMenu({
   const mixed = verticals.length > 0;
 
   return (
-    <div className="grid grid-cols-[200px_1fr] gap-8">
+    <div className="grid grid-cols-[220px_1fr] gap-10">
       {/* stacked destinations */}
       <div className="flex flex-col gap-1 self-start">
         {items.map((it) => (
@@ -505,46 +472,54 @@ function WorkMenu({
             href={it.href}
             onMouseEnter={() => onHover(it.href)}
             onFocus={() => onHover(it.href)}
-            className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.05]"
+            className="group/item flex flex-col gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.05]"
           >
-            <span className="flex items-center gap-1.5 text-sm font-medium text-text">
+            <span className="flex items-center gap-1.5 text-base font-medium text-text">
               {it.label}
               <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
                 →
               </span>
             </span>
-            <span className="text-xs text-text-faint">{it.desc}</span>
+            <span className="text-sm text-text-faint">{it.desc}</span>
           </Link>
         ))}
       </div>
 
-      {/* adaptive preview; height reserved so a hover swap never shifts layout */}
-      <div className="min-h-[252px]">
-        <motion.div
-          key={preview}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
-        >
-          {mixed ? (
-            <div className="grid grid-cols-[148px_232px] items-start gap-3">
-              {verticals.map((c) => (
-                <PreviewCard key={c.title} c={c} aspect="aspect-[9/16]" />
-              ))}
-              <div className="flex flex-col gap-3">
+      {/* adaptive preview — empty on bare "Work"; a bento that fills the area on
+          each sub-item hover (no huge empty space) */}
+      <div className="min-h-[220px]">
+        {cards.length > 0 && (
+          <motion.div
+            key={preview}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+          >
+            {mixed ? (
+              <div className="grid grid-cols-[minmax(0,340px)_minmax(0,520px)] items-start justify-start gap-4">
+                {verticals.map((c) => (
+                  <PreviewCard key={c.title} c={c} aspect="aspect-[9/16]" />
+                ))}
+                <div className="flex flex-col gap-4">
+                  {horizontals.map((c) => (
+                    <PreviewCard key={c.title} c={c} aspect="aspect-video" />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div
+                className="grid gap-4"
+                style={{
+                  gridTemplateColumns: `repeat(${horizontals.length}, minmax(0, 1fr))`,
+                }}
+              >
                 {horizontals.map((c) => (
                   <PreviewCard key={c.title} c={c} aspect="aspect-video" />
                 ))}
               </div>
-            </div>
-          ) : (
-            <div className="grid max-w-[480px] grid-cols-2 gap-3">
-              {horizontals.map((c) => (
-                <PreviewCard key={c.title} c={c} aspect="aspect-video" />
-              ))}
-            </div>
-          )}
-        </motion.div>
+            )}
+          </motion.div>
+        )}
       </div>
     </div>
   );
@@ -573,9 +548,9 @@ function PreviewCard({ c, aspect }: { c: Preview; aspect: string }) {
           />
         )}
       </div>
-      <div className="px-3 py-2.5">
-        <p className="text-sm text-text">{c.title}</p>
-        <p className="text-xs text-text-faint">{c.line}</p>
+      <div className="px-3.5 py-3">
+        <p className="text-[0.95rem] text-text">{c.title}</p>
+        <p className="text-sm text-text-faint">{c.line}</p>
       </div>
     </Link>
   );

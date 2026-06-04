@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 import { phases, type Phase } from "@/lib/work";
 import { EdgeDivider } from "./ui";
+import PhaseVisual from "./ProcessVisuals";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const foundational = (p: Phase) => p.label === "Foundational";
@@ -72,7 +73,7 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
   return (
     <section
       id={phase.id}
-      className="relative flex min-h-[70vh] scroll-mt-32 items-center px-6 py-20 lg:px-10 lg:py-28"
+      className="relative flex min-h-[80vh] scroll-mt-32 items-center px-6 py-20 lg:px-10 lg:py-28"
     >
       {index > 0 && <EdgeDivider />}
       <motion.div
@@ -80,41 +81,47 @@ function PhaseSection({ phase, index }: { phase: Phase; index: number }) {
         initial={{ opacity: 0, y: 24 }}
         animate={inView ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.6, ease }}
-        className="mx-auto w-full max-w-[1100px]"
+        className="mx-auto grid w-full max-w-[1100px] items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14"
       >
-        <div className="flex items-center gap-3">
-          <span className="font-mono text-sm text-text-faint">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span
-            className={`inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] ${
-              gold ? "text-gold" : "text-text-faint"
-            }`}
-          >
-            {gold && <span className="h-1.5 w-1.5 rounded-full bg-gold" />}
-            {phase.label}
-          </span>
+        <div className="min-w-0">
+          <div className="flex items-center gap-3">
+            <span className="font-mono text-sm text-text-faint">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span
+              className={`inline-flex items-center gap-1.5 text-[0.8125rem] font-medium uppercase tracking-[0.18em] ${
+                gold ? "text-gold" : "text-text-faint"
+              }`}
+            >
+              {gold && <span className="h-1.5 w-1.5 rounded-full bg-gold" />}
+              {phase.label}
+            </span>
+          </div>
+
+          <h2 className="mt-5 font-thunder text-[clamp(2.5rem,6vw,5rem)] uppercase leading-[0.95] tracking-[-0.01em]">
+            {phase.title}
+          </h2>
+
+          <p className="mt-6 max-w-xl text-[clamp(1.0625rem,1.6vw,1.3rem)] leading-[1.55] text-text-muted">
+            {phase.detail}
+          </p>
+
+          {phase.link && (
+            <Link
+              href={phase.link.href}
+              className="group mt-8 inline-flex items-center gap-1.5 text-text transition-colors hover:text-white"
+            >
+              {phase.link.label}
+              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
+                →
+              </span>
+            </Link>
+          )}
         </div>
 
-        <h2 className="mt-5 font-thunder text-[clamp(3rem,11vw,9rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-          {phase.title}
-        </h2>
-
-        <p className="mt-6 max-w-2xl text-[clamp(1.125rem,1.9vw,1.5rem)] leading-[1.5] text-text-muted">
-          {phase.detail}
-        </p>
-
-        {phase.link && (
-          <Link
-            href={phase.link.href}
-            className="group mt-8 inline-flex items-center gap-1.5 text-text transition-colors hover:text-white"
-          >
-            {phase.link.label}
-            <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
-              →
-            </span>
-          </Link>
-        )}
+        <div className="min-w-0">
+          <PhaseVisual phaseId={phase.id} />
+        </div>
       </motion.div>
     </section>
   );

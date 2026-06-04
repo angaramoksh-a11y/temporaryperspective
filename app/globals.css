@@ -74,7 +74,7 @@ body {
   box-shadow:
     inset 0 1px 0 0 oklch(1 0 0 / 0.16),
     inset 0 0 0 1px oklch(1 0 0 / 0.02),
-    0 8px 30px -12px oklch(0 0 0 / 0.7);
+    0 14px 40px -16px oklch(0 0 0 / 0.78);
 }
 
 /* Metallic "breathing" headline. A brushed-chrome gradient clipped to the text;

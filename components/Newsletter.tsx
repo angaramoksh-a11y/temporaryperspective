@@ -1,20 +1,25 @@
 import Link from "next/link";
 import { newsletterPosts } from "@/lib/work";
 import { ArrowLink } from "./ui";
+import NewsletterSignup from "./NewsletterSignup";
 
 export default function Newsletter() {
   return (
     <section className="relative py-24 lg:py-28">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <h2 className="max-w-xl font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-tight">
-              Notes on running a podcast worth watching.
+            <h2 className="font-display text-[clamp(2rem,4vw,3.25rem)] font-medium tracking-tight">
+              Newsletter
             </h2>
+            <p className="mt-4 max-w-md text-lg leading-relaxed text-text-muted">
+              Notes on running a podcast worth watching.
+            </p>
           </div>
-          <ArrowLink href="/newsletter" className="text-sm">
-            All posts
-          </ArrowLink>
+          {/* simple email capture on the right */}
+          <div className="lg:justify-self-end">
+            <NewsletterSignup size="lg" />
+          </div>
         </div>
 
         <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-3">
@@ -43,6 +48,12 @@ export default function Newsletter() {
               </span>
             </Link>
           ))}
+        </div>
+
+        <div className="mt-8 flex justify-end">
+          <ArrowLink href="/newsletter" className="text-sm">
+            All posts
+          </ArrowLink>
         </div>
       </div>
     </section>
