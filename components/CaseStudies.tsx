@@ -1,14 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
+import { useEffect, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { caseStudies } from "@/lib/work";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const bg = (id: string) =>
-  `https://player.vimeo.com/video/${id}?background=1&autoplay=1&loop=1&muted=1&playsinline=1&dnt=1`;
+const poster = (id: string) => `https://vumbnail.com/${id}.jpg`;
 const full = (id: string) =>
   `https://player.vimeo.com/video/${id}?autoplay=1&muted=0&playsinline=1&dnt=1&title=0&byline=0&portrait=0`;
 
@@ -16,14 +15,12 @@ export default function CaseStudies() {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(false);
   const reduce = useReducedMotion();
-  const ref = useRef<HTMLButtonElement>(null);
-  const inView = useInView(ref, { amount: 0.5 });
   const current = caseStudies[active];
   const pill = reduce
     ? { duration: 0 }
     : { type: "spring" as const, stiffness: 380, damping: 34 };
 
-  // switching client resets to the muted in-view preview
+  // switching client resets back to its poster
   useEffect(() => {
     setPlaying(false);
   }, [active]);
@@ -42,32 +39,39 @@ export default function CaseStudies() {
         {/* one card: stacks on mobile, video + controls side-by-side on desktop.
             A low green ambient light travels around its rim. */}
         <div className="glass rim-glow mt-10 w-full rounded-2xl p-3 sm:p-4 lg:grid lg:grid-cols-[1.45fr_1fr] lg:gap-6 lg:p-5">
-          {/* video — muted autoplay once in view, full sound on click */}
+          {/* video — poster only, plays with sound on click (no autoplay) */}
           <button
-            ref={ref}
             onClick={() => setPlaying(true)}
             aria-label={`Play ${current.client} testimonial with sound`}
             className="group relative block aspect-video w-full overflow-hidden rounded-xl border border-line bg-bg-sunken"
           >
-            {(inView || playing) && (
+            {playing ? (
               <iframe
-                key={`${current.vimeoId}-${playing}`}
-                src={playing ? full(current.vimeoId) : bg(current.vimeoId)}
+                key={current.vimeoId}
+                src={full(current.vimeoId)}
                 title={current.client}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
-                className={`absolute inset-0 h-full w-full ${playing ? "" : "pointer-events-none"}`}
+                className="absolute inset-0 h-full w-full"
               />
-            )}
-            {!playing && (
-              <span className="pointer-events-none absolute bottom-3 left-3 inline-flex items-center gap-2 rounded-full border border-line-strong bg-bg/60 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors group-hover:text-text">
-                <span className="grid h-5 w-5 place-items-center rounded-full bg-white/10">
-                  <svg viewBox="0 0 24 24" className="h-3 w-3 translate-x-px fill-text" aria-hidden>
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
+            ) : (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={poster(current.vimeoId)}
+                  alt={`${current.client} testimonial`}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover brightness-[0.8] transition-[filter] duration-300 group-hover:brightness-100"
+                />
+                <span className="absolute inset-0 grid place-items-center">
+                  <span className="grid h-14 w-14 place-items-center rounded-full border border-white/25 bg-bg/40 text-lg backdrop-blur transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-110">
+                    ▶
+                  </span>
                 </span>
-                Tap for sound
-              </span>
+                <span className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-line-strong bg-bg/60 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors group-hover:text-text">
+                  Tap for sound
+                </span>
+              </>
             )}
           </button>
 

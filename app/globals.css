@@ -10,10 +10,11 @@
   --color-line: oklch(1 0 0 / 0.1);
   --color-line-strong: oklch(1 0 0 / 0.2);
   --color-chrome: oklch(0.99 0.002 264);
-  /* Sparse record-light red, used <3% of surface (LED, selection, focus). The
-     UI itself stays monochrome chrome; the only colour ambience is a faint
-     green rim-light on a card edge, never a fill. */
-  --color-accent: oklch(0.64 0.21 25);
+  /* A light, desaturated green, used as a quiet tint only: archive grid hover +
+     active chips, the divider node, focus rings, the process meter fill. Never
+     on the nav, CTAs, or headings. It should read as barely-there, never a
+     brand-colour takeover. */
+  --color-accent: oklch(0.8 0.08 150);
   --color-gold: oklch(0.82 0.085 85);
 
   --font-display:
@@ -53,12 +54,12 @@ body {
 }
 
 ::selection {
-  background: oklch(0.64 0.21 25 / 0.28);
+  background: oklch(0.8 0.08 150 / 0.24);
   color: var(--color-text);
 }
 
 :focus-visible {
-  outline: 2px solid oklch(0.99 0.002 264 / 0.65);
+  outline: 2px solid var(--color-accent);
   outline-offset: 2px;
 }
 
@@ -118,12 +119,12 @@ body {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 5px;
-  height: 5px;
+  width: 6px;
+  height: 6px;
   transform: translate(-50%, -50%);
   border-radius: 9999px;
-  background: var(--color-chrome);
-  box-shadow: 0 0 10px 2px oklch(0.99 0.002 264 / 0.45);
+  background: var(--color-accent);
+  box-shadow: 0 0 10px 2px oklch(0.8 0.08 150 / 0.55);
 }
 
 /* Chromium edge-light divider */

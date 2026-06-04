@@ -48,26 +48,27 @@ const categories: Category[] = [
   { label: "Newsletter", href: "/newsletter" },
 ];
 
-// Hover-reactive footage spotlight for the Work menu, keyed by sub-item href.
-const WORK_SPOTLIGHT: Record<
-  string,
-  { ytId?: string; posterSrc?: string; title: string; line: string }
-> = {
-  "/work": {
-    ytId: "TomnFVq3Bt4",
-    title: "Vikram Sood · Bharatvaarta",
-    line: "The shows we produce, episode by episode.",
-  },
-  "/work/archive": {
-    ytId: "W6odY9EG6Jk",
-    title: "The full archive",
-    line: "Every episode and clip, filterable by client or format.",
-  },
-  "/case-studies": {
-    posterSrc: "https://vumbnail.com/1169858825.jpg",
-    title: "Bharatvaarta",
-    line: "100+ episodes, India's sharpest policy talk.",
-  },
+// Hover-reactive two-card preview for the Work menu, keyed by sub-item href.
+type Preview = {
+  ytId?: string;
+  posterSrc?: string;
+  href: string;
+  title: string;
+  line: string;
+};
+const WORK_PREVIEWS: Record<string, Preview[]> = {
+  "/work": [
+    { ytId: "TomnFVq3Bt4", href: "/work", title: "Vikram Sood", line: "Bharatvaarta" },
+    { ytId: "Wd5h0gl5Cj0", href: "/work", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
+  ],
+  "/work/archive": [
+    { ytId: "f1hRTb6MIZ8", href: "/work/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
+    { ytId: "_RR2a1bh1T0", href: "/work/archive", title: "Bureau Podcast", line: "Bureau" },
+  ],
+  "/case-studies": [
+    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
+    { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
+  ],
 };
 const WORK_DEFAULT = "/work";
 
@@ -153,8 +154,8 @@ export default function Nav() {
       <motion.div
         onMouseEnter={() => clearTimeout(closeTimer.current)}
         onMouseLeave={scheduleClose}
-        initial={{ borderRadius: 14 }}
-        animate={{ borderRadius: isOpen ? 20 : 14 }}
+        initial={{ borderRadius: 12 }}
+        animate={{ borderRadius: isOpen ? 16 : 12 }}
         transition={smooth}
         className="glass edge-gradient relative mx-auto max-w-[1080px] overflow-hidden"
       >
@@ -182,12 +183,12 @@ export default function Nav() {
               const highlight = pillLabel === c.label;
               const textCls = highlight
                 ? "text-text"
-                : "text-text-muted hover:text-text";
+                : "text-text/85 hover:text-text";
               const pill = highlight && (
                 <motion.span
                   layoutId="nav-pill"
                   transition={pillT}
-                  className="absolute inset-0 rounded-[var(--radius-btn)] border border-line-strong bg-white/[0.07] shadow-[inset_0_1px_0_0_oklch(1_0_0/0.14)]"
+                  className="absolute inset-0 rounded-[var(--radius-btn)] border border-line-strong bg-white/[0.07] shadow-[inset_0_1px_0_0_oklch(1_0_0/0.14),0_0_16px_-6px_oklch(0.8_0.08_150/0.55)]"
                 />
               );
 
@@ -312,62 +313,61 @@ export default function Nav() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -6 }}
                     transition={fade}
-                    className="grid min-h-[184px] grid-cols-[1fr_300px] gap-6"
+                    className="min-h-[184px]"
                   >
-                    <div>
-                      <p className="font-mono text-[0.7rem] uppercase tracking-[0.2em] text-text-faint">
-                        {current!.label}
-                      </p>
-                      <div className="mt-4 grid grid-cols-2 gap-1">
-                        {current!.items.map((it) => (
+                    {current!.label === "Work" ? (
+                      <WorkMenu
+                        items={current!.items}
+                        preview={hoveredWork ?? WORK_DEFAULT}
+                        onHover={setHoveredWork}
+                        reduce={!!reduce}
+                      />
+                    ) : (
+                      <div className="grid grid-cols-[1fr_300px] gap-6">
+                        <div className="grid grid-cols-2 gap-1 self-start">
+                          {current!.items.map((it) => (
+                            <Link
+                              key={it.href}
+                              href={it.href}
+                              className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.04]"
+                            >
+                              <span className="flex items-center gap-1.5 text-sm text-text">
+                                {it.label}
+                                <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
+                                  →
+                                </span>
+                              </span>
+                              <span className="text-xs text-text-faint">{it.desc}</span>
+                            </Link>
+                          ))}
+                        </div>
+                        {current!.featured && (
                           <Link
-                            key={it.href}
-                            href={it.href}
-                            onMouseEnter={() => setHoveredWork(it.href)}
-                            className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.04]"
+                            href={current!.featured.href}
+                            className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
+                            style={{
+                              backgroundImage:
+                                "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
+                            }}
                           >
-                            <span className="flex items-center gap-1.5 text-sm text-text">
-                              {it.label}
-                              <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
+                            <div>
+                              <p className="font-display text-lg font-medium tracking-tight text-text">
+                                {current!.featured.title}
+                              </p>
+                              <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
+                                {current!.featured.copy}
+                              </p>
+                            </div>
+                            <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
+                              {current!.featured.cta}
+                              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
                                 →
                               </span>
                             </span>
-                            <span className="text-xs text-text-faint">{it.desc}</span>
                           </Link>
-                        ))}
+                        )}
                       </div>
-                    </div>
-
-                    {current!.label === "Work" ? (
-                      <WorkSpotlight
-                        href={hoveredWork ?? WORK_DEFAULT}
-                        reduce={!!reduce}
-                      />
-                    ) : current!.featured ? (
-                      <Link
-                        href={current!.featured.href}
-                        className="group/feat flex flex-col justify-between overflow-hidden rounded-xl border border-line-strong p-5"
-                        style={{
-                          backgroundImage:
-                            "linear-gradient(150deg, oklch(0.18 0.006 264), oklch(0.1 0.004 264) 60%), linear-gradient(180deg, oklch(1 0 0 / 0.06), transparent 40%)",
-                        }}
-                      >
-                        <div>
-                          <p className="font-display text-lg font-medium tracking-tight text-text">
-                            {current!.featured.title}
-                          </p>
-                          <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
-                            {current!.featured.copy}
-                          </p>
-                        </div>
-                        <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-text">
-                          {current!.featured.cta}
-                          <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/feat:translate-x-1">
-                            →
-                          </span>
-                        </span>
-                      </Link>
-                    ) : null}
+                    )}
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -460,52 +460,82 @@ export default function Nav() {
   );
 }
 
-function WorkSpotlight({ href, reduce }: { href: string; reduce: boolean }) {
-  const spot = WORK_SPOTLIGHT[href] ?? WORK_SPOTLIGHT[WORK_DEFAULT];
+function WorkMenu({
+  items,
+  preview,
+  onHover,
+  reduce,
+}: {
+  items: { label: string; href: string; desc: string }[];
+  preview: string;
+  onHover: (href: string) => void;
+  reduce: boolean;
+}) {
+  const cards = WORK_PREVIEWS[preview] ?? WORK_PREVIEWS[WORK_DEFAULT];
   return (
-    <div className="overflow-hidden rounded-xl border border-line-strong p-3">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={href}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: reduce ? 0 : 0.25, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <div className="relative aspect-video w-full overflow-hidden rounded-lg border border-line bg-bg-sunken">
-            {spot.ytId ? (
-              <Thumb id={spot.ytId} alt={spot.title} className="brightness-[0.9]" />
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={spot.posterSrc}
-                alt={spot.title}
-                loading="lazy"
-                className="h-full w-full object-cover brightness-[0.9]"
-              />
-            )}
-            <span className="absolute inset-0 grid place-items-center">
-              <span className="grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur">
-                <svg
-                  viewBox="0 0 24 24"
-                  className="h-4 w-4 translate-x-px fill-text"
-                  aria-hidden
-                >
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+    <div>
+      {/* the three destinations, in one row */}
+      <div className="grid grid-cols-3 gap-2">
+        {items.map((it) => (
+          <Link
+            key={it.href}
+            href={it.href}
+            onMouseEnter={() => onHover(it.href)}
+            onFocus={() => onHover(it.href)}
+            className="group/item flex flex-col gap-0.5 rounded-lg px-3 py-2.5 transition-colors hover:bg-white/[0.05]"
+          >
+            <span className="flex items-center gap-1.5 text-sm font-medium text-text">
+              {it.label}
+              <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
+                →
               </span>
             </span>
-          </div>
-          <div className="px-1 pt-3">
-            <p className="font-display text-base font-medium tracking-tight text-text">
-              {spot.title}
-            </p>
-            <p className="mt-1 text-sm leading-relaxed text-text-muted">
-              {spot.line}
-            </p>
-          </div>
+            <span className="text-xs text-text-faint">{it.desc}</span>
+          </Link>
+        ))}
+      </div>
+
+      {/* two-card preview; structure is constant across sets so the swap never
+          shifts layout. Crossfade on hover, instant under reduced-motion. */}
+      <div className="mt-4 border-t border-line pt-4">
+        <motion.div
+          key={preview}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="grid max-w-[760px] grid-cols-2 gap-4"
+        >
+          {cards.map((c) => (
+            <Link
+              key={c.title}
+              href={c.href}
+              className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/30"
+            >
+              <div className="relative aspect-video w-full overflow-hidden bg-bg-sunken">
+                {c.ytId ? (
+                  <Thumb
+                    id={c.ytId}
+                    alt={c.title}
+                    className="brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={c.posterSrc}
+                    alt={c.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
+                  />
+                )}
+              </div>
+              <div className="px-3 py-2.5">
+                <p className="text-sm text-text">{c.title}</p>
+                <p className="text-xs text-text-faint">{c.line}</p>
+              </div>
+            </Link>
+          ))}
         </motion.div>
-      </AnimatePresence>
+      </div>
     </div>
   );
 }
