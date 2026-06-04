@@ -31,14 +31,14 @@ function Tile({
       animate={inView ? { opacity: 1, y: 0 } : undefined}
       // tiles in the same row cascade left-to-right; rows reveal as they scroll in
       transition={{ duration: 0.5, ease, delay: col * 0.05 }}
-      className="group"
+      className="glass sweep group rounded-2xl p-2.5"
       onMouseEnter={() => onHover(ep.id)}
       onMouseLeave={() => onHover(null)}
     >
       <button
         onClick={() => onOpen(ep)}
         aria-label={`${ep.guest}, ${ep.client}`}
-        className="relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
+        className="relative block aspect-video w-full overflow-hidden rounded-xl"
       >
         <Thumb
           id={ep.id}
@@ -54,9 +54,9 @@ function Tile({
           />
         )}
       </button>
-      <figcaption className="mt-3 px-0.5">
+      <figcaption className="px-1.5 pb-1 pt-3.5">
         <p className="text-sm font-medium leading-snug">{ep.guest}</p>
-        <p className="mt-0.5 text-xs text-text-faint">{ep.client}</p>
+        <p className="mt-1 text-xs text-text-faint">{ep.client}</p>
       </figcaption>
     </motion.figure>
   );

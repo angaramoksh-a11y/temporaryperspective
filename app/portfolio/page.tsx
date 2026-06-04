@@ -1,30 +1,23 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import PageHero from "@/components/PageHero";
+import PageHeroWord from "@/components/PageHeroWord";
 import WorkGrid from "@/components/WorkGrid";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider } from "@/components/ui";
 
 export const metadata: Metadata = {
-  title: "The work — Temporary Perspective",
+  title: "Portfolio — Temporary Perspective",
   description:
     "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
 };
 
-export default function WorkPage() {
+export default function PortfolioPage() {
   return (
     <>
       <Nav />
       <main>
-        <div className="relative">
-          <PageHero
-            title="The work."
-            subcopy="The shows we produce, episode by episode."
-            size="md"
-            minH="short"
-          />
-        </div>
+        <PageHeroWord word="Portfolio" />
         <WorkGrid />
         <section className="relative py-20 lg:py-24">
           <EdgeDivider />
