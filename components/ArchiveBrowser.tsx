@@ -6,7 +6,13 @@ import WorkLightbox from "./WorkLightbox";
 
 const PER_PAGE = 48;
 
-export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] }) {
+export default function ArchiveBrowser({
+  items,
+  initialSlug,
+}: {
+  items: ResolvedWorkItem[];
+  initialSlug?: string;
+}) {
   // One calm, uniform 16:9 wall. Vertical clips are letterboxed (blurred fill)
   // so the grid stays even without butchering the reel; orientation plays
   // correctly inside the lightbox.
@@ -14,7 +20,9 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
   const [selClients, setSelClients] = useState<string[]>([]);
   const [selFormats, setSelFormats] = useState<string[]>([]);
   const [page, setPage] = useState(0);
-  const [active, setActive] = useState<ResolvedWorkItem | null>(null);
+  const [active, setActive] = useState<ResolvedWorkItem | null>(() =>
+    initialSlug ? items.find((i) => i.slug === initialSlug) ?? null : null,
+  );
 
   const clients = useMemo(
     () => [...new Set(items.map((i) => i.client))].sort(),
@@ -43,6 +51,29 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
     const q = new URLSearchParams(window.location.search).get("q");
     if (q) setQuery(q);
   }, []);
+
+  // Keep the URL in sync with the open item, so /portfolio/archive/<slug> is
+  // shareable and opens the lightbox over the grid.
+  useEffect(() => {
+    const base = "/portfolio/archive";
+    const want = active ? `${base}/${active.slug}` : base;
+    if (window.location.pathname.replace(/\/$/, "") !== want) {
+      window.history.pushState(null, "", want + window.location.search);
+    }
+  }, [active]);
+
+  // Sync the open item with browser back/forward.
+  useEffect(() => {
+    const onPop = () => {
+      const m = window.location.pathname.match(
+        /\/portfolio\/archive\/(.+?)\/?$/,
+      );
+      const slug = m ? decodeURIComponent(m[1]) : null;
+      setActive(slug ? items.find((i) => i.slug === slug) ?? null : null);
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [items]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const current = Math.min(page, pageCount - 1);
