@@ -70,7 +70,7 @@ export default function WorkLightbox({
         : ""
     : "";
 
-  const title = active ? active.desc ?? active.client : "";
+  const title = active ? active.title ?? active.desc ?? active.client : "";
   const rest = items.filter((i) => active && i.key !== active.key);
 
   // shared bits ------------------------------------------------------------
@@ -299,7 +299,7 @@ function BrowseMore({
               }
             >
               <span className="block truncate text-sm text-text">
-                {it.desc ?? it.client}
+                {it.title ?? it.desc ?? it.client}
               </span>
               <span className="block truncate text-xs text-text-faint">
                 {it.client} · {it.format}

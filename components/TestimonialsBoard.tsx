@@ -131,14 +131,14 @@ export default function TestimonialsBoard({
         {testimonialCategories.map((cat) => {
           const group = byCat(cat);
           if (!group.length) return null;
-          const split = cat !== "Content creators / Brands";
+          const split = cat !== "Creators";
           return (
             <div key={cat} className="pt-20 first:pt-12 lg:pt-28">
               <SectionLabel>{cat}</SectionLabel>
               {split ? (
                 <div
                   className={`mt-8 flex flex-col gap-8 ${
-                    cat === "Fintech" ? "lg:max-w-[86%]" : ""
+                    cat === "Podcasters & B2B" ? "lg:max-w-[86%]" : ""
                   }`}
                 >
                   {group.map((t) => (

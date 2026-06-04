@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { type ResolvedWorkItem, type Orientation } from "@/lib/work";
 import WorkLightbox from "./WorkLightbox";
 
@@ -44,13 +44,37 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
   const filtered = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
     return inView.filter((it) => {
-      const hay = `${it.client} ${it.format} ${it.desc ?? ""}`.toLowerCase();
+      const hay = `${it.client} ${it.format} ${(it.tags ?? []).join(" ")} ${
+        it.desc ?? ""
+      } ${it.title ?? ""} ${it.slug}`.toLowerCase();
       const matchQ = tokens.every((t) => hay.includes(t));
       const matchClient = !selClients.length || selClients.includes(it.client);
       const matchFormat = !selFormats.length || selFormats.includes(it.format);
       return matchQ && matchClient && matchFormat;
     });
   }, [inView, query, selClients, selFormats]);
+
+  // Prefill the search from ?q= (deep-links from /testimonials), and jump to
+  // whichever shape actually has matches so vertical deep-links aren't empty.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("q");
+    if (!q) return;
+    setQuery(q);
+    const toks = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const hits = (o: Orientation) =>
+      items.filter(
+        (i) =>
+          i.orientation === o &&
+          toks.every((t) =>
+            `${i.client} ${i.format} ${(i.tags ?? []).join(" ")} ${
+              i.desc ?? ""
+            } ${i.title ?? ""} ${i.slug}`
+              .toLowerCase()
+              .includes(t),
+          ),
+      ).length;
+    if (hits("horizontal") === 0 && hits("vertical") > 0) setOrient("vertical");
+  }, [items]);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const current = Math.min(page, pageCount - 1);
@@ -174,8 +198,9 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
               }
             >
               {shown.map((it) => {
-                const title = it.desc ?? it.client;
-                const sub = it.desc ? `${it.client} · ${it.format}` : it.format;
+                const title = it.title ?? it.desc ?? it.client;
+                const sub =
+                  it.title || it.desc ? `${it.client} · ${it.format}` : it.format;
                 return (
                   <button
                     key={it.key}

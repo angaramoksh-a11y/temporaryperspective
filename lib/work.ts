@@ -97,6 +97,7 @@ export type Orientation = "horizontal" | "vertical";
 export type VimeoClip = { id: string; hash?: string };
 
 export type WorkItem = {
+  slug: string; // unique + shareable: /portfolio/archive/<slug>
   client: string;
   format: string;
   source: "vimeo" | "youtube";
@@ -104,7 +105,9 @@ export type WorkItem = {
   h?: VimeoClip; // horizontal cut (vimeo)
   v?: VimeoClip; // vertical cut (vimeo)
   yt?: string; // youtube id (long-form podcasts)
+  title?: string; // human title; falls back to desc/client for display
   desc?: string;
+  tags?: string[]; // extra search keywords
   caseStudy?: string;
 };
 
@@ -118,7 +121,37 @@ const CASE_STUDY: Record<string, string> = {
   Qapita: "/case-studies/qapita",
 };
 
-const vimeoItems: WorkItem[] = (
+// A catalog entry before its slug + case-study link are computed.
+type WorkSeed = Omit<WorkItem, "slug" | "caseStudy"> & { slug?: string };
+
+export function slugify(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/['’]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+// Give every item a stable, unique slug (explicit wins; else derived from
+// client + title/desc/format) and attach its case-study link.
+function assignSlugs(seeds: WorkSeed[]): WorkItem[] {
+  const used = new Set<string>();
+  seeds.forEach((s) => s.slug && used.add(s.slug));
+  return seeds.map((s) => {
+    let slug = s.slug;
+    if (!slug) {
+      const base =
+        slugify(`${s.client} ${s.title ?? s.desc ?? s.format}`) || "clip";
+      slug = base;
+      let i = 2;
+      while (used.has(slug)) slug = `${base}-${i++}`;
+      used.add(slug);
+    }
+    return { ...s, slug, caseStudy: CASE_STUDY[s.client] };
+  });
+}
+
+const vimeoSeeds: WorkSeed[] = (
   [
     // Testimonials about TP (surfaced on /about, not in the work archive)
     { client: "Bharatvaarta", format: "Testimonial", source: "vimeo", orientation: "horizontal", h: { id: "1169858825" }, desc: "Roshan Cariappa (host) on TP" },
@@ -162,21 +195,48 @@ const vimeoItems: WorkItem[] = (
 
     { client: "Read Reels", format: "Commercial", source: "vimeo", orientation: "horizontal", h: { id: "1172800968" }, desc: "Quirky service-launch video with motion graphics" },
     { client: "BD Software", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1197344755" }, desc: "Corporate talking head, shot outdoors at an event" },
-  ] as WorkItem[]
-).map((it) => ({ ...it, caseStudy: CASE_STUDY[it.client] }));
+
+    // ── New projects (handoff) ───────────────────────────────────────────────
+    { slug: "gmorn-valentines-reel", title: "Gmorn — Valentine's reel", client: "Gmorn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169861256" }, tags: ["brand", "valentines", "ads"] },
+    { slug: "gmorn-hanger-reel", title: "Gmorn — Hanger reel", client: "Gmorn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169861200" }, tags: ["studio", "fashion", "white-bg"] },
+    { slug: "gmorn-outdoor-reel", title: "Gmorn — Outdoor reel", client: "Gmorn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169860406" }, tags: ["outdoor", "sunny", "music", "cycle"] },
+    { slug: "pixel-tarini", title: "Pixel — Tarini", client: "Pixel (Google)", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197941353" }, tags: ["ad", "mobile", "tarini"] },
+    { slug: "loreal-tarini", title: "L'Oréal — Tarini", client: "L'Oréal", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197941354" }, tags: ["ad", "beauty", "tarini"] },
+    { slug: "amazon-prime-day", title: "Amazon Prime Day", client: "Amazon", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197943312" }, tags: ["ad", "prime-day", "d_starrr_"] },
+    { slug: "good-things-take-time", title: "Good Things Take Time", client: "Ishpreet × Muskan", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197949652" }, tags: ["creator", "narrative", "ishpreet"] },
+    // TODO(owner): confirm client + tags for See You Online
+    { slug: "see-you-online", title: "See You Online", client: "See You Online", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197941945" }, tags: [] },
+    { slug: "how-i-met-you-ep-1", title: "How I Met You — Ep 1", client: "How I Met You", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942565" }, tags: ["narrative", "dating", "ishpreet", "tarini"] },
+    { slug: "how-i-met-you-ep-2", title: "How I Met You — Ep 2", client: "How I Met You", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942386" }, tags: ["narrative", "dating", "ishpreet", "tarini"] },
+    { slug: "ishi-ki-khushi-ep-5", title: "Ishi Ki Khushi — Ep 5", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942739" }, desc: "At a beach; Khushi is about to leave town.", tags: ["narrative", "beach", "khushbu", "ishpreet"] },
+    { slug: "ishi-ki-khushi-ep-6", title: "Ishi Ki Khushi — Ep 6", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942848" }, desc: "Ishpreet asks Imran Khan for advice at a café.", tags: ["narrative", "imran-khan", "cafe"] },
+    { slug: "ishi-ki-khushi-ep-7", title: "Ishi Ki Khushi — Ep 7", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197947961" }, desc: "Ishpreet follows Imran's advice; chooses long-distance over breaking it off.", tags: ["narrative"] },
+    { slug: "ishi-ki-khushi-ep-8", title: "Ishi Ki Khushi — Ep 8", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197947863" }, desc: "Imran & Khushi meet; all three have a heartfelt conversation.", tags: ["narrative"] },
+    { slug: "ansh-x-lenskart", title: "Ansh × Lenskart", client: "Lenskart", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947258" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-navi-upi", title: "Ansh × Navi UPI", client: "Navi", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947259" }, tags: ["brand-collab", "ansh-dhote", "fintech"] },
+    { slug: "ansh-x-flo", title: "Ansh × Flo", client: "Flo", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947261" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-mudrex", title: "Ansh × Mudrex", client: "Mudrex", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947260" }, tags: ["brand-collab", "ansh-dhote", "crypto"] },
+    { slug: "ansh-x-tvs-bike", title: "Ansh × TVS", client: "TVS", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947427" }, tags: ["brand-collab", "ansh-dhote", "auto"] },
+    { slug: "ansh-x-happn", title: "Ansh × Happn", client: "Happn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947434" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-croma", title: "Ansh × Croma", client: "Croma", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947479" }, tags: ["brand-collab", "ansh-dhote", "retail"] },
+    { slug: "shutup-beta-logo-animation", title: "Shutup Beta — Logo animation", client: "Shutup Beta", format: "Logo animation", source: "vimeo", orientation: "horizontal", h: { id: "1172823675" }, tags: ["motion-graphics", "branding"] },
+  ] as WorkSeed[]
+);
 
 // Long-form podcasts (YouTube), reusing the existing library.
-const podcastItems: WorkItem[] = workLibrary.map((e) => ({
+const podcastSeeds: WorkSeed[] = workLibrary.map((e) => ({
   client: e.client,
   format: "Long-form podcast",
   source: "youtube",
   orientation: "horizontal",
   yt: e.id,
   desc: e.guest,
-  caseStudy: e.caseStudy,
 }));
 
-export const workCatalog: WorkItem[] = [...podcastItems, ...vimeoItems];
+export const workCatalog: WorkItem[] = assignSlugs([
+  ...podcastSeeds,
+  ...vimeoSeeds,
+]);
 
 // Catalog minus testimonials (those live on /about).
 export const archiveItems = workCatalog.filter((i) => i.format !== "Testimonial");
@@ -191,6 +251,8 @@ const FORMAT_ORDER = [
   "Short-form reel",
   "Product video",
   "Commercial",
+  "Narrative series",
+  "Logo animation",
 ];
 export const workClients = [...new Set(archiveItems.map((i) => i.client))].sort();
 export const workFormats = [...new Set(archiveItems.map((i) => i.format))].sort(
@@ -258,9 +320,9 @@ export async function resolveThumb(i: WorkItem): Promise<string> {
 // and (a 3-pick preview) on /about.
 
 export type TestimonialCategory =
-  | "Podcasters"
-  | "Fintech"
-  | "Content creators / Brands";
+  | "Creators"
+  | "Podcasters & B2B"
+  | "Founders";
 export type CredIcon = "instagram" | "linkedin" | "youtube" | "website";
 export type Credential = { label: string; href: string; icon: CredIcon };
 export type TestimonialProject = { label: string; href?: string };
@@ -281,9 +343,9 @@ export type SiteTestimonial = {
 export type ResolvedTestimonial = SiteTestimonial & { thumb: string };
 
 export const testimonialCategories: TestimonialCategory[] = [
-  "Podcasters",
-  "Fintech",
-  "Content creators / Brands",
+  "Creators",
+  "Podcasters & B2B",
+  "Founders",
 ];
 
 // TODO(testimonials): Tarini's transcript is the cleaned partial cut (a fuller
@@ -292,7 +354,7 @@ export const testimonialCategories: TestimonialCategory[] = [
 // to the exact entry would need URL-driven archive filters.
 export const siteTestimonials: SiteTestimonial[] = [
   {
-    category: "Podcasters",
+    category: "Podcasters & B2B",
     name: "Brendan Marshall",
     role: "Host, The Catapult Code · Advisor, Qapita",
     vimeoId: "1196195127",
@@ -308,7 +370,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     preview: true,
   },
   {
-    category: "Podcasters",
+    category: "Podcasters & B2B",
     name: "Roshan Cariappa",
     role: "Host, Bharatvaarta",
     vimeoId: "1169858825",
@@ -327,7 +389,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     projects: [{ label: "Bharatvaarta", href: "/case-studies/bharatvaarta" }],
   },
   {
-    category: "Fintech",
+    category: "Podcasters & B2B",
     name: "Rahi Bhattacharjee",
     role: "Content Head, Bureau",
     vimeoId: "1195342176",
@@ -360,14 +422,14 @@ export const siteTestimonials: SiteTestimonial[] = [
     preview: true,
   },
   {
-    category: "Content creators / Brands",
+    category: "Creators",
     name: "Tarini Shah",
     role: "Content creator · 540k+ followers",
     vimeoId: "1169859676",
     quote:
       "The vision and the sense of filmmaking that they have will bring your idea to life. They add their own touch, to bring the best out of your idea and create something just magical.",
     transcript: [
-      "The first project I shot with these guys wasn't my own hire, it was with Ishpreet Balbir's. It was one of the longest, craziest days I've ever had, but the result turned out so good. We did a lot of jugaad on set, but the creative lens we got from it shaped how I wanted to work. That's something Temporary Perspective brings to the picture, no matter what, the vision and sense of filmmaking they have will bring your idea to life. The best part is the mix of things they bring: you have an idea, they understand your perspective, and it doesn't end there, they add their own touch from their sense of filmmaking. They're ready to learn and tweak everything you want, but also add to it, which is what makes them unique. They bring the best out of your idea and the best of what they have to create something magical. Would I collaborate again? Oh, yes, for sure, as long as they have time.",
+      "The first project I ended up shooting with these guys wasn't my hire — it was Ishpreet Balbir's. It was one of the longest, craziest days I've ever had, but the result turned out so good. Humne bahut jugaad kiya hai woh set pe, but the creative lens I got from them — jaise kaam karna hai. That's something Temporary Perspective brings into the picture. No matter what, the vision and the sense of filmmaking they have will bring your idea to life — I saw that on the first shoot. The best part is a mix of things: you have an idea, they understand your perspective — but it doesn't end there; there's a lot more additive value from their sense of filmmaking. In the end, the product you want — they're ready to learn and tweak everything, but also add their own touch, which makes them unique: bringing the best out of your idea and the best of what they have, together, to create something magical. Would I collaborate again? Oh yes — as long as they have time. Thank you so much.",
     ],
     credentials: [
       {
@@ -382,23 +444,21 @@ export const siteTestimonials: SiteTestimonial[] = [
       },
     ],
     projects: [
-      { label: "How I Met You", href: "/work/archive" },
-      { label: "Google Pixel commercial", href: "/work/archive" },
-      { label: "L'Oréal commercial", href: "/work/archive" },
+      { label: "How I Met You", href: "/work/archive?q=how-i-met-you" },
+      { label: "Google Pixel commercial", href: "/work/archive?q=pixel-tarini" },
+      { label: "L'Oréal commercial", href: "/work/archive?q=loreal-tarini" },
     ],
     preview: true,
   },
   {
-    category: "Content creators / Brands",
+    category: "Creators",
     name: "Ishpreet Balbir",
     role: "Content creator · 230k+ followers",
     vimeoId: "1197937165",
     quote:
       "They are very well headed. The understanding of the challenges, always looking out for the final product. Anyone wondering whether they should collaborate with Temporary Perspective, they definitely should.",
     transcript: [
-      "Hi, my name is Ishpreet Balbir, and I've worked with Temporary Perspective, which is Manav and Moksh, for five videos, and I've had the best time working with them. I worked on two amazing series on Instagram: one is Ishi Ki Khushi, and the other is How I Met You. Across those five videos, our experience had its highs and lows, going through different challenges and working together, especially because each video was very different. We were shooting in public spaces, with different people featuring in them; one of them was an A-list Bollywood actor. Keeping all those variables in mind and making sure things were executed in the time we had, both of them were utterly professional.",
-      "We had a lot of fun editing, too. Whenever you shoot this kind of video, you're shooting far more than the final product, going from three or four minutes down to a minute and a half or two. When you're editing and so many people are involved, there's always some creative opinion that each person carries. In most cases we were all in sync on what we wanted, and we all wanted the best product for the audience. From an audience point of view, people loved each and every video we created.",
-      "Both of them are supremely talented, and especially at the age they are, both in their early twenties, for them to have that creative vision and, more importantly, the understanding of the challenges and always looking out for the final product rather than “what I want versus what he wants”, that's extremely important in the space we're in. I really wish them all the best, and I really hope anyone watching this and wondering whether they should collaborate with Temporary Perspective, they definitely should.",
+      "Hi, my name is Ishpreet Balbir and I have worked with Temporary Perspective — which represents Manav & Moksh — for five videos, and I've had the best time working with them. I worked on two amazing series on Instagram: one is Ishi Ki Khushi and the other is How I Met You. In those five videos, humara jo experience raha hai in terms of the highs and the lows, going through different challenges, working together — especially because each video was very different. We shot in public spaces, with different people featuring; one was an A-lister Bollywood actor. Keeping all those variables in mind, and ensuring things were executed in the time we had, both of them were utterly professional. We had a lot of fun editing too — whenever you shoot such videos, you shoot far more than the final cut. Going from 3–4 minutes down to a minute or two, with so many people involved, there's always some creative opinion each one carries. In most cases we were all in sync, all wanting the best product for the audience. And the result — people loved every video. Both are supremely talented, and especially at their age — early 20s — to have that creative vision and sense, and the understanding of the challenges, always looking out for the final product rather than 'main kya chahta hoon, woh kya chahta hai' — they're very well headed. That's extremely important in our space. I really wish them all the best, and anyone wondering whether they should collaborate with Temporary Perspective — from my perspective, they definitely should.",
     ],
     credentials: [
       {
@@ -413,13 +473,13 @@ export const siteTestimonials: SiteTestimonial[] = [
       },
     ],
     projects: [
-      { label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive" },
-      { label: "Good Things Take Time", href: "/work/archive" },
-      { label: "How I Met You (Eps 1-2)", href: "/work/archive" },
+      { label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive?q=ishi-ki-khushi" },
+      { label: "Good Things Take Time", href: "/work/archive?q=good-things-take-time" },
+      { label: "How I Met You (Eps 1-2)", href: "/work/archive?q=how-i-met-you" },
     ],
   },
   {
-    category: "Content creators / Brands",
+    category: "Creators",
     name: "Khushbu Chandarana",
     note: "chashmishkhushi",
     role: "Content creator · 180k+ followers",
@@ -427,9 +487,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     quote:
       "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Temporary Perspective might just be their name, but my recommendation: permanently solid.",
     transcript: [
-      "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Hi, my name is Khushbu Chandarana, also known as chashmishkhushi. I worked with Moksh and Manav on a series called Ishi Ki Khushi. We shot at my home, across Mumbai, and at the beach. There was a lot of Mumbai heat, but a lot of hope too.",
-      "Through it all, these guys were always calm, creative, and somehow excited, even when my head and the wind clearly weren't getting along. They weren't just DOPs; they were co-directors, idea partners, and even mood stabilisers. We even pulled off a final shoot with Imran Khan, and it was magical. They didn't just want it to look good, they wanted it to feel right. They also made sure I was always in sync with the process, the edits, and the final cuts, even though I had like 56 opinions. (I did.)",
-      "If you're a creator looking for a team that just gets your vibe, matches your madness, and doesn't cry whenever you say “let's shoot on the beach”, these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
+      "A lot of people bring cameras to shoots; Moksh & Manav bring vision, vibes and a lot of magic. Hi, my name is Khushbu Chandarana, also known as chashmishkhushi. I worked with Moksh & Manav on a series called Ishi Ki Khushi. We shot at my home, across Mumbai, and at the beach. There was a lot of tadakti-bhadakti Mumbai ki garmi, but a lot of hope. Through it all, these guys were always calm, creative and somehow excited — even though my head and the wind were clearly not getting along. They weren't just DOPs; they were co-directors, idea partners, and even mood stabilizers. We even pulled off a final shoot with Imran Khan, and it was magical. They didn't just want it to look good — they wanted it to feel right. They made sure I was in sync with the process, edits and final cuts, even though I had like 56 opinions. If you're a creator looking for a team that gets your vibe, matches your madness, and doesn't cry whenever you say 'let's shoot on the beach' — these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
     ],
     credentials: [
       {
@@ -443,17 +501,17 @@ export const siteTestimonials: SiteTestimonial[] = [
         icon: "linkedin",
       },
     ],
-    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive" }],
+    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive?q=ishi-ki-khushi" }],
   },
   {
-    category: "Content creators / Brands",
+    category: "Founders",
     name: "Meet",
     role: "Founder, Ettara (D2C brand)",
     vimeoId: "1169859867",
     quote:
       "It's never only been about finishing the job. They've been so involved in each and every part of the process. It feels like they're a part of Team Ettara.",
     transcript: [
-      "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks. They've been so involved in every part of the process, they've helped us think, ideate, and plan for the shoots, and then finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care this much, who take ownership of someone else's project to this extent, not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments, that's what sets them apart for me.",
+      "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks — they've been so involved in each and every part of the process. They helped us think, ideate, plan the shoots, and finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care so much, who take ownership of others' projects to this extent — not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments — that's what sets them apart for me.",
     ],
     credentials: [
       { label: "Ettara", href: "https://ettara.co/", icon: "website" },
