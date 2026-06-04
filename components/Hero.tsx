@@ -52,7 +52,7 @@ export default function Hero() {
           initial="hidden"
           animate="show"
           transition={{ staggerChildren: 0.09, delayChildren: 0.15 }}
-          className="flex flex-col items-start text-left"
+          className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left"
         >
           {/* proof line */}
           <motion.div variants={rise}>
@@ -78,7 +78,7 @@ export default function Hero() {
           {/* headline — metallic breathing chrome (the studio's display signature) */}
           <motion.h1
             variants={rise}
-            className="text-metal mt-8 text-balance font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.05] tracking-[-0.02em]"
+            className="text-metal mt-8 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.05] tracking-[-0.02em]"
           >
             <span className="block">You&apos;ve built the conversation.</span>
             <span className="block">We build the stage.</span>
@@ -96,22 +96,22 @@ export default function Hero() {
           {/* buttons */}
           <motion.div
             variants={rise}
-            className="mt-9 flex flex-wrap items-center justify-start gap-3"
+            className="mt-9 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
           >
-            <Magnetic>
-              <PrimaryButton href="/contact" size="lg">
+            <Magnetic className="w-full sm:w-auto">
+              <PrimaryButton href="/contact" size="lg" className="w-full sm:w-auto">
                 Book a call
               </PrimaryButton>
             </Magnetic>
-            <GhostButton href="/work" size="lg">
+            <GhostButton href="/work" size="lg" className="w-full sm:w-auto">
               See our work
             </GhostButton>
           </motion.div>
         </motion.div>
 
-        {/* film — capped on small screens so the 16:9 card never balloons past
-            the fold in the single-column band; full grid cell at lg. */}
-        <div className="w-full max-w-[520px] lg:max-w-none">
+        {/* film — on top + centred on mobile (re-layout), beside the text at lg.
+            Capped width on small screens so the 16:9 card never balloons. */}
+        <div className="order-1 mx-auto w-full max-w-[520px] lg:order-2 lg:mx-0 lg:max-w-none">
           <HeroFilm id="1197960218" caption="The studio, in 60 seconds." />
         </div>
       </div>

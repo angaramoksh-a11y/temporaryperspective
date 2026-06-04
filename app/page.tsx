@@ -21,7 +21,10 @@ export default function Home() {
         <CaseStudies />
         <CommonQuestions />
         <Newsletter />
-        <ClosingCTA divider={false} />
+        <ClosingCTA
+          divider={false}
+          subline="One call to see if we're the right studio for you."
+        />
       </main>
       <Footer />
     </>

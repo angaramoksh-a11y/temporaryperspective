@@ -23,13 +23,13 @@ export default function VirtualCallout() {
           transition={{ duration: 0.6, ease }}
         >
           <h2 className="text-metal-static max-w-md font-display text-[clamp(1.75rem,3.4vw,2.6rem)] font-medium leading-[1.12] tracking-tight">
-            A remote shoot that doesn&apos;t look remote.
+            An online podcast doesn&apos;t need to look like a Zoom call.
           </h2>
           <p className="mt-5 max-w-md leading-relaxed text-text-muted">
-            Host in Mumbai, guest in Delhi? We send a crew to both, real
-            cameras, real light, real sound in each room, and cut it into one
-            conversation. Not a webcam call dressed up. An actual shoot, in two
-            places at once.
+            Most online episodes are recorded on a laptop webcam — soft, flat,
+            lifeless. We put a real camera, proper light, and clean sound on your
+            guest (and your host), wherever they are. Same online format, shot
+            like a studio.
           </p>
           <ul className="mt-6 flex flex-col gap-2.5">
             {POINTS.map((p) => (
@@ -40,7 +40,7 @@ export default function VirtualCallout() {
             ))}
           </ul>
           <div className="mt-8">
-            <ArrowLink href="/virtual">See how it works</ArrowLink>
+            <ArrowLink href="/virtual">Learn more</ArrowLink>
           </div>
         </motion.div>
 

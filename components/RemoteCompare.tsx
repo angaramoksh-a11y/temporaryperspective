@@ -67,7 +67,7 @@ export default function RemoteCompare() {
       <div
         role="tablist"
         aria-label="Compare remote production"
-        className="inline-grid grid-cols-2 gap-1 rounded-full border border-line bg-bg-sunken p-1"
+        className="inline-grid grid-cols-2 gap-1 rounded-[var(--radius-btn)] border border-line bg-bg-sunken p-1"
       >
         {ORDER.map((m) => {
           const on = m === mode;
@@ -77,13 +77,13 @@ export default function RemoteCompare() {
               role="tab"
               aria-selected={on}
               onClick={() => select(m)}
-              className="relative rounded-full px-4 py-2 text-center"
+              className="relative rounded-[calc(var(--radius-btn)-2px)] px-4 py-2 text-center"
             >
               {on && (
                 <motion.span
                   layoutId="remote-compare-pill"
                   transition={pill}
-                  className="absolute inset-0 rounded-full border border-line-strong bg-bg-raised shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08)]"
+                  className="absolute inset-0 rounded-[calc(var(--radius-btn)-2px)] border border-line-strong bg-bg-raised shadow-[inset_0_1px_0_0_oklch(1_0_0/0.08)]"
                 />
               )}
               <span

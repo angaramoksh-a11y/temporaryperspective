@@ -82,7 +82,7 @@ export default function CaseStudies() {
               <div
                 role="tablist"
                 aria-label="Choose a client"
-                className="grid grid-cols-3 gap-1 rounded-xl border border-line bg-bg-sunken p-1"
+                className="glass grid grid-cols-3 gap-1 rounded-xl p-1"
               >
                 {caseStudies.map((c, i) => {
                   const selected = i === active;

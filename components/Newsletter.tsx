@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { newsletterPosts } from "@/lib/work";
-import { ArrowLink, SectionLabel } from "./ui";
+import { ArrowLink } from "./ui";
 
 export default function Newsletter() {
   return (
@@ -8,8 +8,7 @@ export default function Newsletter() {
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <SectionLabel>From the newsletter</SectionLabel>
-            <h2 className="mt-4 max-w-xl font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-tight">
+            <h2 className="max-w-xl font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light leading-tight tracking-tight">
               Notes on running a podcast worth watching.
             </h2>
           </div>
