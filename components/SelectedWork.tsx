@@ -139,7 +139,7 @@ export default function SelectedWork() {
 
         {/* CTA tile — frosted glass with the light sweep */}
         <Link
-          href="/work"
+          href="/portfolio"
           className="glass sweep group flex w-[78vw] shrink-0 flex-col items-center justify-center gap-3 rounded-2xl sm:w-[420px] lg:w-[480px]"
           style={{ aspectRatio: "16 / 9" }}
         >

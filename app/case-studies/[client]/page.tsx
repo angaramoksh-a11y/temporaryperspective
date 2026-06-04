@@ -91,7 +91,7 @@ export default async function CaseStudyPage({
           <div className="mx-auto max-w-[1100px]">
             <CaseVideo
               vimeoId={cs.vimeoId}
-              href="/work"
+              href="/portfolio"
               label={`${cs.client} case study`}
             />
           </div>
@@ -104,7 +104,7 @@ export default async function CaseStudyPage({
                 <h2 className="font-display text-[clamp(1.5rem,3vw,2.25rem)] font-light tracking-tight">
                   Episodes from this show
                 </h2>
-                <ArrowLink href="/work">See all work</ArrowLink>
+                <ArrowLink href="/portfolio">See all work</ArrowLink>
               </div>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
                 {episodes.map((ep) => (

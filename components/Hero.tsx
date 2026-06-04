@@ -103,7 +103,7 @@ export default function Hero() {
                 Book a call
               </PrimaryButton>
             </Magnetic>
-            <GhostButton href="/work" size="lg" className="w-full sm:w-auto">
+            <GhostButton href="/portfolio" size="lg" className="w-full sm:w-auto">
               See our work
             </GhostButton>
           </motion.div>

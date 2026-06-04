@@ -1,43 +1,25 @@
-import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import PageHero from "@/components/PageHero";
-import WorkGrid from "@/components/WorkGrid";
-import ClosingCTA from "@/components/ClosingCTA";
-import { ArrowLink, EdgeDivider } from "@/components/ui";
+"use client";
 
-export const metadata: Metadata = {
-  title: "The work — Temporary Perspective",
-  description:
-    "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
-};
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function WorkPage() {
+// /work has moved to /portfolio. Static export can't issue a server redirect,
+// so this is a client-side redirect with a no-JS link fallback.
+export default function WorkRedirect() {
+  const router = useRouter();
+  useEffect(() => {
+    router.replace("/portfolio");
+  }, [router]);
   return (
-    <>
-      <Nav />
-      <main>
-        <div className="relative">
-          <PageHero
-            title="The work."
-            subcopy="The shows we produce, episode by episode."
-            size="md"
-            minH="short"
-          />
-        </div>
-        <WorkGrid />
-        <section className="relative py-20 lg:py-24">
-          <EdgeDivider />
-          <div className="mx-auto flex max-w-[1400px] flex-col items-center gap-4 px-6 text-center lg:px-10">
-            <p className="text-text-muted">Looking for everything?</p>
-            <ArrowLink href="/work/archive" className="text-base text-text">
-              Browse the full library
-            </ArrowLink>
-          </div>
-        </section>
-        <ClosingCTA subline="Want a show like these? Start with a call." />
-      </main>
-      <Footer />
-    </>
+    <main className="grid min-h-svh place-items-center px-6 text-center text-text-muted">
+      <p>
+        Redirecting to{" "}
+        <Link href="/portfolio" className="text-text underline">
+          the portfolio
+        </Link>
+        …
+      </p>
+    </main>
   );
 }

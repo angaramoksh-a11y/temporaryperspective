@@ -444,9 +444,9 @@ export const siteTestimonials: SiteTestimonial[] = [
       },
     ],
     projects: [
-      { label: "How I Met You", href: "/work/archive?q=how-i-met-you" },
-      { label: "Google Pixel commercial", href: "/work/archive?q=pixel-tarini" },
-      { label: "L'Oréal commercial", href: "/work/archive?q=loreal-tarini" },
+      { label: "How I Met You", href: "/portfolio/archive?q=how-i-met-you" },
+      { label: "Google Pixel commercial", href: "/portfolio/archive?q=pixel-tarini" },
+      { label: "L'Oréal commercial", href: "/portfolio/archive?q=loreal-tarini" },
     ],
     preview: true,
   },
@@ -473,9 +473,9 @@ export const siteTestimonials: SiteTestimonial[] = [
       },
     ],
     projects: [
-      { label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive?q=ishi-ki-khushi" },
-      { label: "Good Things Take Time", href: "/work/archive?q=good-things-take-time" },
-      { label: "How I Met You (Eps 1-2)", href: "/work/archive?q=how-i-met-you" },
+      { label: "Ishi Ki Khushi (Eps 5-8)", href: "/portfolio/archive?q=ishi-ki-khushi" },
+      { label: "Good Things Take Time", href: "/portfolio/archive?q=good-things-take-time" },
+      { label: "How I Met You (Eps 1-2)", href: "/portfolio/archive?q=how-i-met-you" },
     ],
   },
   {
@@ -501,7 +501,7 @@ export const siteTestimonials: SiteTestimonial[] = [
         icon: "linkedin",
       },
     ],
-    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/work/archive?q=ishi-ki-khushi" }],
+    projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/portfolio/archive?q=ishi-ki-khushi" }],
   },
   {
     category: "Founders",
@@ -517,7 +517,7 @@ export const siteTestimonials: SiteTestimonial[] = [
       { label: "Ettara", href: "https://ettara.co/", icon: "website" },
     ],
     projects: [
-      { label: "Website content shoot", href: "/work/archive" },
+      { label: "Website content shoot", href: "/portfolio/archive" },
       {
         label: "BTS reel",
         href: "https://www.instagram.com/reel/DNBFk15yCSM/",

@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import { EdgeDivider } from "./ui";
 
 const primary = [
-  { label: "Work", href: "/work" },
+  { label: "Work", href: "/portfolio" },
   { label: "Process", href: "/process" },
   { label: "Newsletter", href: "/newsletter" },
   { label: "About", href: "/about" },

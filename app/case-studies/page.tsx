@@ -64,7 +64,7 @@ export default function CaseStudiesPage() {
             Looking for everything else we&apos;ve shot?
           </p>
           <Link
-            href="/work"
+            href="/portfolio"
             className="sweep group mt-4 inline-flex items-center gap-2 rounded-[var(--radius-btn)] px-3 py-1 text-[clamp(1.25rem,2.4vw,1.5rem)] text-text"
           >
             Browse all work

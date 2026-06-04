@@ -25,8 +25,8 @@ const categories: Category[] = [
   {
     label: "Work",
     items: [
-      { label: "The work", href: "/work", desc: "The shows we produce, episode by episode." },
-      { label: "Full archive", href: "/work/archive", desc: "Every episode and clip. Filter by client or format." },
+      { label: "Portfolio", href: "/portfolio", desc: "The shows we produce, episode by episode." },
+      { label: "Full archive", href: "/portfolio/archive", desc: "Every episode and clip. Filter by client or format." },
       { label: "Case studies", href: "/case-studies", desc: "The shows, told by the clients." },
     ],
   },
@@ -48,29 +48,37 @@ const categories: Category[] = [
   { label: "Newsletter", href: "/newsletter" },
 ];
 
-// Hover-reactive two-card preview for the Work menu, keyed by sub-item href.
+// Hover-reactive preview cards for the Work menu, keyed by sub-item href.
 type Preview = {
   ytId?: string;
   posterSrc?: string;
   href: string;
   title: string;
   line: string;
+  vertical?: boolean;
 };
 const WORK_PREVIEWS: Record<string, Preview[]> = {
-  "/work": [
-    { ytId: "TomnFVq3Bt4", href: "/work", title: "Vikram Sood", line: "Bharatvaarta" },
-    { ytId: "Wd5h0gl5Cj0", href: "/work", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
+  // Work tab, nothing hovered: one case study + one portfolio piece.
+  default: [
+    { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "Case study" },
+    { ytId: "TomnFVq3Bt4", href: "/portfolio", title: "Vikram Sood", line: "Portfolio" },
   ],
-  "/work/archive": [
-    { ytId: "f1hRTb6MIZ8", href: "/work/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
-    { ytId: "_RR2a1bh1T0", href: "/work/archive", title: "Bureau Podcast", line: "Bureau" },
+  "/portfolio": [
+    { ytId: "TomnFVq3Bt4", href: "/portfolio", title: "Vikram Sood", line: "Bharatvaarta" },
+    { ytId: "Wd5h0gl5Cj0", href: "/portfolio", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
+  ],
+  // mixed orientations: one vertical reel + two horizontal podcasts.
+  "/portfolio/archive": [
+    { posterSrc: "https://vumbnail.com/1169859907.jpg", href: "/portfolio/archive", title: "My Fin", line: "Short-form reel", vertical: true },
+    { ytId: "f1hRTb6MIZ8", href: "/portfolio/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
+    { ytId: "_RR2a1bh1T0", href: "/portfolio/archive", title: "Bureau Podcast", line: "Bureau" },
   ],
   "/case-studies": [
-    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
     { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
+    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
   ],
 };
-const WORK_DEFAULT = "/work";
+const WORK_DEFAULT = "default";
 
 const under = (p: string, href: string) => p === href || p.startsWith(`${href}/`);
 const isActive = (p: string, c: Category) =>
@@ -163,12 +171,49 @@ export default function Nav() {
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-bg/55" />
 
         {/* top bar */}
-        <div className="relative z-10 flex h-[66px] items-center justify-between gap-4 pl-5 pr-4">
+        <div className="relative z-10 flex h-[66px] items-center justify-between gap-4 px-4 lg:pl-5 lg:pr-4">
+          {/* left: hamburger on mobile, logo on desktop */}
+          <div className="flex items-center">
+            <button
+              type="button"
+              onClick={() => setMobileOpen((v) => !v)}
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              className="relative -ml-1 inline-flex h-11 w-11 items-center justify-center text-text lg:hidden"
+            >
+              <span className="relative block h-3 w-5" aria-hidden>
+                <span
+                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    mobileOpen ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1.5 block h-px w-5 bg-current transition-opacity duration-200 ${
+                    mobileOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
+                    mobileOpen ? "top-1.5 -rotate-45" : "top-3"
+                  }`}
+                />
+              </span>
+            </button>
+            <Link
+              href="/"
+              aria-label="Temporary Perspective, home"
+              onMouseEnter={() => open(null)}
+              className="hidden items-center lg:flex"
+            >
+              <Logo className="h-7 w-auto text-text" />
+            </Link>
+          </div>
+
+          {/* center logo — mobile only */}
           <Link
             href="/"
             aria-label="Temporary Perspective, home"
-            onMouseEnter={() => open(null)}
-            className="flex items-center"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:hidden"
           >
             <Logo className="h-7 w-auto text-text" />
           </Link>
@@ -255,42 +300,16 @@ export default function Nav() {
             })}
           </ul>
 
-          <div className="hidden lg:block" onMouseEnter={() => open(null)}>
-            <Magnetic>
-              <PrimaryButton href="/contact">Book a call</PrimaryButton>
-            </Magnetic>
-          </div>
-
-          {/* mobile controls */}
-          <div className="flex items-center gap-2 lg:hidden">
-            <PrimaryButton href="/contact" className="h-9 px-4 text-sm">
+          {/* right: Book a call (both breakpoints) */}
+          <div className="flex items-center">
+            <div className="hidden lg:block" onMouseEnter={() => open(null)}>
+              <Magnetic>
+                <PrimaryButton href="/contact">Book a call</PrimaryButton>
+              </Magnetic>
+            </div>
+            <PrimaryButton href="/contact" className="h-9 px-4 text-sm lg:hidden">
               Book a call
             </PrimaryButton>
-            <button
-              type="button"
-              onClick={() => setMobileOpen((v) => !v)}
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-              aria-expanded={mobileOpen}
-              className="relative inline-flex h-9 w-9 items-center justify-center text-text"
-            >
-              <span className="relative block h-3 w-5" aria-hidden>
-                <span
-                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                    mobileOpen ? "top-1.5 rotate-45" : "top-0"
-                  }`}
-                />
-                <span
-                  className={`absolute left-0 top-1.5 block h-px w-5 bg-current transition-opacity duration-200 ${
-                    mobileOpen ? "opacity-0" : "opacity-100"
-                  }`}
-                />
-                <span
-                  className={`absolute left-0 block h-px w-5 bg-current transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-                    mobileOpen ? "top-1.5 -rotate-45" : "top-3"
-                  }`}
-                />
-              </span>
-            </button>
           </div>
         </div>
 
@@ -472,10 +491,14 @@ function WorkMenu({
   reduce: boolean;
 }) {
   const cards = WORK_PREVIEWS[preview] ?? WORK_PREVIEWS[WORK_DEFAULT];
+  const verticals = cards.filter((c) => c.vertical);
+  const horizontals = cards.filter((c) => !c.vertical);
+  const mixed = verticals.length > 0;
+
   return (
-    <div>
-      {/* the three destinations, in one row */}
-      <div className="grid grid-cols-3 gap-2">
+    <div className="grid grid-cols-[200px_1fr] gap-8">
+      {/* stacked destinations */}
+      <div className="flex flex-col gap-1 self-start">
         {items.map((it) => (
           <Link
             key={it.href}
@@ -495,47 +518,65 @@ function WorkMenu({
         ))}
       </div>
 
-      {/* two-card preview; structure is constant across sets so the swap never
-          shifts layout. Crossfade on hover, instant under reduced-motion. */}
-      <div className="mt-4 border-t border-line pt-4">
+      {/* adaptive preview; height reserved so a hover swap never shifts layout */}
+      <div className="min-h-[252px]">
         <motion.div
           key={preview}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="grid max-w-[760px] grid-cols-2 gap-4"
         >
-          {cards.map((c) => (
-            <Link
-              key={c.title}
-              href={c.href}
-              className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/30"
-            >
-              <div className="relative aspect-video w-full overflow-hidden bg-bg-sunken">
-                {c.ytId ? (
-                  <Thumb
-                    id={c.ytId}
-                    alt={c.title}
-                    className="brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
-                  />
-                ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={c.posterSrc}
-                    alt={c.title}
-                    loading="lazy"
-                    className="h-full w-full object-cover brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
-                  />
-                )}
+          {mixed ? (
+            <div className="grid grid-cols-[148px_232px] items-start gap-3">
+              {verticals.map((c) => (
+                <PreviewCard key={c.title} c={c} aspect="aspect-[9/16]" />
+              ))}
+              <div className="flex flex-col gap-3">
+                {horizontals.map((c) => (
+                  <PreviewCard key={c.title} c={c} aspect="aspect-video" />
+                ))}
               </div>
-              <div className="px-3 py-2.5">
-                <p className="text-sm text-text">{c.title}</p>
-                <p className="text-xs text-text-faint">{c.line}</p>
-              </div>
-            </Link>
-          ))}
+            </div>
+          ) : (
+            <div className="grid max-w-[480px] grid-cols-2 gap-3">
+              {horizontals.map((c) => (
+                <PreviewCard key={c.title} c={c} aspect="aspect-video" />
+              ))}
+            </div>
+          )}
         </motion.div>
       </div>
     </div>
+  );
+}
+
+function PreviewCard({ c, aspect }: { c: Preview; aspect: string }) {
+  return (
+    <Link
+      href={c.href}
+      className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40"
+    >
+      <div className={`relative w-full overflow-hidden bg-bg-sunken ${aspect}`}>
+        {c.ytId ? (
+          <Thumb
+            id={c.ytId}
+            alt={c.title}
+            className="brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={c.posterSrc}
+            alt={c.title}
+            loading="lazy"
+            className="h-full w-full object-cover brightness-[0.85] transition-[filter] duration-300 group-hover/card:brightness-100"
+          />
+        )}
+      </div>
+      <div className="px-3 py-2.5">
+        <p className="text-sm text-text">{c.title}</p>
+        <p className="text-xs text-text-faint">{c.line}</p>
+      </div>
+    </Link>
   );
 }

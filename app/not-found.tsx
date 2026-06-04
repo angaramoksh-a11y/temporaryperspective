@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const routes = [
   { label: "Home", href: "/" },
-  { label: "Work", href: "/work" },
+  { label: "Work", href: "/portfolio" },
   { label: "Newsletter", href: "/newsletter" },
   { label: "Book a call", href: CAL_LINK },
 ];

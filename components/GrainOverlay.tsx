@@ -20,7 +20,7 @@ export default function GrainOverlay({
   const ref = useRef<HTMLCanvasElement>(null);
   const pathname = usePathname();
   // The /work page uses the Silk shader as its sole background texture.
-  const hidden = pathname?.startsWith("/work") ?? false;
+  const hidden = pathname?.startsWith("/portfolio") ?? false;
 
   useEffect(() => {
     if (hidden) return;

@@ -1,34 +1,26 @@
-import type { Metadata } from "next";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ArchiveBrowser from "@/components/ArchiveBrowser";
-import ClosingCTA from "@/components/ClosingCTA";
-import { archiveItems, resolveThumb, workItemKey } from "@/lib/work";
+"use client";
 
-export const metadata: Metadata = {
-  title: "The archive — Temporary Perspective",
-  description: "Every episode, every piece. The full Temporary Perspective library.",
-};
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default async function ArchivePage() {
-  // resolve posters server-side (YouTube pattern / Vimeo oEmbed), then hand the
-  // catalog to the client browser for filtering and playback.
-  const items = await Promise.all(
-    archiveItems.map(async (i) => ({
-      ...i,
-      thumb: await resolveThumb(i),
-      key: workItemKey(i),
-    })),
-  );
-
+// /work/archive has moved to /portfolio/archive (client-side redirect; static
+// export can't issue a server redirect). Preserves the ?q= query string.
+export default function WorkArchiveRedirect() {
+  const router = useRouter();
+  useEffect(() => {
+    const qs = typeof window !== "undefined" ? window.location.search : "";
+    router.replace(`/portfolio/archive${qs}`);
+  }, [router]);
   return (
-    <>
-      <Nav />
-      <main>
-        <ArchiveBrowser items={items} />
-        <ClosingCTA subline="Want a show like these? Start with a call." />
-      </main>
-      <Footer />
-    </>
+    <main className="grid min-h-svh place-items-center px-6 text-center text-text-muted">
+      <p>
+        Redirecting to{" "}
+        <Link href="/portfolio/archive" className="text-text underline">
+          the archive
+        </Link>
+        …
+      </p>
+    </main>
   );
 }
