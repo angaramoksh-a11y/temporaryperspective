@@ -1,49 +1,33 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { type ResolvedWorkItem, type Orientation } from "@/lib/work";
+import { type ResolvedWorkItem } from "@/lib/work";
 import WorkLightbox from "./WorkLightbox";
 
 const PER_PAGE = 48;
 
 export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] }) {
-  // The wall splits by shape so every tile keeps its true aspect ratio: a
-  // landscape view of 16:9 work and a vertical view of 9:16 work, switched by
-  // the glass toggle. Mixing both in one grid is what made it read as noise.
-  const counts = useMemo(
-    () => ({
-      horizontal: items.filter((i) => i.orientation === "horizontal").length,
-      vertical: items.filter((i) => i.orientation === "vertical").length,
-    }),
-    [items],
-  );
-
-  const [orient, setOrient] = useState<Orientation>("horizontal");
+  // One calm, uniform 16:9 wall. Vertical clips are letterboxed (blurred fill)
+  // so the grid stays even without butchering the reel; orientation plays
+  // correctly inside the lightbox.
   const [query, setQuery] = useState("");
   const [selClients, setSelClients] = useState<string[]>([]);
   const [selFormats, setSelFormats] = useState<string[]>([]);
   const [page, setPage] = useState(0);
   const [active, setActive] = useState<ResolvedWorkItem | null>(null);
 
-  const inView = useMemo(
-    () => items.filter((i) => i.orientation === orient),
-    [items, orient],
-  );
-
-  // Filter options are scoped to the current shape so you never pick a client
-  // or format that has nothing to show in this view.
   const clients = useMemo(
-    () => [...new Set(inView.map((i) => i.client))].sort(),
-    [inView],
+    () => [...new Set(items.map((i) => i.client))].sort(),
+    [items],
   );
   const formats = useMemo(
-    () => [...new Set(inView.map((i) => i.format))],
-    [inView],
+    () => [...new Set(items.map((i) => i.format))],
+    [items],
   );
 
   const filtered = useMemo(() => {
     const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    return inView.filter((it) => {
+    return items.filter((it) => {
       const hay = `${it.client} ${it.format} ${(it.tags ?? []).join(" ")} ${
         it.desc ?? ""
       } ${it.title ?? ""} ${it.slug}`.toLowerCase();
@@ -52,42 +36,19 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
       const matchFormat = !selFormats.length || selFormats.includes(it.format);
       return matchQ && matchClient && matchFormat;
     });
-  }, [inView, query, selClients, selFormats]);
+  }, [items, query, selClients, selFormats]);
 
-  // Prefill the search from ?q= (deep-links from /testimonials), and jump to
-  // whichever shape actually has matches so vertical deep-links aren't empty.
+  // Prefill the search from ?q= (deep-links from /testimonials).
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("q");
-    if (!q) return;
-    setQuery(q);
-    const toks = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const hits = (o: Orientation) =>
-      items.filter(
-        (i) =>
-          i.orientation === o &&
-          toks.every((t) =>
-            `${i.client} ${i.format} ${(i.tags ?? []).join(" ")} ${
-              i.desc ?? ""
-            } ${i.title ?? ""} ${i.slug}`
-              .toLowerCase()
-              .includes(t),
-          ),
-      ).length;
-    if (hits("horizontal") === 0 && hits("vertical") > 0) setOrient("vertical");
-  }, [items]);
+    if (q) setQuery(q);
+  }, []);
 
   const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
   const current = Math.min(page, pageCount - 1);
   const shown = filtered.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
 
   const reset = () => setPage(0);
-  const switchOrient = (o: Orientation) => {
-    if (o === orient) return;
-    setOrient(o);
-    setPage(0);
-    setSelClients([]);
-    setSelFormats([]);
-  };
   const toggle =
     (set: typeof setSelClients) => (v: string) => {
       reset();
@@ -100,8 +61,6 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
     ...selClients.map((c) => ({ label: c, remove: () => toggleClient(c) })),
     ...selFormats.map((f) => ({ label: f, remove: () => toggleFormat(f) })),
   ];
-
-  const vertical = orient === "vertical";
 
   return (
     <section className="relative">
@@ -116,11 +75,6 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
               Every episode, every piece. The full library.
             </p>
           </div>
-          <OrientToggle
-            orient={orient}
-            counts={counts}
-            onSwitch={switchOrient}
-          />
         </div>
       </header>
 
@@ -182,25 +136,19 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
       <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-10 lg:py-14">
         {shown.length === 0 ? (
           <p className="py-24 text-center text-text-faint">
-            No {vertical ? "vertical" : "landscape"} work matches those filters.
-            Try broader filters or clear them.
+            No work matches those filters. Try broader filters or clear them.
           </p>
         ) : (
           <>
             <p className="mb-6 text-sm text-text-faint">
               {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
             </p>
-            <div
-              className={
-                vertical
-                  ? "grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-5 lg:gap-x-5 2xl:grid-cols-6"
-                  : "grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-5 2xl:grid-cols-5"
-              }
-            >
+            <div className="grid grid-cols-2 gap-x-4 gap-y-7 sm:grid-cols-3 lg:grid-cols-4 lg:gap-x-5 2xl:grid-cols-5">
               {shown.map((it) => {
                 const title = it.title ?? it.desc ?? it.client;
                 const sub =
                   it.title || it.desc ? `${it.client} · ${it.format}` : it.format;
+                const isVertical = it.orientation === "vertical";
                 return (
                   <button
                     key={it.key}
@@ -208,19 +156,35 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
                     aria-label={`Play ${it.client}, ${it.format}`}
                     className="group block text-left"
                   >
-                    <div
-                      className={`relative overflow-hidden rounded-xl border border-line bg-bg-sunken ${
-                        vertical ? "aspect-[9/16]" : "aspect-video"
-                      }`}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={it.thumb}
-                        alt=""
-                        loading="lazy"
-                        className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
-                      />
-                      <span className="absolute inset-0 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                    <div className="relative aspect-video overflow-hidden rounded-xl border border-line bg-bg-sunken">
+                      {isVertical ? (
+                        <>
+                          {/* blurred fill so the 9:16 reel isn't hard-cropped */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={it.thumb}
+                            alt=""
+                            aria-hidden
+                            className="absolute inset-0 h-full w-full scale-110 object-cover blur-2xl brightness-[0.4]"
+                          />
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={it.thumb}
+                            alt=""
+                            loading="lazy"
+                            className="relative z-10 mx-auto h-full w-auto object-contain brightness-[0.85] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
+                          />
+                        </>
+                      ) : (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={it.thumb}
+                          alt=""
+                          loading="lazy"
+                          className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
+                        />
+                      )}
+                      <span className="absolute inset-0 z-20 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                         <span className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-bg/45 backdrop-blur">
                           <svg
                             viewBox="0 0 24 24"
@@ -272,57 +236,6 @@ export default function ArchiveBrowser({ items }: { items: ResolvedWorkItem[] })
         onClose={() => setActive(null)}
       />
     </section>
-  );
-}
-
-function OrientToggle({
-  orient,
-  counts,
-  onSwitch,
-}: {
-  orient: Orientation;
-  counts: Record<Orientation, number>;
-  onSwitch: (o: Orientation) => void;
-}) {
-  const opts: { key: Orientation; label: string }[] = [
-    { key: "horizontal", label: "Landscape" },
-    { key: "vertical", label: "Vertical" },
-  ];
-  return (
-    <div className="glass edge-gradient inline-flex shrink-0 gap-1 self-start rounded-full p-1 text-sm lg:self-auto">
-      {opts.map((o) => {
-        const on = orient === o.key;
-        return (
-          <button
-            key={o.key}
-            onClick={() => onSwitch(o.key)}
-            aria-pressed={on}
-            className={`inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 transition-colors ${
-              on ? "bg-white/[0.1] text-text" : "text-text-muted hover:text-text"
-            }`}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              className="h-3.5 w-3.5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.6}
-              aria-hidden
-            >
-              {o.key === "horizontal" ? (
-                <rect x="3" y="6.5" width="18" height="11" rx="2" />
-              ) : (
-                <rect x="6.5" y="3" width="11" height="18" rx="2" />
-              )}
-            </svg>
-            {o.label}
-            <span className={on ? "text-text-faint" : "text-text-faint/70"}>
-              {counts[o.key]}
-            </span>
-          </button>
-        );
-      })}
-    </div>
   );
 }
 
