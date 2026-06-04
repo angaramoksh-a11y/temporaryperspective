@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import PageHero from "@/components/PageHero";
+import PageHeroWord from "@/components/PageHeroWord";
 import Accordion from "@/components/Accordion";
 import ClosingCTA from "@/components/ClosingCTA";
 import { faqs } from "@/lib/work";
@@ -31,11 +31,7 @@ export default function FaqPage() {
       />
       <Nav />
       <main>
-        <PageHero
-          title="Questions."
-          subcopy="Common questions, answered honestly. No pitch, no rate card."
-          minH="half"
-        />
+        <PageHeroWord word="Questions" eyebrow="Before you book" />
         <section className="relative pb-24 lg:pb-28">
           <div className="mx-auto max-w-[820px] px-6 lg:px-10">
             <Accordion items={faqs} />

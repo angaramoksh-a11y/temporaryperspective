@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 import Beliefs from "@/components/Beliefs";
 import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
-import { EdgeDivider, SectionLabel } from "@/components/ui";
+import { EdgeDivider } from "@/components/ui";
 import { siteTestimonials, team, vimeoPoster } from "@/lib/work";
 
 export const metadata: Metadata = {
@@ -59,7 +59,6 @@ export default async function AboutPage() {
           <EdgeDivider />
           <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
             <div className="mb-12 flex flex-col gap-4">
-              <SectionLabel>The team</SectionLabel>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
                 The people behind the shows.
               </h2>
@@ -128,7 +127,6 @@ export default async function AboutPage() {
           <EdgeDivider />
           <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
             <div className="mb-12 flex flex-col gap-4">
-              <SectionLabel>Testimonials</SectionLabel>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
                 What people say.
               </h2>
@@ -142,7 +140,6 @@ export default async function AboutPage() {
           <EdgeDivider />
           <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
             <div className="mb-12 flex flex-col gap-4">
-              <SectionLabel>Beliefs</SectionLabel>
               <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
                 What we believe.
               </h2>
