@@ -2,128 +2,145 @@
 
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { motion, useInView } from "motion/react";
-import { phases } from "@/lib/work";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { GhostButton } from "./ui";
+import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-function PhaseRow({
-  phase,
-  open,
-  onToggle,
-  index,
-  first,
-}: {
-  phase: (typeof phases)[number];
-  open: boolean;
-  onToggle: () => void;
-  index: number;
-  first: boolean;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
+const REPEAT = [
+  { id: "guest-prep", title: "Guest Prep", body: "Briefs both sides. No cold starts." },
+  { id: "production", title: "Production", body: "Multi-cam, lit, broadcast sound." },
+  { id: "post", title: "Post", body: "Master edit, grade, and clips." },
+  { id: "growth", title: "Growth", body: "Published, and grown." },
+];
 
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : undefined}
-      transition={{ duration: 0.5, ease, delay: index * 0.06 }}
-      className={`sweep group/card relative ${
-        first ? "" : "border-t border-line"
-      }`}
-    >
-      <button
-        onClick={onToggle}
-        aria-expanded={open}
-        className="flex w-full cursor-pointer items-center justify-between gap-4 px-7 py-6 text-left transition-colors duration-300 ease-[var(--ease-out-quart)] hover:bg-white/[0.025]"
-      >
-        <span className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <h3 className="font-display text-[clamp(1.375rem,2.2vw,1.9rem)] font-normal leading-[1.15] tracking-[-0.015em]">
-            {phase.title}
-          </h3>
-          <span className="font-mono text-[0.65rem] uppercase tracking-[0.2em] text-text-faint">
-            {phase.label}
-          </span>
-        </span>
-        <span
-          className={`shrink-0 text-lg leading-none text-text-faint transition-transform duration-300 ease-[var(--ease-out-quart)] ${
-            open ? "rotate-45" : ""
-          }`}
-        >
-          +
-        </span>
-      </button>
-
-      <div
-        className="grid transition-[grid-template-rows] duration-300 ease-[var(--ease-out-quart)]"
-        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
-      >
-        <div className="overflow-hidden">
-          <div className="px-7 pb-7">
-            <p className="max-w-xl text-[1.0625rem] leading-relaxed text-text-muted">
-              {phase.body}
-            </p>
-            <Link
-              href={`/process#${phase.id}`}
-              className="group/link mt-4 inline-flex items-center gap-1.5 text-sm text-text-faint transition-colors hover:text-text"
-            >
-              More on this
-              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/link:translate-x-1">
-                →
-              </span>
-            </Link>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
+const BRAND_BOOK: LightboxItem = {
+  title: "Bharatvaarta — brand book",
+  client: "Branding",
+  desc: "Logo, palette, typography, and the show's full visual system.",
+  media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
+};
 
 export default function Process() {
-  const [openId, setOpenId] = useState<string | null>(null);
-  const headRef = useRef<HTMLDivElement>(null);
-  const headInView = useInView(headRef, { once: true, amount: 0.4 });
+  const reduce = useReducedMotion();
+  const [pdfOpen, setPdfOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.35 });
 
   return (
-    <section className="relative pt-16 pb-24 lg:pt-20 lg:pb-28">
-      <div className="mx-auto grid max-w-[1400px] gap-12 px-6 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-10">
-        {/* left — sticky framing */}
-        <motion.div
-          ref={headRef}
-          initial={{ opacity: 0, y: 16 }}
-          animate={headInView ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.6, ease }}
-          className="lg:sticky lg:top-32 lg:self-start"
-        >
-          <h2 className="font-display text-[clamp(2rem,4vw,3rem)] font-medium tracking-tight">
+    <section className="relative py-24 lg:py-28">
+      <div className="mx-auto max-w-[1200px] px-6 lg:px-10">
+        <div className="max-w-2xl">
+          <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3rem)] font-medium tracking-tight">
             The process.
           </h2>
-          <p className="mt-4 max-w-sm text-lg leading-relaxed text-text-muted">
-            Five phases. One foundational. Four per episode.
+          <p className="mt-4 text-lg leading-relaxed text-text-muted">
+            One foundation. Then an engine that repeats, every episode, in under
+            a week.
           </p>
-          <GhostButton href="/process" className="mt-7">
-            See the full process →
-          </GhostButton>
-        </motion.div>
+        </div>
 
-        {/* right — connected accordion, all collapsed by default */}
-        <div className="overflow-hidden rounded-2xl border border-line bg-bg-raised/30">
-          {phases.map((p, i) => (
-            <PhaseRow
-              key={p.id}
-              phase={p}
-              index={i}
-              first={i === 0}
-              open={openId === p.id}
-              onToggle={() =>
-                setOpenId((cur) => (cur === p.id ? null : p.id))
-              }
-            />
-          ))}
+        {/* timeline */}
+        <div
+          ref={ref}
+          className="mt-12 flex flex-col gap-4 lg:mt-14 lg:flex-row lg:items-stretch"
+        >
+          {/* Branding — the one-time Foundation node; opens the brand book */}
+          <button
+            onClick={() => setPdfOpen(true)}
+            className="group glass rim-glow relative flex flex-col rounded-2xl p-5 text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1 lg:w-[248px] lg:shrink-0"
+          >
+            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-[0.65rem] font-medium uppercase tracking-[0.14em] text-text">
+              Once
+            </span>
+            <h3 className="mt-4 font-display text-xl font-medium tracking-tight text-text">
+              Branding
+            </h3>
+            <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
+              Logo, palette, the show&apos;s whole identity.
+            </p>
+            <span className="mt-auto inline-flex items-center gap-1.5 pt-4 text-sm font-medium text-text">
+              View the brand book
+              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
+                →
+              </span>
+            </span>
+          </button>
+
+          {/* the repeating engine */}
+          <div className="relative flex-1 rounded-2xl border border-line bg-bg-raised/20 p-5">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
+                Every episode
+              </span>
+              <span className="inline-flex items-center gap-1.5 text-xs text-text-faint">
+                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden>
+                  <path d="M21 12a9 9 0 1 1-3-6.7" strokeLinecap="round" />
+                  <path d="M21 3v4h-4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                repeats
+              </span>
+            </div>
+            <ol className="mt-4 grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
+              {REPEAT.map((p, i) => (
+                <li key={p.id}>
+                  <Link href={`/process#${p.id}`} className="group/node block">
+                    <span className="font-mono text-xs text-text-faint">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <span className="mt-1 flex items-center gap-1.5 font-display text-base font-medium tracking-tight text-text">
+                      {p.title}
+                      <span className="text-text-faint opacity-0 transition-opacity duration-200 group-hover/node:opacity-100">
+                        →
+                      </span>
+                    </span>
+                    <span className="mt-1 block text-sm leading-snug text-text-muted">
+                      {p.body}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+
+            {/* Start → Published meter; fills once when in view */}
+            <div className="mt-6">
+              <div className="flex items-center justify-between text-xs text-text-faint">
+                <span>Start</span>
+                <span>Published · &lt; 7 days</span>
+              </div>
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
+                <motion.div
+                  className="h-full rounded-full bg-accent"
+                  initial={{ width: 0 }}
+                  animate={inView ? { width: "100%" } : { width: 0 }}
+                  transition={{ duration: reduce ? 0 : 1.1, ease, delay: 0.15 }}
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* the stat */}
+          <div className="glass flex flex-col justify-center rounded-2xl p-5 text-center lg:w-[172px] lg:shrink-0">
+            <span className="text-metal-static font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-tight">
+              &lt; 7 days
+            </span>
+            <span className="mt-1.5 text-xs leading-snug text-text-muted">
+              Shot to published, every episode.
+            </span>
+          </div>
+        </div>
+
+        <div className="mt-10">
+          <GhostButton href="/process">See the full process →</GhostButton>
         </div>
       </div>
+
+      <MediaLightbox
+        items={[BRAND_BOOK]}
+        index={pdfOpen ? 0 : null}
+        onClose={() => setPdfOpen(false)}
+      />
     </section>
   );
 }
