@@ -78,7 +78,15 @@
       "Bash(sed -n '1,30p' app/work/page.tsx)",
       "Bash(sed -n '1,30p' app/work/archive/page.tsx)",
       "Bash(sed -n '1,20p' app/case-studies/page.tsx)",
-      "WebFetch(domain:www.youtube.com)"
+      "WebFetch(domain:www.youtube.com)",
+      "Bash(python3 scripts/search.py \"B2B podcast film studio premium dark cinematic service agency\" --design-system -p \"Temporary Perspective\" -f markdown)",
+      "Bash(python3 scripts/search.py \"animation accessibility z-index reduced-motion loading\" --domain ux -n 10)",
+      "Bash(python3 scripts/search.py \"comparison before after testimonial social-proof hero\" --domain landing -n 8)",
+      "Bash(python3 scripts/search.py \"video image optimization motion routing\" --stack nextjs -n 8)",
+      "Bash(python3 scripts/search.py \"modal overlay dialog focus trap escape backdrop\" --domain ux -n 8)",
+      "Bash(python3 scripts/search.py \"gallery lightbox dark cinematic portfolio video\" --domain style -n 5)",
+      "Bash(python3 scripts/search.py \"dialog focus keyboard aria modal\" --domain web -n 6)",
+      "Bash(awk '{print $5, $9}')"
     ]
   }
 }
