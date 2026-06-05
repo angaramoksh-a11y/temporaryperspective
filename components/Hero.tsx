@@ -78,7 +78,7 @@ export default function Hero() {
           {/* headline — metallic breathing chrome (the studio's display signature) */}
           <motion.h1
             variants={rise}
-            className="text-metal mt-5 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]"
+            className="text-metal mt-6 text-balance font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]"
           >
             <span className="block">You&apos;ve built the conversation.</span>
             <span className="block">We build the stage.</span>
@@ -96,7 +96,7 @@ export default function Hero() {
           {/* buttons */}
           <motion.div
             variants={rise}
-            className="mt-9 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
+            className="mt-12 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
           >
             <Magnetic className="w-full sm:w-auto">
               <PrimaryButton href="/contact" size="lg" className="w-full sm:w-auto">
