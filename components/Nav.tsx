@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Logo from "./Logo";
 import Thumb from "./Thumb";
+import { team } from "@/lib/work";
 import { Magnetic, PrimaryButton } from "./ui";
 
 // Floating glass nav that morphs. Inspired by sarvam.ai (feel only): a detached
@@ -34,7 +35,7 @@ const categories: Category[] = [
     items: [
       { label: "Our process", href: "/process", desc: "How we run a show." },
       { label: "Remote production", href: "/virtual", desc: "When your guest's in another city." },
-      { label: "What clients say", href: "/testimonials", desc: "Proof, from the people we make it for." },
+      { label: "Testimonials", href: "/testimonials", desc: "What clients say." },
       { label: "About us", href: "/about", desc: "Who runs the studio." },
     ],
   },
@@ -76,6 +77,34 @@ const WORK_PREVIEWS: Record<string, Preview[]> = {
 };
 const WORK_DEFAULT = "default";
 
+// Studio menu previews, one distinct visual per sub-item (keyed by href).
+// Process = the section's signature engine; Remote = a static with/without
+// still pair (view-only, no toggle); Testimonials = three video posters;
+// About = the whole team, every face treated identically.
+const STUDIO_PROCESS = [
+  { n: "01", label: "Guest Prep", body: "Briefs both sides." },
+  { n: "02", label: "Production", body: "Multi-cam, lit, sound." },
+  { n: "03", label: "Post", body: "Edit, grade, clips." },
+  { n: "04", label: "Growth", body: "Published, grown." },
+];
+
+const STUDIO_TESTIMONIALS: { poster: string; name: string; line: string }[] = [
+  { poster: "https://vumbnail.com/1169859676.jpg", name: "Tarini Shah", line: "Creator · 540k+" },
+  { poster: "https://vumbnail.com/1169859867.jpg", name: "Meet", line: "Founder, Ettara" },
+  { poster: "https://vumbnail.com/1197937165.jpg", name: "Ishpreet Balbir", line: "Creator · 230k+" },
+];
+
+// Two-letter initials for the team tiles (matches the /about fallback).
+function monogram(name: string) {
+  const parts = name.trim().split(/\s+/);
+  return (parts.length > 1 ? parts[0][0] + parts[1][0] : name.slice(0, 2)).toUpperCase();
+}
+// The recognizable name (the studio is known by "Moksh", not "Angara").
+function shortName(name: string) {
+  const parts = name.trim().split(/\s+/);
+  return parts.length > 1 ? parts[parts.length - 1] : name;
+}
+
 const under = (p: string, href: string) => p === href || p.startsWith(`${href}/`);
 const isActive = (p: string, c: Category) =>
   c.items ? c.items.some((i) => under(p, i.href)) : under(p, c.href);
@@ -85,7 +114,7 @@ export default function Nav() {
   const reduce = useReducedMotion();
   const [openCat, setOpenCat] = useState<string | null>(null);
   const [hoveredTop, setHoveredTop] = useState<string | null>(null);
-  const [hoveredWork, setHoveredWork] = useState<string | null>(null);
+  const [hoveredSub, setHoveredSub] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
@@ -97,7 +126,7 @@ export default function Nav() {
 
   // reset the spotlight to its default when a different menu opens
   useEffect(() => {
-    setHoveredWork(null);
+    setHoveredSub(null);
   }, [openCat]);
 
   useEffect(() => {
@@ -333,8 +362,15 @@ export default function Nav() {
                     {current!.label === "Work" ? (
                       <WorkMenu
                         items={current!.items}
-                        preview={hoveredWork ?? WORK_DEFAULT}
-                        onHover={setHoveredWork}
+                        preview={hoveredSub ?? WORK_DEFAULT}
+                        onHover={setHoveredSub}
+                        reduce={!!reduce}
+                      />
+                    ) : current!.label === "Studio" ? (
+                      <StudioMenu
+                        items={current!.items}
+                        hovered={hoveredSub ?? "/process"}
+                        onHover={setHoveredSub}
                         reduce={!!reduce}
                       />
                     ) : (
@@ -466,26 +502,7 @@ function WorkMenu({
 
   return (
     <div className="grid grid-cols-[220px_1fr] gap-10">
-      {/* stacked destinations */}
-      <div className="flex flex-col gap-1 self-start">
-        {items.map((it) => (
-          <Link
-            key={it.href}
-            href={it.href}
-            onMouseEnter={() => onHover(it.href)}
-            onFocus={() => onHover(it.href)}
-            className="group/item flex flex-col gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.05]"
-          >
-            <span className="flex items-center gap-1.5 text-base font-medium text-text">
-              {it.label}
-              <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
-                →
-              </span>
-            </span>
-            <span className="text-sm text-text-faint">{it.desc}</span>
-          </Link>
-        ))}
-      </div>
+      <DestList items={items} onHover={onHover} />
 
       {/* adaptive preview — empty on bare "Work"; a bento that fills the area on
           each sub-item hover (no huge empty space) */}
@@ -555,5 +572,231 @@ function PreviewCard({ c, aspect }: { c: Preview; aspect: string }) {
         <p className="text-sm text-text-faint">{c.line}</p>
       </div>
     </Link>
+  );
+}
+
+// Shared left rail of stacked destinations (Work + Studio menus).
+function DestList({
+  items,
+  onHover,
+}: {
+  items: Item[];
+  onHover: (href: string) => void;
+}) {
+  return (
+    <div className="flex flex-col gap-1 self-start">
+      {items.map((it) => (
+        <Link
+          key={it.href}
+          href={it.href}
+          onMouseEnter={() => onHover(it.href)}
+          onFocus={() => onHover(it.href)}
+          className="group/item flex flex-col gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.05]"
+        >
+          <span className="flex items-center gap-1.5 text-base font-medium text-text">
+            {it.label}
+            <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
+              →
+            </span>
+          </span>
+          <span className="text-sm text-text-faint">{it.desc}</span>
+        </Link>
+      ))}
+    </div>
+  );
+}
+
+function StudioMenu({
+  items,
+  hovered,
+  onHover,
+  reduce,
+}: {
+  items: Item[];
+  hovered: string;
+  onHover: (href: string) => void;
+  reduce: boolean;
+}) {
+  return (
+    <div className="grid grid-cols-[220px_1fr] gap-10">
+      <DestList items={items} onHover={onHover} />
+      {/* fixed-height stage so the panel never jumps between the four hovers */}
+      <div className="h-[260px] overflow-hidden">
+        <motion.div
+          key={hovered}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+          className="h-full"
+        >
+          <StudioPreview href={hovered} />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+function StudioPreview({ href }: { href: string }) {
+  if (href === "/virtual") return <RemotePreview />;
+  if (href === "/testimonials") return <TestimonialsPreview />;
+  if (href === "/about") return <AboutPreview />;
+  return <ProcessPreview />;
+}
+
+// The Process section's signature, compressed: the repeating engine + the
+// chromium Start → Day 7 meter.
+function ProcessPreview() {
+  return (
+    <Link
+      href="/process"
+      className="flex h-full flex-col justify-center rounded-xl border border-line bg-bg-raised/20 p-5 transition-colors hover:border-line-strong"
+    >
+      <div className="flex items-center justify-between">
+        <span className="text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-text-faint">
+          Every episode
+        </span>
+        <span className="text-[0.8125rem] text-text-faint">in under a week</span>
+      </div>
+      <ol className="mt-5 grid grid-cols-4 gap-x-4">
+        {STUDIO_PROCESS.map((p) => (
+          <li key={p.n}>
+            <span className="font-mono text-xs text-text-faint">{p.n}</span>
+            <span className="mt-1 block font-display text-[0.95rem] font-medium tracking-tight text-text">
+              {p.label}
+            </span>
+            <span className="mt-1 block text-[0.8125rem] leading-snug text-text-muted">
+              {p.body}
+            </span>
+          </li>
+        ))}
+      </ol>
+      <div className="mt-6">
+        <div className="flex items-center justify-between text-[0.8125rem] text-text-faint">
+          <span>Start</span>
+          <span>Day 7</span>
+        </div>
+        <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
+          <div className="h-full w-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]" />
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+// View-only with/without contrast. Rather than borrow loud YouTube cover art
+// (off-brand, and not an honest production-quality comparison), the difference
+// is carried by the design language itself: a flat, dim webcam tile beside a
+// lit glass studio tile.
+function RemotePreview() {
+  return (
+    <div className="flex h-full flex-col justify-center">
+      <div className="grid grid-cols-2 gap-4">
+        {/* Without: a dull "gallery view" of flat video tiles — instantly reads
+            as a video call, lifeless and fragmented */}
+        <div className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl border border-line bg-bg-raised/25 p-4">
+          <span className="text-[0.8125rem] font-medium text-text-muted">Webcam call</span>
+          <span className="grid flex-1 place-items-center">
+            <span className="grid grid-cols-2 gap-1.5">
+              {[0, 1, 2, 3].map((i) => (
+                <span key={i} className="h-6 w-10 rounded-[3px] bg-text-faint/15" />
+              ))}
+            </span>
+          </span>
+          <span className="text-[0.8125rem] text-text-faint">Soft, flat, fragmented.</span>
+        </div>
+        {/* With: one lit, framed shot under a single key light */}
+        <Link
+          href="/virtual"
+          className="glass edge-gradient sweep group/card relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl p-4"
+        >
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(62% 72% at 50% 46%, oklch(0.72 0.02 250 / 0.2), transparent 72%)",
+            }}
+          />
+          <span className="relative z-10 text-[0.8125rem] font-medium text-text">With us</span>
+          <span className="relative z-10 grid flex-1 place-items-center">
+            <span className="grid h-11 w-16 place-items-center rounded-md border border-line-strong bg-bg/40 backdrop-blur">
+              <svg viewBox="0 0 24 24" className="h-6 w-6 text-text" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
+                <path d="M3 7h11v10H3z" strokeLinejoin="round" />
+                <path d="M14 10l5-3v10l-5-3" strokeLinejoin="round" />
+                <circle cx="6.5" cy="10" r="0.6" fill="currentColor" />
+              </svg>
+            </span>
+          </span>
+          <span className="relative z-10 text-[0.8125rem] text-text-muted">Lit, sharp, one frame.</span>
+        </Link>
+      </div>
+      <p className="mt-3 text-sm text-text-faint">
+        Same online format, shot like a studio. When your guest&apos;s in another city.
+      </p>
+    </div>
+  );
+}
+
+function TestimonialsPreview() {
+  return (
+    <div className="flex h-full flex-col justify-center">
+      <div className="grid grid-cols-3 gap-4">
+        {STUDIO_TESTIMONIALS.map((t) => (
+          <Link
+            key={t.name}
+            href="/testimonials"
+            className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40"
+          >
+            <div className="relative aspect-video w-full overflow-hidden bg-bg-sunken">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={t.poster}
+                alt={t.name}
+                loading="lazy"
+                className="h-full w-full object-cover brightness-[0.8] transition-[filter] duration-300 group-hover/card:brightness-100"
+              />
+              <span className="absolute inset-0 grid place-items-center">
+                <span className="grid h-9 w-9 place-items-center rounded-full border border-line-strong bg-bg/55 backdrop-blur transition-transform duration-300 group-hover/card:scale-110">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px text-text" fill="currentColor" aria-hidden>
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </span>
+              </span>
+            </div>
+            <div className="px-3 py-2.5">
+              <p className="text-[0.95rem] text-text">{t.name}</p>
+              <p className="text-[0.8125rem] text-text-faint">{t.line}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// The whole team, every face treated identically (uniform monogram tiles, no
+// single headshot featured) so the nav peek never plays favorites.
+function AboutPreview() {
+  return (
+    <div className="flex h-full flex-col justify-center">
+      <div className="grid grid-cols-5 gap-3">
+        {team.map((m) => (
+          <Link
+            key={m.name}
+            href="/about"
+            className="group/face flex flex-col items-center gap-2 text-center"
+          >
+            <span className="sweep grid aspect-square w-full place-items-center rounded-xl border border-line-strong bg-bg-raised/50 font-thunder text-[clamp(1.1rem,2vw,1.6rem)] uppercase leading-none text-text-faint transition-colors duration-300 group-hover/face:text-text">
+              {monogram(m.name)}
+            </span>
+            <span className="text-[0.8125rem] leading-tight text-text">{shortName(m.name)}</span>
+            <span className="text-xs leading-tight text-text-faint">{m.role}</span>
+          </Link>
+        ))}
+      </div>
+      <p className="mt-4 text-sm text-text-faint">
+        A small studio. The people behind every show.
+      </p>
+    </div>
   );
 }
