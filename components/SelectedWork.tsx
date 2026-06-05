@@ -96,13 +96,22 @@ export default function SelectedWork() {
         </div>
       </div>
 
+      {/* Wrapper gives us a stacking context for the bottom-edge veil without
+          touching the overflow-x clip on the scroll row itself. */}
+      <div className="relative">
+        {/* Bottom feather — sits below the cards, softens the section boundary */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-16"
+          style={{ background: "linear-gradient(to top, var(--color-bg), transparent)" }}
+        />
       <div
         ref={rowRef}
         onPointerDown={onDown}
         onPointerMove={onMoveDrag}
         onPointerUp={onUp}
         onPointerLeave={onUp}
-        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:pl-[7%] lg:pr-10"
+        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-6 active:cursor-grabbing lg:pl-[7%] lg:pr-10"
       >
         {selectedWork.map((ep) => (
           <figure
@@ -151,6 +160,7 @@ export default function SelectedWork() {
           </span>
         </Link>
       </div>
+      </div>{/* end relative wrapper */}
 
       <Lightbox
         episode={active}
