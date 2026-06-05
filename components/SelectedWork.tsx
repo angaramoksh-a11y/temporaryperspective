@@ -77,10 +77,10 @@ export default function SelectedWork() {
 
   return (
     <section className="relative pt-14 pb-28 lg:pt-16 lg:pb-36">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
         <div className="mb-12 flex items-start justify-between gap-6">
           <div className="max-w-xl">
-            <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+            <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
               Some of our work
             </h2>
             <p className="mt-4 text-base leading-relaxed text-text-muted">
@@ -102,7 +102,7 @@ export default function SelectedWork() {
         onPointerMove={onMoveDrag}
         onPointerUp={onUp}
         onPointerLeave={onUp}
-        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:px-10"
+        className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-2 active:cursor-grabbing lg:pl-[7%] lg:pr-10"
       >
         {selectedWork.map((ep) => (
           <figure

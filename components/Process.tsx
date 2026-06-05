@@ -35,9 +35,9 @@ export default function Process() {
 
   return (
     <section className="relative py-24 lg:py-28">
-      <div className="mx-auto max-w-[1200px] px-6 lg:px-10">
+      <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
         <div className="max-w-2xl">
-          <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3rem)] font-medium tracking-tight">
+          <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
             The process.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-text-muted">

@@ -1,8 +1,14 @@
 import Link from "next/link";
 import type { Credential, CredIcon, TestimonialProject } from "@/lib/work";
 
-function CredIconSvg({ name }: { name: CredIcon }) {
-  const c = "h-3.5 w-3.5";
+function CredIconSvg({
+  name,
+  className = "h-3.5 w-3.5",
+}: {
+  name: CredIcon;
+  className?: string;
+}) {
+  const c = className;
   if (name === "linkedin")
     return (
       <svg viewBox="0 0 24 24" className={c} fill="currentColor" aria-hidden>
@@ -48,10 +54,10 @@ export function CredChips({
 }) {
   if (!items.length) return null;
 
-  // Icon-only: a quiet row of social marks, no pill/border — just the glyphs.
+  // Icon-only: a row of social marks, each in its own legible chrome circle.
   if (iconOnly)
     return (
-      <div className="flex flex-wrap items-center gap-1">
+      <div className="flex flex-wrap items-center gap-2">
         {items.map((c) => (
           <a
             key={c.href}
@@ -60,9 +66,9 @@ export function CredChips({
             rel="noreferrer"
             aria-label={c.label}
             title={c.label}
-            className="inline-grid h-7 w-7 place-items-center rounded-full text-text-faint transition-colors hover:bg-white/[0.06] hover:text-text"
+            className="inline-grid h-9 w-9 place-items-center rounded-full border border-line-strong bg-white/[0.03] text-text-muted transition-colors hover:border-white/40 hover:bg-white/[0.07] hover:text-text"
           >
-            <CredIconSvg name={c.icon} />
+            <CredIconSvg name={c.icon} className="h-[18px] w-[18px]" />
           </a>
         ))}
       </div>

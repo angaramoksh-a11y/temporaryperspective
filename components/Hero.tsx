@@ -46,7 +46,7 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 px-6 sm:gap-12 lg:grid-cols-[minmax(0,560px)_minmax(0,640px)] lg:justify-center lg:gap-12 lg:px-10">
+      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 px-6 sm:gap-12 lg:w-[86%] lg:grid-cols-[minmax(0,560px)_minmax(0,640px)] lg:justify-center lg:gap-12 lg:px-0">
         {/* text column */}
         <motion.div
           initial="hidden"
@@ -78,16 +78,16 @@ export default function Hero() {
           {/* headline — metallic breathing chrome (the studio's display signature) */}
           <motion.h1
             variants={rise}
-            className="text-metal mt-8 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]"
+            className="text-metal mt-5 text-balance pb-2 font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]"
           >
             <span className="block">You&apos;ve built the conversation.</span>
-            <span className="block lg:pl-[1.4em]">We build the stage.</span>
+            <span className="block">We build the stage.</span>
           </motion.h1>
 
           {/* sub-headline */}
           <motion.p
             variants={rise}
-            className="mt-7 max-w-lg text-lg leading-relaxed text-text-muted"
+            className="mt-4 max-w-lg text-lg leading-relaxed text-text-muted"
           >
             Cinema-grade podcasts for India&apos;s hardest-to-book guests — shot,
             edited, and live in under a week.

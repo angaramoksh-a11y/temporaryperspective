@@ -16,12 +16,7 @@ export default function BharatvaartaCaseStudy() {
       <Nav />
       <main>
         {/* 1. Header — mega metallic word, centred, matching the interior hero */}
-        <PageHeroWord
-          word="Bharatvaarta"
-          eyebrow={c.eyebrow}
-          sub={c.host}
-          staticGlow
-        />
+        <PageHeroWord word="Bharatvaarta" eyebrow={c.eyebrow} sub={c.host} />
 
         {/* 2. Testimonial — home-hero film + the pull-quote */}
         <section className="relative px-6 pb-20 lg:px-10 lg:pb-28">

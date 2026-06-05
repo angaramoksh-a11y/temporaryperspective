@@ -193,6 +193,11 @@ export default function MediaLightbox({
                   <>
                     <NavArrow side="left" onClick={() => go(-1)} />
                     <NavArrow side="right" onClick={() => go(1)} />
+                    {/* count so it's obvious there's more than one doc to page */}
+                    <span className="pointer-events-none absolute bottom-3 left-1/2 z-20 -translate-x-1/2 rounded-full border border-line-strong bg-bg/70 px-3 py-1 text-xs font-medium tracking-[0.08em] text-text-muted backdrop-blur">
+                      {(index ?? 0) + 1}
+                      <span className="text-text-faint"> / {items.length}</span>
+                    </span>
                   </>
                 )}
               </div>
@@ -274,7 +279,7 @@ function NavArrow({
     <button
       onClick={onClick}
       aria-label={side === "left" ? "Previous" : "Next"}
-      className={`absolute top-1/2 hidden -translate-y-1/2 place-items-center rounded-full border border-line bg-bg/55 text-lg text-text-muted backdrop-blur transition-colors hover:text-text sm:grid sm:h-10 sm:w-10 ${
+      className={`absolute top-1/2 z-20 hidden -translate-y-1/2 place-items-center rounded-full border border-line-strong bg-bg/70 text-2xl text-text shadow-[0_10px_30px_-14px_oklch(0_0_0/0.85)] backdrop-blur transition-[transform,background] duration-300 ease-[var(--ease-out-quart)] hover:scale-110 hover:bg-bg/90 sm:grid sm:h-11 sm:w-11 ${
         side === "left" ? "left-3" : "right-3"
       }`}
     >

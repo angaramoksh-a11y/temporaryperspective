@@ -199,7 +199,7 @@ export default async function TestimonialsPage() {
     <>
       <Nav />
       <main>
-        <PageHeroWord word="Testimonials" eyebrow="In their own words" staticGlow />
+        <PageHeroWord word="Testimonials" eyebrow="In their own words" />
         <TestimonialsHandbook rows={rows} />
         <ClosingCTA subline="The work behind these words is the work we'd do for your show." />
       </main>

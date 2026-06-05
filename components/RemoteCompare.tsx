@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-} from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { embed } from "@/lib/work";
 import Thumb from "./Thumb";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
@@ -85,17 +80,6 @@ export default function RemoteCompare({
   const [lightbox, setLightbox] = useState<number | null>(null);
   const active = sides[i];
 
-  // Cursor-reactive green edge on the video card (border-only, follows the
-  // cursor near the box, fades out on leave). Not a constant rotation.
-  const gx = useMotionValue(-200);
-  const gy = useMotionValue(-200);
-  const edge = useMotionTemplate`radial-gradient(220px circle at ${gx}px ${gy}px, oklch(0.8 0.08 150 / 0.85), transparent 60%)`;
-  const onCardMove = (e: React.MouseEvent) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    gx.set(e.clientX - r.left);
-    gy.set(e.clientY - r.top);
-  };
-
   const pillT = reduce
     ? { duration: 0 }
     : { type: "spring" as const, stiffness: 380, damping: 34 };
@@ -114,7 +98,7 @@ export default function RemoteCompare({
       <div
         role="tablist"
         aria-label={ariaLabel}
-        className="inline-grid grid-cols-2 gap-1 rounded-[var(--radius-btn)] border border-line bg-white/[0.045] p-1"
+        className="inline-grid grid-cols-2 gap-1 rounded-[var(--radius-btn)] border border-line bg-bg-sunken p-1"
       >
         {sides.map((s, idx) => {
           const on = idx === i;
@@ -145,27 +129,8 @@ export default function RemoteCompare({
         })}
       </div>
 
-      {/* video card — ambient preview at rest, opens the lightbox on click. A
-          cursor-reactive green edge stands in for the old light sweep. */}
-      <div
-        onMouseMove={reduce ? undefined : onCardMove}
-        className="glass group relative mt-5 w-full rounded-2xl p-2.5"
-      >
-        {!reduce && (
-          <motion.span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 z-10 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background: edge,
-              padding: "1px",
-              WebkitMask:
-                "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-              WebkitMaskComposite: "xor",
-              mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
-              maskComposite: "exclude",
-            }}
-          />
-        )}
+      {/* video card — ambient preview at rest, opens the lightbox on click */}
+      <div className="glass sweep group mt-5 w-full rounded-2xl p-2.5">
         <button
           onClick={() => setLightbox(i)}
           aria-label={`Play, ${active.label}`}
@@ -175,7 +140,7 @@ export default function RemoteCompare({
             <Thumb
               id={active.id}
               alt={active.alt}
-              className="brightness-[0.85] transition-[filter] duration-300"
+              className="brightness-[0.85] transition-[filter] duration-300 group-hover:brightness-100"
             />
           ) : (
             <iframe
@@ -186,6 +151,11 @@ export default function RemoteCompare({
               className="pointer-events-none absolute inset-0 h-full w-full"
             />
           )}
+          {/* quiet hover veil for the click affordance, no button, no caption */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg-sunken/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          />
         </button>
       </div>
 

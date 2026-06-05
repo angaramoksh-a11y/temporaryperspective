@@ -15,14 +15,14 @@ const POINTS = [
 export default function VirtualCallout() {
   return (
     <section className="relative py-24 lg:py-28">
-      <div className="mx-auto grid max-w-[1400px] items-start gap-8 px-6 lg:grid-cols-[minmax(0,420px)_minmax(0,660px)] lg:justify-start lg:gap-12 lg:px-10">
+      <div className="mx-auto grid w-full max-w-[1400px] items-center gap-8 px-6 lg:w-[86%] lg:grid-cols-2 lg:gap-12 lg:px-0">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, ease }}
         >
-          <h2 className="text-metal-static max-w-md font-display text-[clamp(1.75rem,3.4vw,2.6rem)] font-medium leading-[1.12] tracking-tight">
+          <h2 className="text-metal text-balance font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
             An online podcast doesn&apos;t need to look like a Zoom call.
           </h2>
           <p className="mt-5 max-w-md leading-relaxed text-text-muted">

@@ -387,6 +387,11 @@ export const siteTestimonials: SiteTestimonial[] = [
         href: "https://www.youtube.com/@Bharatvaarta",
         icon: "youtube",
       },
+      {
+        label: "Roshan on LinkedIn",
+        href: "https://www.linkedin.com/in/cariappack/",
+        icon: "linkedin",
+      },
     ],
     projects: [{ label: "Bharatvaarta", href: "/case-studies/bharatvaarta" }],
   },
@@ -405,11 +410,6 @@ export const siteTestimonials: SiteTestimonial[] = [
       "And apart from the work, we also happily banter with the team. For me, that's a plus, I like that I can be professional and also have fun with the team.",
     ],
     credentials: [
-      {
-        label: "LinkedIn",
-        href: "https://www.linkedin.com/in/rahi-bhattacharjee-3a4456135/",
-        icon: "linkedin",
-      },
       {
         label: "Bureau",
         href: "https://www.linkedin.com/company/bureauidentity/",

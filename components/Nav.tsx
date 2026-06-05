@@ -59,16 +59,18 @@ const WORK_PREVIEWS: Record<string, Preview[]> = {
     { ytId: "Wd5h0gl5Cj0", href: "/portfolio", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
     { ytId: "f1hRTb6MIZ8", href: "/portfolio", title: "Manish Sabharwal", line: "Bharatvaarta" },
   ],
-  // Full archive → a bento: one vertical reel + two horizontal cuts.
+  // Full archive → three horizontal cuts across formats (same scale as the
+  // portfolio hover; verticals get their proper 9:16 frame on the page itself).
   "/portfolio/archive": [
-    { posterSrc: "https://vumbnail.com/1197947260.jpg", href: "/portfolio/archive", title: "Mudrex", line: "Short-form reel", vertical: true },
     { posterSrc: "https://vumbnail.com/1172800968.jpg", href: "/portfolio/archive", title: "Read Reels", line: "Commercial" },
     { ytId: "f1hRTb6MIZ8", href: "/portfolio/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
+    { posterSrc: "https://vumbnail.com/1169858512.jpg", href: "/portfolio/archive", title: "ORMH", line: "Product film" },
   ],
-  // Case studies → all three.
+  // Case studies → all three. Bharatvaarta uses the same calm Roshan poster the
+  // case-study card uses on the page (not the loud "deep state" YouTube frame).
   "/case-studies": [
     { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
-    { ytId: "TomnFVq3Bt4", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
+    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
     { posterSrc: "https://vumbnail.com/1195342176.jpg", href: "/case-studies/bureau", title: "Bureau", line: "Fraud Forum" },
   ],
 };

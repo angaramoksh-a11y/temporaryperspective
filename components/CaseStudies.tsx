@@ -27,8 +27,8 @@ export default function CaseStudies() {
 
   return (
     <section className="relative py-24 lg:py-32">
-      <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium leading-[1.1] tracking-tight">
+      <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+        <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
           The people we make it for.
         </h2>
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-text-muted">
