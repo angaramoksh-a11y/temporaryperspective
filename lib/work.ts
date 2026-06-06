@@ -360,13 +360,14 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Brendan Marshall",
     role: "Host, The Catapult Code · Advisor, Qapita",
     vimeoId: "1196195127",
-    quote:
-      "Everyone on this team cares. They care about the product they're making, and the people who are part of that, including our guest. Great people to work with.",
+    quote: "Everyone on this team genuinely cares.",
     transcript: [
       "My name is Brendan Marshall and I'm an advisor to Qapita. I spent the last few days with Temporary Perspective, had a wonderful time, learnt a lot about how to deliver a great show on a podcast. And I think what's really clear is that everyone on this team cares. They care about the product they're making, but also the people who were part of that, including our guest. They're very meticulous about all those details, and great people to work with.",
     ],
     credentials: [
       { label: "Qapita", href: "https://www.qapita.com", icon: "website" },
+      { label: "Qapita on LinkedIn", href: "https://www.linkedin.com/company/qapita/posts/?feedView=all", icon: "linkedin" },
+      { label: "Brendan on LinkedIn", href: "https://www.linkedin.com/in/brendantmarshall/", icon: "linkedin" },
     ],
     projects: [{ label: "The Catapult Code", href: "/case-studies/qapita" }],
     preview: true,
@@ -376,8 +377,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Roshan Cariappa",
     role: "Host, Bharatvaarta",
     vimeoId: "1169858825",
-    quote:
-      "Moksh and team are fantastic, really committed to the art and science of production. Not your run-of-the-mill production team.",
+    quote: "Committed to the art of production.",
     transcript: [
       "Hey, it's been amazing working with Temporary Perspective. Moksh and team are fantastic, really committed to the art and science of production, which I really appreciate. They really care about the outcomes as well. Not your run-of-the-mill production team that will just get the camera, audio, video, sound, and so on. I really like that. We've had a great time working with them, and look forward to working with them again in future.",
     ],
@@ -400,8 +400,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Rahi Bhattacharjee",
     role: "Content Head, Bureau",
     vimeoId: "1195342176",
-    quote:
-      "Your team understands the nuances. The output is something that is the most valuable out of the entire thing we shot. It just gets easier every single project we do.",
+    quote: "They understand the nuances, it shows.",
     transcript: [
       "When you work in an industry where you're doing collaborations and videos, especially in B2B, it's important that the team you work with understands you. You give them a project brief, and every time you go back to them on the same or similar projects, their understanding is intuitive, it becomes instinctive. You don't have to sit for an hour or two going over the nitty-gritty. There's a level of understanding where your team gets the nuances, understands who the audience is, and it just gets easier every time you do something with them.",
       "I don't think the goal should be reducing workload, the quality of the output should be excellent, and that should be mutually beneficial for both parties. Even though the workload hasn't reduced, your team has been extremely flexible, and that's given us the opportunity to demand excellence, to expect it, and to put forward requests that, even though they increase the workload, we know will make the project that much better. Flexibility and understanding is something that, on a day-to-day basis, has made it really easy to work with you.",
@@ -428,8 +427,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Tarini Shah",
     role: "Content creator · 540k+ followers",
     vimeoId: "1169859676",
-    quote:
-      "The vision and the sense of filmmaking that they have will bring your idea to life. They add their own touch, to bring the best out of your idea and create something just magical.",
+    quote: "Their filmmaking brings your idea to life.",
     transcript: [
       "The first project I ended up shooting with these guys wasn't my hire — it was Ishpreet Balbir's. It was one of the longest, craziest days I've ever had, but the result turned out so good. Humne bahut jugaad kiya hai woh set pe, but the creative lens I got from them — jaise kaam karna hai. That's something Temporary Perspective brings into the picture. No matter what, the vision and the sense of filmmaking they have will bring your idea to life — I saw that on the first shoot. The best part is a mix of things: you have an idea, they understand your perspective — but it doesn't end there; there's a lot more additive value from their sense of filmmaking. In the end, the product you want — they're ready to learn and tweak everything, but also add their own touch, which makes them unique: bringing the best out of your idea and the best of what they have, together, to create something magical. Would I collaborate again? Oh yes — as long as they have time. Thank you so much.",
     ],
@@ -457,8 +455,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Ishpreet Balbir",
     role: "Content creator · 230k+ followers",
     vimeoId: "1197937165",
-    quote:
-      "They are very well headed. The understanding of the challenges, always looking out for the final product. Anyone wondering whether they should collaborate with Temporary Perspective, they definitely should.",
+    quote: "Supremely talented, and genuinely caring.",
     transcript: [
       "Hi, my name is Ishpreet Balbir and I have worked with Temporary Perspective — which represents Manav & Moksh — for five videos, and I've had the best time working with them. I worked on two amazing series on Instagram: one is Ishi Ki Khushi and the other is How I Met You. In those five videos, humara jo experience raha hai in terms of the highs and the lows, going through different challenges, working together — especially because each video was very different. We shot in public spaces, with different people featuring; one was an A-lister Bollywood actor. Keeping all those variables in mind, and ensuring things were executed in the time we had, both of them were utterly professional. We had a lot of fun editing too — whenever you shoot such videos, you shoot far more than the final cut. Going from 3–4 minutes down to a minute or two, with so many people involved, there's always some creative opinion each one carries. In most cases we were all in sync, all wanting the best product for the audience. And the result — people loved every video. Both are supremely talented, and especially at their age — early 20s — to have that creative vision and sense, and the understanding of the challenges, always looking out for the final product rather than 'main kya chahta hoon, woh kya chahta hai' — they're very well headed. That's extremely important in our space. I really wish them all the best, and anyone wondering whether they should collaborate with Temporary Perspective — from my perspective, they definitely should.",
     ],
@@ -486,8 +483,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     note: "chashmishkhushi",
     role: "Content creator · 180k+ followers",
     vimeoId: "1197937167",
-    quote:
-      "A lot of people bring cameras to shoots. Moksh and Manav bring vision, vibes, and a lot of magic. Temporary Perspective might just be their name, but my recommendation: permanently solid.",
+    quote: "Vision, vibes, and a lot of magic.",
     transcript: [
       "A lot of people bring cameras to shoots; Moksh & Manav bring vision, vibes and a lot of magic. Hi, my name is Khushbu Chandarana, also known as chashmishkhushi. I worked with Moksh & Manav on a series called Ishi Ki Khushi. We shot at my home, across Mumbai, and at the beach. There was a lot of tadakti-bhadakti Mumbai ki garmi, but a lot of hope. Through it all, these guys were always calm, creative and somehow excited — even though my head and the wind were clearly not getting along. They weren't just DOPs; they were co-directors, idea partners, and even mood stabilizers. We even pulled off a final shoot with Imran Khan, and it was magical. They didn't just want it to look good — they wanted it to feel right. They made sure I was in sync with the process, edits and final cuts, even though I had like 56 opinions. If you're a creator looking for a team that gets your vibe, matches your madness, and doesn't cry whenever you say 'let's shoot on the beach' — these are your guys. Temporary Perspective might just be their name, but my recommendation is permanently solid. Bye!",
     ],
@@ -510,8 +506,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     name: "Meet",
     role: "Founder, Ettara (D2C brand)",
     vimeoId: "1169859867",
-    quote:
-      "It's never only been about finishing the job. They've been so involved in each and every part of the process. It feels like they're a part of Team Ettara.",
+    quote: "Feels like they're part of the team.",
     transcript: [
       "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks — they've been so involved in each and every part of the process. They helped us think, ideate, plan the shoots, and finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care so much, who take ownership of others' projects to this extent — not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments — that's what sets them apart for me.",
     ],
@@ -684,8 +679,7 @@ export const bharatvaartaContent = {
   testimonialVimeoId: "1169858825",
   testimonialName: "Roshan Cariappa, host of Bharatvaarta",
   // The existing pull-quote stays (from siteTestimonials).
-  quote:
-    "Moksh and team are fantastic, really committed to the art and science of production. Not your run-of-the-mill production team.",
+  quote: "Committed to the art of production.",
   aboutShow: [
     "Bharatvaarta is a long-form show on Indian politics, policy, and culture: the longer, harder conversations, taken seriously. Guests have included former R&AW chief Vikram Sood, Saurabh Mukherjea, Manish Sabharwal, and Medha Bhaskaran.",
     "It isn't built for views. It's built for the people who want the full conversation, and it's stayed that way because that's how Roshan runs it. We're grateful Roshan still trusts us with it.",
@@ -1053,56 +1047,80 @@ export const homeFaqs: QA[] = [
     q: "What makes you different from a cheaper studio or a freelance editor?",
     a: "We already understand your category (no time wasted explaining your business), and we own the full pipeline: strategy, shoot, edit, clips, publishing. A freelancer cuts a video; we build a show that compounds.",
   },
+  {
+    q: "Do you understand SaaS, fintech, or VC?",
+    a: "You won't have to explain. Our editors and producers speak the language: cap tables, PLG, fraud rails, fund economics. We've worked inside these categories long enough that we already know what matters to your audience.",
+  },
+  {
+    q: "Who have you worked with?",
+    a: "Bharatvaarta, Bureau, Qapita, Seclore, and a growing set of SaaS and fintech founders across India and Singapore. The full archive is at /portfolio.",
+  },
 ];
 
 export const faqs: QA[] = [
   {
-    q: "What does a typical engagement look like?",
-    a: "It starts with a call to understand the show you want. From there we scope the work, brand and shoot if you're starting cold, or pick up editing and distribution if you're already running. Most clients settle into a per-episode rhythm with us once the format is set.",
+    q: "Do you actually understand SaaS, fintech, and VC — or will I have to explain my business?",
+    a: "You won't. Our editors and producers already speak the language — cap tables, product-led growth, fraud rails, fund economics. That's the whole point of TP. We make the conversations founders only get to have once actually land.",
   },
   {
-    q: "Do you only work with B2B companies?",
-    a: "It's where we do our best work: founders, fintech, SaaS, the kind of show with a serious guest list. We've done other formats, but B2B is the focus.",
+    q: "We've never run a podcast. Can you handle the whole thing?",
+    a: "Yes — from format and positioning to shoot, edit, color, clips, and publishing. You show up and talk. We handle everything that happens before and after.",
   },
   {
-    q: "What do you need from me to start?",
-    a: "A sense of who you want on the show and what you want it to do. We handle the rest of the production planning. If you have brand assets already, send them; if you don't, that's a phase we cover.",
+    q: "How much of my time does this realistically take?",
+    a: "Your time goes into one thing: the conversation with your guest. We handle prep, setup, direction on the day, and all post-production. Most founders are in and out in a half-day per shoot.",
   },
   {
-    q: "Do you write the questions or book the guests?",
-    a: "No. The guests and the conversation are yours. That's your relationship and your vision. We help with prep and structure, but the editorial call is always the host's.",
+    q: "How fast do I get my episodes back?",
+    a: "Full production — multi-cam, color, clips — lands in 4–7 days. Lighter work like event coverage or testimonials comes back in 1–2 days.",
   },
   {
-    q: "Can you shoot if my guest is in another city?",
-    a: "Yes. We produce remotely: your city, the guest's, or split across both. The show looks the same wherever it's shot.",
+    q: "Is this going to get me views, or actual business?",
+    a: "We build shows around positioning, not vanity. The full episode builds authority; the short-form clips put you in front of the exact people you want — founders, operators, LPs — where they already scroll.",
   },
   {
-    q: "Where are you based?",
-    a: "Mumbai. We shoot in studio here, on location, and remotely across cities and countries.",
+    q: "Where can you shoot?",
+    a: "Mumbai, Bangalore, Chennai, Hyderabad, Delhi, and Singapore. Your office, our studio, or a space we book for the day — whatever the shoot needs.",
   },
   {
-    q: "Do you handle editing only, or full production?",
-    a: "Either. Some clients take the full pipeline; others come to us only for the edit. We'll scope it to what you actually need.",
+    q: "Can I start with just one episode, or do I have to commit?",
+    a: "Both work. Some clients run a one-off; others go monthly so the show compounds. We'll tell you honestly which makes sense for what you're trying to build.",
   },
   {
-    q: "How many clips do I get from an episode?",
-    a: "As many as the show needs. Typically three, six, or twelve cuts per episode, sized to where you're distributing.",
+    q: "What do you cost?",
+    a: "Every show is scoped differently, so we quote per project rather than sell a one-size box. Tell us what you're trying to build and we'll come back with a clear, itemized number — no vague retainers.",
   },
   {
-    q: "Do you do the branding too?",
-    a: "Yes, if you're starting from scratch. Logo, palette, typography, and the show's full visual system, built once at the start so every episode after stays consistent.",
+    q: "Do you just hand me footage, or handle the clips and posting too?",
+    a: "We go past delivery. Short-form clips for social, show strategy, and YouTube SEO and publishing are all part of what we do. The episode is the start, not the finish.",
   },
   {
-    q: "How long until my first episode is live?",
-    a: "Depends on scope, but a typical first episode moves from shoot to published in a few weeks. We'll give you a real timeline on the call.",
+    q: "Who have you worked with?",
+    a: "Qapita, Bureau, Seclore, Bharatvaarta and a growing list of SaaS and fintech operators across India and Singapore.",
   },
   {
-    q: "What does it cost?",
-    a: "We don't send quotes. We learn what your show needs on the first call, then come back with a plan and pricing built around it, not a number pulled from a rate card.",
+    q: "What if I'm not happy with the cut?",
+    a: "You see the work before anything goes live. We build in revision rounds so the final episode sounds like you — not a template.",
   },
   {
-    q: "How do we start?",
-    a: "Book a thirty-minute call. No pitch, no quote on the call. We listen first, then come back with a plan built for your show.",
+    q: "Will the people I'm talking to now actually be on my shoot, or do you send juniors?",
+    a: "The team you meet is the team that shows up. Our DOP and lead editor are co-founders — your project doesn't get passed down a chain to whoever's free that week.",
+  },
+  {
+    q: "My numbers and roadmap are sensitive. How do you handle confidential material?",
+    a: "NDA before anything sensitive gets discussed, and nothing goes public without your explicit sign-off. Your unreleased metrics stay yours until you decide otherwise.",
+  },
+  {
+    q: "I don't even know what I'd talk about. Can you help with that?",
+    a: "That's where we start. Before any camera rolls, we shape the angle, the episode topics, and the through-line — so the show actually says something instead of being another founder talking into a mic.",
+  },
+  {
+    q: "What makes you different from a cheaper studio or a freelance editor?",
+    a: "Two things. We already understand your category, so you're not burning hours explaining your business. And we own the full pipeline — strategy, shoot, edit, clips, publishing. A freelancer cuts a video. We build a show that compounds.",
+  },
+  {
+    q: "How do we actually get started?",
+    a: "One call. We figure out what you're building, scope it, and send a clear plan and number. After that, it's a shoot date.",
   },
 ];
 

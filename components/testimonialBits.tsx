@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Credential, CredIcon, TestimonialProject } from "@/lib/work";
 
-function CredIconSvg({
+export function CredIconSvg({
   name,
   className = "h-3.5 w-3.5",
 }: {

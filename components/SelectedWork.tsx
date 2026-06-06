@@ -76,11 +76,11 @@ export default function SelectedWork() {
   };
 
   return (
-    <section className="relative pt-14 pb-28 lg:pt-16 lg:pb-36">
+    <section className="relative pt-14 pb-10 lg:pt-16 lg:pb-14">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
         <div className="mb-12 flex items-start justify-between gap-6">
           <div className="max-w-xl">
-            <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+            <h2 className="text-metal font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
               Some of our work
             </h2>
             <p className="mt-4 text-base leading-relaxed text-text-muted">
@@ -96,15 +96,7 @@ export default function SelectedWork() {
         </div>
       </div>
 
-      {/* Wrapper gives us a stacking context for the bottom-edge veil without
-          touching the overflow-x clip on the scroll row itself. */}
       <div className="relative">
-        {/* Bottom feather — sits below the cards, softens the section boundary */}
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-16"
-          style={{ background: "linear-gradient(to top, var(--color-bg), transparent)" }}
-        />
       <div
         ref={rowRef}
         onPointerDown={onDown}

@@ -20,10 +20,10 @@ const ORDER = [
   "1169858825", // Bharatvaarta · Roshan
   "1196195127", // Qapita · Brendan
   "1195342176", // Bureau · Rahi
-  "1169859867", // Ettara · Meet
   "1169859676", // Tarini
   "1197937165", // Ishpreet
   "1197937167", // Khushbu
+  "1169859867", // Ettara · Meet
 ];
 
 const v = (id: string, hash?: string) =>
@@ -201,7 +201,7 @@ export default async function TestimonialsPage() {
       <main>
         <PageHeroWord word="Testimonials" eyebrow="In their own words" />
         <TestimonialsHandbook rows={rows} />
-        <ClosingCTA subline="The work behind these words is the work we'd do for your show." />
+        <ClosingCTA subline="Let's talk about your show." />
       </main>
       <Footer />
       <script

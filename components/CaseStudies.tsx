@@ -26,12 +26,12 @@ export default function CaseStudies() {
   }, [active]);
 
   return (
-    <section className="relative py-24 lg:py-32">
+    <section className="relative py-14 lg:py-32">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
-        <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+        <h2 className="text-metal font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
           The people we make it for.
         </h2>
-        <p className="mt-4 max-w-xl text-lg leading-relaxed text-text-muted">
+        <p className="mt-4 max-w-xl leading-relaxed text-text-muted">
           We&apos;d rather you hear it from them: real clients on what changed
           once the production stopped getting in the way of the conversation.
         </p>

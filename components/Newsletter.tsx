@@ -5,14 +5,14 @@ import NewsletterSignup from "./NewsletterSignup";
 
 export default function Newsletter() {
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative py-14 lg:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
         <div className="grid gap-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+            <h2 className="text-metal font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
               Newsletter
             </h2>
-            <p className="mt-4 max-w-md text-lg leading-relaxed text-text-muted">
+            <p className="mt-4 max-w-md leading-relaxed text-text-muted">
               Notes on running a podcast worth watching.
             </p>
           </div>

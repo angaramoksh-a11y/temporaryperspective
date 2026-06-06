@@ -60,15 +60,13 @@ const WORK_PREVIEWS: Record<string, Preview[]> = {
     { ytId: "Wd5h0gl5Cj0", href: "/portfolio", title: "Saurabh Mukherjea", line: "Bharatvaarta" },
     { ytId: "f1hRTb6MIZ8", href: "/portfolio", title: "Manish Sabharwal", line: "Bharatvaarta" },
   ],
-  // Full archive → three horizontal cuts across formats (same scale as the
-  // portfolio hover; verticals get their proper 9:16 frame on the page itself).
+  // Full archive → three horizontal cuts across formats.
   "/portfolio/archive": [
     { posterSrc: "https://vumbnail.com/1172800968.jpg", href: "/portfolio/archive", title: "Read Reels", line: "Commercial" },
     { ytId: "f1hRTb6MIZ8", href: "/portfolio/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
     { posterSrc: "https://vumbnail.com/1169858512.jpg", href: "/portfolio/archive", title: "ORMH", line: "Product film" },
   ],
-  // Case studies → all three. Bharatvaarta uses the same calm Roshan poster the
-  // case-study card uses on the page (not the loud "deep state" YouTube frame).
+  // Case studies → all three.
   "/case-studies": [
     { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
     { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
@@ -77,21 +75,34 @@ const WORK_PREVIEWS: Record<string, Preview[]> = {
 };
 const WORK_DEFAULT = "default";
 
-// Studio menu previews, one distinct visual per sub-item (keyed by href).
-// Process = the section's signature engine; Remote = a static with/without
-// still pair (view-only, no toggle); Testimonials = three video posters;
-// About = the whole team, every face treated identically.
-const STUDIO_PROCESS = [
-  { n: "01", label: "Guest Prep", body: "Briefs both sides." },
-  { n: "02", label: "Production", body: "Multi-cam, lit, sound." },
-  { n: "03", label: "Post", body: "Edit, grade, clips." },
-  { n: "04", label: "Growth", body: "Published, grown." },
+// Remote production preview: two recent remote podcast episodes.
+const REMOTE_PREVIEWS: Preview[] = [
+  {
+    ytId: "ck7wQT4dPVs",
+    href: "https://www.youtube.com/watch?v=ck7wQT4dPVs",
+    title: "Cold War 2.0 Explained",
+    line: "Velina Tchakarova · Remote production",
+  },
+  {
+    ytId: "w-LissfW42g",
+    href: "https://youtu.be/w-LissfW42g",
+    title: "India's Hardest Choices 2026",
+    line: "Roshan Cariappa · Remote production",
+  },
 ];
 
-const STUDIO_TESTIMONIALS: { poster: string; name: string; line: string }[] = [
-  { poster: "https://vumbnail.com/1169859676.jpg", name: "Tarini Shah", line: "Creator · 540k+" },
-  { poster: "https://vumbnail.com/1169859867.jpg", name: "Meet", line: "Founder, Ettara" },
-  { poster: "https://vumbnail.com/1197937165.jpg", name: "Ishpreet Balbir", line: "Creator · 230k+" },
+// Studio menu — process steps (with deep-link hrefs for each phase).
+const STUDIO_PROCESS = [
+  { n: "01", label: "Guest Prep", body: "Briefs both sides.", href: "/process#guest-prep" },
+  { n: "02", label: "Production", body: "Multi-cam, lit, sound.", href: "/process#production" },
+  { n: "03", label: "Post", body: "Edit, grade, clips.", href: "/process#post" },
+  { n: "04", label: "Growth", body: "Published, grown.", href: "/process#growth" },
+];
+
+const STUDIO_TESTIMONIALS: { poster: string; name: string; line: string; href: string }[] = [
+  { poster: "https://vumbnail.com/1169859676.jpg", name: "Tarini Shah", line: "Creator · 540k+", href: "/testimonials#1169859676" },
+  { poster: "https://vumbnail.com/1169859867.jpg", name: "Meet", line: "Founder, Ettara", href: "/testimonials" },
+  { poster: "https://vumbnail.com/1197937165.jpg", name: "Ishpreet Balbir", line: "Creator · 230k+", href: "/testimonials" },
 ];
 
 // Two-letter initials for the team tiles (matches the /about fallback).
@@ -118,11 +129,18 @@ export default function Nav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const openTimer  = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  // Mirror of openCat in a ref so timer callbacks always see the latest value
+  // without introducing stale closures or extra deps.
+  const menuIsOpen = useRef(false);
 
   useEffect(() => {
     setOpenCat(null);
     setMobileOpen(false);
   }, [pathname]);
+
+  // Keep the ref in sync so timers see current state.
+  useEffect(() => { menuIsOpen.current = openCat !== null; }, [openCat]);
 
   // reset the spotlight to its default when a different menu opens
   useEffect(() => {
@@ -147,12 +165,31 @@ export default function Nav() {
     };
   }, [mobileOpen]);
 
+  // Immediate open (for keyboard focus, logo hover, Newsletter hover).
   const open = (label: string | null) => {
+    clearTimeout(openTimer.current);
     clearTimeout(closeTimer.current);
     setOpenCat(label);
   };
+
+  // Delayed open so accidental grazes don't flash the panel.
+  // If a panel is already showing, switch category immediately (no delay feels
+  // right when the user is actively browsing the nav).
+  const scheduleOpen = (label: string) => {
+    clearTimeout(openTimer.current);
+    clearTimeout(closeTimer.current);
+    if (menuIsOpen.current) {
+      setOpenCat(label);
+    } else {
+      openTimer.current = setTimeout(() => setOpenCat(label), 180);
+    }
+  };
+
+  // Close delay: 350 ms — comfortable for diagonal movement to the panel,
+  // and noticeable enough that the menu doesn't feel like it vanishes.
   const scheduleClose = () => {
-    closeTimer.current = setTimeout(() => setOpenCat(null), 180);
+    clearTimeout(openTimer.current);
+    closeTimer.current = setTimeout(() => setOpenCat(null), 350);
   };
 
   const current = categories.find((c) => c.label === openCat && c.items) as
@@ -166,7 +203,9 @@ export default function Nav() {
     : { type: "spring" as const, stiffness: 420, damping: 38 };
 
   const activeLabel = categories.find((c) => isActive(pathname, c))?.label ?? null;
-  const pillLabel = hoveredTop ?? activeLabel;
+  // Fix: when inside the panel (hoveredTop cleared by ul onMouseLeave),
+  // fall back to openCat so the top pill stays on the open category.
+  const pillLabel = hoveredTop ?? (openCat ?? activeLabel);
 
   return (
     <header className="fixed inset-x-0 top-3 z-50 px-3 sm:top-4 sm:px-4">
@@ -247,7 +286,7 @@ export default function Nav() {
               with the logo/CTA widths */}
           <ul
             onMouseLeave={() => setHoveredTop(null)}
-            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-1 lg:flex"
+            className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 items-center gap-6 lg:flex"
           >
             {categories.map((c) => {
               const highlight = pillLabel === c.label;
@@ -275,7 +314,7 @@ export default function Nav() {
                       {pill}
                       <Link
                         href={c.href}
-                        className={`relative z-10 block rounded-[var(--radius-btn)] px-4 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
+                        className={`relative z-10 block rounded-[var(--radius-btn)] px-5 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
                       >
                         {c.label}
                       </Link>
@@ -284,12 +323,13 @@ export default function Nav() {
                 );
               }
 
+              // Studio: open menu but show no content until a sub-item is hovered.
               const isThis = openCat === c.label;
               return (
                 <li
                   key={c.label}
                   onMouseEnter={() => {
-                    open(c.label);
+                    scheduleOpen(c.label);
                     setHoveredTop(c.label);
                   }}
                 >
@@ -303,7 +343,7 @@ export default function Nav() {
                         open(c.label);
                         setHoveredTop(c.label);
                       }}
-                      className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-4 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
+                      className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-5 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
                     >
                       {c.label}
                       <svg
@@ -364,13 +404,15 @@ export default function Nav() {
                         items={current!.items}
                         preview={hoveredSub ?? WORK_DEFAULT}
                         onHover={setHoveredSub}
+                        active={hoveredSub}
                         reduce={!!reduce}
                       />
                     ) : current!.label === "Studio" ? (
                       <StudioMenu
                         items={current!.items}
-                        hovered={hoveredSub ?? "/process"}
+                        hovered={hoveredSub ?? ""}
                         onHover={setHoveredSub}
+                        active={hoveredSub}
                         reduce={!!reduce}
                       />
                     ) : (
@@ -488,11 +530,13 @@ function WorkMenu({
   items,
   preview,
   onHover,
+  active,
   reduce,
 }: {
   items: { label: string; href: string; desc: string }[];
   preview: string;
   onHover: (href: string) => void;
+  active: string | null;
   reduce: boolean;
 }) {
   const cards = WORK_PREVIEWS[preview] ?? WORK_PREVIEWS[WORK_DEFAULT];
@@ -502,7 +546,7 @@ function WorkMenu({
 
   return (
     <div className="grid grid-cols-[220px_1fr] gap-10">
-      <DestList items={items} onHover={onHover} />
+      <DestList items={items} onHover={onHover} active={active} subPillId="work-sub-pill" />
 
       {/* adaptive preview — empty on bare "Work"; a bento that fills the area on
           each sub-item hover (no huge empty space) */}
@@ -545,11 +589,9 @@ function WorkMenu({
 }
 
 function PreviewCard({ c, aspect }: { c: Preview; aspect: string }) {
-  return (
-    <Link
-      href={c.href}
-      className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40"
-    >
+  const isExternal = c.href.startsWith("http");
+  const content = (
+    <>
       <div className={`relative w-full overflow-hidden bg-bg-sunken ${aspect}`}>
         {c.ytId ? (
           <Thumb
@@ -571,17 +613,38 @@ function PreviewCard({ c, aspect }: { c: Preview; aspect: string }) {
         <p className="text-[0.95rem] text-text">{c.title}</p>
         <p className="text-sm text-text-faint">{c.line}</p>
       </div>
+    </>
+  );
+
+  const cls =
+    "group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40";
+
+  if (isExternal) {
+    return (
+      <a href={c.href} target="_blank" rel="noopener noreferrer" className={cls}>
+        {content}
+      </a>
+    );
+  }
+  return (
+    <Link href={c.href} className={cls}>
+      {content}
     </Link>
   );
 }
 
 // Shared left rail of stacked destinations (Work + Studio menus).
+// `active` is the currently previewed href; a shared-layout pill tracks it.
 function DestList({
   items,
   onHover,
+  active,
+  subPillId,
 }: {
   items: Item[];
   onHover: (href: string) => void;
+  active: string | null;
+  subPillId: string;
 }) {
   return (
     <div className="flex flex-col gap-1 self-start">
@@ -591,15 +654,23 @@ function DestList({
           href={it.href}
           onMouseEnter={() => onHover(it.href)}
           onFocus={() => onHover(it.href)}
-          className="group/item flex flex-col gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.05]"
+          className="group/item relative flex flex-col gap-1 rounded-lg px-4 py-3 transition-colors hover:bg-white/[0.03]"
         >
-          <span className="flex items-center gap-1.5 text-base font-medium text-text">
+          {/* morphing active-pill inside the sub-menu */}
+          {active === it.href && (
+            <motion.span
+              layoutId={subPillId}
+              transition={{ type: "spring", stiffness: 500, damping: 40 }}
+              className="absolute inset-0 rounded-lg border border-line-strong bg-white/[0.06]"
+            />
+          )}
+          <span className="relative z-10 flex items-center gap-1.5 text-base font-medium text-text">
             {it.label}
             <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/item:translate-x-0 group-hover/item:opacity-100">
               →
             </span>
           </span>
-          <span className="text-sm text-text-faint">{it.desc}</span>
+          <span className="relative z-10 text-sm text-text-faint">{it.desc}</span>
         </Link>
       ))}
     </div>
@@ -610,47 +681,51 @@ function StudioMenu({
   items,
   hovered,
   onHover,
+  active,
   reduce,
 }: {
   items: Item[];
   hovered: string;
   onHover: (href: string) => void;
+  active: string | null;
   reduce: boolean;
 }) {
   return (
     <div className="grid grid-cols-[220px_1fr] gap-10">
-      <DestList items={items} onHover={onHover} />
-      {/* fixed-height stage so the panel never jumps between the four hovers */}
-      <div className="h-[260px] overflow-hidden">
-        <motion.div
-          key={hovered}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full"
-        >
-          <StudioPreview href={hovered} />
-        </motion.div>
+      <DestList items={items} onHover={onHover} active={active} subPillId="studio-sub-pill" />
+      {/* stage: no fixed height so previews can breathe; panel-level min-h handles the floor */}
+      <div className="overflow-hidden">
+        <AnimatePresence mode="wait">
+          {hovered && (
+            <motion.div
+              key={hovered}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.2, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <StudioPreview href={hovered} />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
 }
 
 function StudioPreview({ href }: { href: string }) {
+  if (!href) return null;
   if (href === "/virtual") return <RemotePreview />;
   if (href === "/testimonials") return <TestimonialsPreview />;
   if (href === "/about") return <AboutPreview />;
   return <ProcessPreview />;
 }
 
-// The Process section's signature, compressed: the repeating engine + the
-// chromium Start → Day 7 meter.
+// The Process section: every-episode phases (each deep-linked) +
+// a horizontal Branding strip for the foundational one-time step.
 function ProcessPreview() {
   return (
-    <Link
-      href="/process"
-      className="flex h-full flex-col justify-center rounded-xl border border-line bg-bg-raised/20 p-5 transition-colors hover:border-line-strong"
-    >
+    <div className="flex flex-col justify-center rounded-xl border border-line bg-bg-raised/20 p-5 transition-colors hover:border-line-strong">
       <div className="flex items-center justify-between">
         <span className="text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-text-faint">
           Every episode
@@ -660,13 +735,18 @@ function ProcessPreview() {
       <ol className="mt-5 grid grid-cols-4 gap-x-4">
         {STUDIO_PROCESS.map((p) => (
           <li key={p.n}>
-            <span className="font-mono text-xs text-text-faint">{p.n}</span>
-            <span className="mt-1 block font-display text-[0.95rem] font-medium tracking-tight text-text">
-              {p.label}
-            </span>
-            <span className="mt-1 block text-[0.8125rem] leading-snug text-text-muted">
-              {p.body}
-            </span>
+            <Link
+              href={p.href}
+              className="group/phase -mx-1 block rounded-lg px-1 py-1 transition-colors hover:bg-white/[0.06]"
+            >
+              <span className="font-mono text-xs text-text-faint">{p.n}</span>
+              <span className="mt-1 block font-display text-[0.95rem] font-medium tracking-tight text-text">
+                {p.label}
+              </span>
+              <span className="mt-1 block text-[0.8125rem] leading-snug text-text-muted">
+                {p.body}
+              </span>
+            </Link>
           </li>
         ))}
       </ol>
@@ -679,56 +759,39 @@ function ProcessPreview() {
           <div className="h-full w-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]" />
         </div>
       </div>
-    </Link>
+
+      {/* Branding — the foundational one-time step, shown as a horizontal strip */}
+      <Link
+        href="/process#branding"
+        className="group/brand mt-4 flex items-center justify-between rounded-lg border border-line bg-white/[0.03] px-4 py-2.5 transition-colors hover:border-line-strong hover:bg-white/[0.06]"
+      >
+        <div className="flex items-center gap-3">
+          <span className="rounded-[3px] bg-white/[0.08] px-1.5 py-0.5 font-mono text-[0.6875rem] text-text-faint">
+            00
+          </span>
+          <span className="font-display text-[0.9rem] font-medium tracking-tight text-text">
+            Branding
+          </span>
+          <span className="hidden text-[0.8125rem] text-text-faint xl:block">
+            Visual identity — built once, lives in every episode.
+          </span>
+        </div>
+        <span className="-translate-x-1 text-text-faint opacity-0 transition-all duration-200 group-hover/brand:translate-x-0 group-hover/brand:opacity-100">
+          →
+        </span>
+      </Link>
+    </div>
   );
 }
 
-// View-only with/without contrast. Rather than borrow loud YouTube cover art
-// (off-brand, and not an honest production-quality comparison), the difference
-// is carried by the design language itself: a flat, dim webcam tile beside a
-// lit glass studio tile.
+// Remote production: two recent remote-shot episodes as preview cards.
 function RemotePreview() {
   return (
     <div className="flex h-full flex-col justify-center">
       <div className="grid grid-cols-2 gap-4">
-        {/* Without: a dull "gallery view" of flat video tiles — instantly reads
-            as a video call, lifeless and fragmented */}
-        <div className="relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl border border-line bg-bg-raised/25 p-4">
-          <span className="text-[0.8125rem] font-medium text-text-muted">Webcam call</span>
-          <span className="grid flex-1 place-items-center">
-            <span className="grid grid-cols-2 gap-1.5">
-              {[0, 1, 2, 3].map((i) => (
-                <span key={i} className="h-6 w-10 rounded-[3px] bg-text-faint/15" />
-              ))}
-            </span>
-          </span>
-          <span className="text-[0.8125rem] text-text-faint">Soft, flat, fragmented.</span>
-        </div>
-        {/* With: one lit, framed shot under a single key light */}
-        <Link
-          href="/virtual"
-          className="glass edge-gradient sweep group/card relative flex aspect-video flex-col justify-between overflow-hidden rounded-xl p-4"
-        >
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(62% 72% at 50% 46%, oklch(0.72 0.02 250 / 0.2), transparent 72%)",
-            }}
-          />
-          <span className="relative z-10 text-[0.8125rem] font-medium text-text">With us</span>
-          <span className="relative z-10 grid flex-1 place-items-center">
-            <span className="grid h-11 w-16 place-items-center rounded-md border border-line-strong bg-bg/40 backdrop-blur">
-              <svg viewBox="0 0 24 24" className="h-6 w-6 text-text" fill="none" stroke="currentColor" strokeWidth={1.5} aria-hidden>
-                <path d="M3 7h11v10H3z" strokeLinejoin="round" />
-                <path d="M14 10l5-3v10l-5-3" strokeLinejoin="round" />
-                <circle cx="6.5" cy="10" r="0.6" fill="currentColor" />
-              </svg>
-            </span>
-          </span>
-          <span className="relative z-10 text-[0.8125rem] text-text-muted">Lit, sharp, one frame.</span>
-        </Link>
+        {REMOTE_PREVIEWS.map((c) => (
+          <PreviewCard key={c.title} c={c} aspect="aspect-video" />
+        ))}
       </div>
       <p className="mt-3 text-sm text-text-faint">
         Same online format, shot like a studio. When your guest&apos;s in another city.
@@ -744,7 +807,7 @@ function TestimonialsPreview() {
         {STUDIO_TESTIMONIALS.map((t) => (
           <Link
             key={t.name}
-            href="/testimonials"
+            href={t.href}
             className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40"
           >
             <div className="relative aspect-video w-full overflow-hidden bg-bg-sunken">
@@ -774,11 +837,11 @@ function TestimonialsPreview() {
   );
 }
 
-// The whole team, every face treated identically (uniform monogram tiles, no
-// single headshot featured) so the nav peek never plays favorites.
+// The whole team, every face treated identically. Shows headshot where
+// available, monogram initials otherwise.
 function AboutPreview() {
   return (
-    <div className="flex h-full flex-col justify-center">
+    <div className="flex flex-col justify-center py-1">
       <div className="grid grid-cols-5 gap-3">
         {team.map((m) => (
           <Link
@@ -786,17 +849,26 @@ function AboutPreview() {
             href="/about"
             className="group/face flex flex-col items-center gap-2 text-center"
           >
-            <span className="sweep grid aspect-square w-full place-items-center rounded-xl border border-line-strong bg-bg-raised/50 font-thunder text-[clamp(1.1rem,2vw,1.6rem)] uppercase leading-none text-text-faint transition-colors duration-300 group-hover/face:text-text">
-              {monogram(m.name)}
+            <span className="sweep relative grid aspect-square w-full place-items-center overflow-hidden rounded-xl border border-line-strong bg-bg-raised/50 transition-colors duration-300">
+              {m.headshot ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={m.headshot}
+                  alt={m.name}
+                  loading="eager"
+                  className="absolute inset-0 h-full w-full object-cover grayscale transition-[filter] duration-300 group-hover/face:grayscale-0"
+                />
+              ) : (
+                <span className="font-thunder text-[clamp(1.1rem,2vw,1.6rem)] uppercase leading-none text-text-faint transition-colors duration-300 group-hover/face:text-text">
+                  {monogram(m.name)}
+                </span>
+              )}
             </span>
             <span className="text-[0.8125rem] leading-tight text-text">{shortName(m.name)}</span>
             <span className="text-xs leading-tight text-text-faint">{m.role}</span>
           </Link>
         ))}
       </div>
-      <p className="mt-4 text-sm text-text-faint">
-        A small studio. The people behind every show.
-      </p>
     </div>
   );
 }

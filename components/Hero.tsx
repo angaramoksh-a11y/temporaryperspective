@@ -13,7 +13,7 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] flex-col overflow-hidden pb-16 pt-28 sm:pt-32 lg:justify-center lg:py-24">
+    <section className="relative flex min-h-[100svh] flex-col overflow-hidden pb-10 pt-24 sm:pt-28 lg:justify-center lg:py-24">
       {/* Hero-local stage. A near-black veil crushes the backdrop behind the
           headline so the H1 reads crisp full white and the silk noise calms.
           The whole group is masked to dissolve into the global silk at the top
@@ -87,7 +87,7 @@ export default function Hero() {
           {/* sub-headline */}
           <motion.p
             variants={rise}
-            className="mt-4 max-w-lg text-lg leading-relaxed text-text-muted"
+            className="mt-4 max-w-lg text-base leading-relaxed text-text-muted sm:text-lg"
           >
             Cinema-grade podcasts for India&apos;s hardest-to-book guests — shot,
             edited, and live in under a week.
@@ -96,7 +96,7 @@ export default function Hero() {
           {/* buttons */}
           <motion.div
             variants={rise}
-            className="mt-12 flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
+            className="mt-8 flex w-full flex-col items-stretch gap-3 sm:mt-10 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-center lg:justify-start"
           >
             <Magnetic className="w-full sm:w-auto">
               <PrimaryButton href="/contact" size="lg" className="w-full sm:w-auto">

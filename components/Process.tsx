@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { GhostButton } from "./ui";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 
@@ -32,12 +33,22 @@ const BRAND_BOOKS: LightboxItem[] = [
 
 export default function Process() {
   const [pdf, setPdf] = useState<number | null>(null);
+  // runKey increments each time the user hits repeat — a new key remounts the
+  // motion.div so the fill animation always restarts from zero.
+  const [runKey, setRunKey] = useState(0);
+  const [running, setRunning] = useState(false);
+
+  const handleRepeat = () => {
+    if (running) return;
+    setRunning(true);
+    setRunKey((k) => k + 1);
+  };
 
   return (
-    <section className="relative py-24 lg:py-28">
+    <section className="relative py-14 lg:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
         <div className="max-w-2xl">
-          <h2 className="text-metal font-display text-[clamp(2.5rem,4vw,3.8rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+          <h2 className="text-metal font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
             The process.
           </h2>
           <p className="mt-4 text-lg leading-relaxed text-text-muted">
@@ -76,13 +87,38 @@ export default function Process() {
               <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
                 Every episode
               </span>
-              <span className="inline-flex items-center gap-1.5 text-xs text-text-faint">
-                <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth={1.6} aria-hidden>
+              <button
+                type="button"
+                onClick={handleRepeat}
+                disabled={running}
+                aria-label="Replay episode cycle"
+                className="group/repeat inline-flex items-center gap-1.5 text-xs text-text-faint transition-colors hover:text-text disabled:pointer-events-none"
+              >
+                <motion.svg
+                  viewBox="0 0 24 24"
+                  className="h-3.5 w-3.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.6}
+                  aria-hidden
+                  animate={running ? { rotate: 360 } : { rotate: 0 }}
+                  transition={running ? { duration: 0.7, repeat: Infinity, ease: "linear" } : { duration: 0 }}
+                >
                   <path d="M21 12a9 9 0 1 1-3-6.7" strokeLinecap="round" />
                   <path d="M21 3v4h-4" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                repeats
-              </span>
+                </motion.svg>
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.span
+                    key={running ? "running" : "idle"}
+                    initial={{ opacity: 0, y: 4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    {running ? "running…" : "repeat"}
+                  </motion.span>
+                </AnimatePresence>
+              </button>
             </div>
             <ol className="mt-4 grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
               {REPEAT.map((p, i) => (
@@ -105,14 +141,24 @@ export default function Process() {
               ))}
             </ol>
 
-            {/* Start → Day 7 meter; chromium, kept full (no progress animation) */}
+            {/* Start → Day 7 meter — fills on repeat */}
             <div className="mt-6">
               <div className="flex items-center justify-between text-xs text-text-faint">
                 <span>Start</span>
                 <span>Day 7</span>
               </div>
               <div className="mt-2 h-1 overflow-hidden rounded-full bg-line">
-                <div className="h-full w-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]" />
+                <motion.div
+                  key={runKey}
+                  className="h-full rounded-full bg-gradient-to-r from-white/30 via-white/70 to-white shadow-[0_0_10px_-1px_oklch(0.99_0.002_264/0.55)]"
+                  initial={{ width: runKey === 0 ? "100%" : "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={runKey === 0
+                    ? { duration: 0 }
+                    : { duration: 1.8, ease: [0.4, 0, 0.2, 1] }
+                  }
+                  onAnimationComplete={() => setRunning(false)}
+                />
               </div>
             </div>
           </div>
