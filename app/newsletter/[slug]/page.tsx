@@ -129,7 +129,7 @@ export default async function PostPage({
               className="sweep group mt-6 flex items-center justify-between gap-6 rounded-2xl border border-line bg-bg-raised/30 p-8 transition-[transform,border-color] duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 hover:border-white/20"
             >
               <span>
-                <span className="block font-mono text-[0.7rem] uppercase tracking-[0.15em] text-text-faint">
+                <span className="block font-mono text-xs uppercase tracking-[0.15em] text-text-faint">
                   {related.date} · {related.readingTime}
                 </span>
                 <span className="mt-2 block font-display text-[clamp(1.375rem,2.4vw,1.85rem)] font-normal leading-snug tracking-tight">
@@ -155,7 +155,7 @@ export default async function PostPage({
             </div>
             <div className="flex items-center gap-3">
               <span className="h-px w-8 bg-line" />
-              <span className="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-text-faint">
+              <span className="font-mono text-xs uppercase tracking-[0.18em] text-text-faint">
                 or
               </span>
               <span className="h-px w-8 bg-line" />

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { GhostButton } from "./ui";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
@@ -13,9 +13,6 @@ const REPEAT = [
   { id: "growth", title: "Growth", body: "Published, and grown." },
 ];
 
-// Two brand books in the shared lightbox (prev/next), so the work doesn't read
-// as a single-client, BV-only site. Served locally (the R2 bucket isn't
-// CORS/frame-accessible, so it renders blank in an iframe).
 const BRAND_BOOKS: LightboxItem[] = [
   {
     title: "Bharatvaarta — brand book",
@@ -31,12 +28,23 @@ const BRAND_BOOKS: LightboxItem[] = [
   },
 ];
 
+// How many ms each per-episode step stays lit before moving to the next.
+const STEP_MS = 900;
+
 export default function Process() {
   const [pdf, setPdf] = useState<number | null>(null);
-  // runKey increments each time the user hits repeat — a new key remounts the
-  // motion.div so the fill animation always restarts from zero.
   const [runKey, setRunKey] = useState(0);
   const [running, setRunning] = useState(false);
+  // Which per-episode step is currently lit. Starts cycling immediately.
+  const [litStep, setLitStep] = useState(0);
+
+  // Cycle through per-episode steps on mount, indefinitely.
+  useEffect(() => {
+    const id = setInterval(() => {
+      setLitStep((s) => (s + 1) % REPEAT.length);
+    }, STEP_MS);
+    return () => clearInterval(id);
+  }, []);
 
   const handleRepeat = () => {
     if (running) return;
@@ -59,13 +67,14 @@ export default function Process() {
 
         {/* timeline */}
         <div className="mt-12 flex flex-col gap-4 lg:mt-14 lg:flex-row lg:items-stretch">
-          {/* Branding — the one-time Foundation node; opens the brand books */}
+
+          {/* Branding — foundational, always lit */}
           <button
             onClick={() => setPdf(0)}
             className="group glass rim-glow relative flex flex-col rounded-2xl p-5 text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1 lg:w-[248px] lg:shrink-0"
           >
-            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-[0.7rem] font-medium uppercase tracking-[0.14em] text-text">
-              Once
+            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-[0.14em] text-text">
+              Foundational
             </span>
             <h3 className="mt-4 font-display text-xl font-medium tracking-tight text-text">
               Branding
@@ -81,7 +90,7 @@ export default function Process() {
             </span>
           </button>
 
-          {/* the repeating engine */}
+          {/* repeating engine */}
           <div className="relative flex-1 rounded-2xl border border-line bg-bg-raised/20 p-5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
@@ -120,28 +129,43 @@ export default function Process() {
                 </AnimatePresence>
               </button>
             </div>
+
             <ol className="mt-4 grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
-              {REPEAT.map((p, i) => (
-                <li key={p.id}>
-                  <Link href={`/process#${p.id}`} className="group/node block">
-                    <span className="font-mono text-xs text-text-faint">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <span className="mt-1 flex items-center gap-1.5 font-display text-base font-medium tracking-tight text-text">
-                      {p.title}
-                      <span className="text-text-faint opacity-0 transition-opacity duration-200 group-hover/node:opacity-100">
-                        →
+              {REPEAT.map((p, i) => {
+                const lit = litStep === i;
+                return (
+                  <li key={p.id}>
+                    <Link href={`/process#${p.id}`} className="group/node block">
+                      <span className="flex items-center gap-2">
+                        {/* cycling indicator dot */}
+                        <span
+                          className={`h-1.5 w-1.5 shrink-0 rounded-full transition-all duration-500 ${
+                            lit
+                              ? "bg-chrome shadow-[0_0_8px_1px_oklch(0.85_0.03_240/0.9)] scale-125"
+                              : "bg-line-strong scale-100"
+                          }`}
+                          aria-hidden
+                        />
+                        <span className={`font-mono text-xs transition-colors duration-500 ${lit ? "text-text" : "text-text-faint"}`}>
+                          {String(i + 1).padStart(2, "0")}
+                        </span>
                       </span>
-                    </span>
-                    <span className="mt-1 block text-sm leading-snug text-text-muted">
-                      {p.body}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+                      <span className="mt-1.5 flex items-center gap-1.5 font-display text-base font-medium tracking-tight text-text">
+                        {p.title}
+                        <span className="text-text-faint opacity-0 transition-opacity duration-200 group-hover/node:opacity-100">
+                          →
+                        </span>
+                      </span>
+                      <span className="mt-1 block text-sm leading-snug text-text-muted">
+                        {p.body}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ol>
 
-            {/* Start → Day 7 meter — fills on repeat */}
+            {/* Start → Day 7 meter */}
             <div className="mt-6">
               <div className="flex items-center justify-between text-xs text-text-faint">
                 <span>Start</span>
@@ -163,7 +187,7 @@ export default function Process() {
             </div>
           </div>
 
-          {/* the stat */}
+          {/* stat */}
           <div className="glass flex flex-col justify-center rounded-2xl p-5 text-center lg:w-[172px] lg:shrink-0">
             <span className="text-metal-static font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-tight">
               &lt; 7 days

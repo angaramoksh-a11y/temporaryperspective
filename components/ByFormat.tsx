@@ -4,7 +4,7 @@ import { useState } from "react";
 import { embed, type Episode, type FormatBlock } from "@/lib/work";
 import Thumb from "./Thumb";
 import Lightbox from "./Lightbox";
-import { EdgeDivider, SectionLabel } from "./ui";
+import { SectionLabel } from "./ui";
 
 function Tile({
   ep,
@@ -53,7 +53,6 @@ export default function ByFormat({ blocks }: { blocks: FormatBlock[] }) {
   return (
     <>
       <section className="relative py-20 lg:py-24">
-        <EdgeDivider />
         <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
           <SectionLabel>What we do, by format</SectionLabel>
           <div className="mt-12 space-y-16 lg:space-y-20">

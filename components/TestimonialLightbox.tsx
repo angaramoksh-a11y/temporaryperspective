@@ -40,6 +40,15 @@ export default function TestimonialLightbox({
             onClick={onClose}
             className="fixed inset-0 cursor-default bg-bg-sunken/80 backdrop-blur-xl"
           />
+          {/* Close — viewport top-right, clear of player controls */}
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-bg/80 text-text-muted backdrop-blur-md transition-colors hover:border-white/30 hover:text-text"
+          >
+            ✕
+          </button>
+
           <div className="flex min-h-full items-center justify-center p-4 sm:p-8">
             <motion.div
               role="dialog"
@@ -50,13 +59,6 @@ export default function TestimonialLightbox({
               transition={{ duration: 0.3, ease }}
               className="chrome-card relative z-10 w-full max-w-[1000px]"
             >
-              <button
-                onClick={onClose}
-                aria-label="Close"
-                className="absolute right-3 top-3 z-20 grid h-9 w-9 place-items-center rounded-full border border-line bg-bg/60 text-text-muted backdrop-blur transition-colors hover:text-text"
-              >
-                ✕
-              </button>
 
               {/* testimonials are meant to be heard: autoplay, not muted */}
               <div className="aspect-video w-full bg-black">

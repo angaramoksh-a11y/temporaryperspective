@@ -92,72 +92,114 @@ function Segmented({
 
 /* ---------- Branding — the brand book ------------------------------------- */
 
-const BRAND_BOOK: LightboxItem = {
-  title: "Bharatvaarta — brand book",
-  client: "Branding",
-  desc: "Logo, palette, typography, and the show's full visual system.",
-  media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
+// The real branding artifacts, opened fullscreen in the shared lightbox
+// (prev/next). Two brand books plus the Shut Up Beta logo animation, kept right
+// below its book. The logo film is the same asset that lives in the archive.
+type BrandDoc = {
+  kind: "doc" | "film";
+  label: string;
+  meta: string;
+  item: LightboxItem;
 };
 
-// The Bharatvaarta palette, shown on the cover as the artifact's own colours
-// (a client brand book legitimately carries colour the site chrome never does).
-const BV_PALETTE = ["#7A1410", "#C9A23F", "#E9DCC2", "#0E0E0E"];
+const BRAND_DOCS: BrandDoc[] = [
+  {
+    kind: "doc",
+    label: "Bharatvaarta",
+    meta: "Brand book · PDF",
+    item: {
+      title: "Bharatvaarta — brand book",
+      client: "Branding",
+      desc: "Logo, palette, typography, and the show's full visual system.",
+      media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
+    },
+  },
+  {
+    kind: "doc",
+    label: "Shut Up Beta",
+    meta: "Brand book · PDF",
+    item: {
+      title: "Shut Up Beta — brand book",
+      client: "Branding",
+      desc: "A second identity system, built from the ground up for a different show.",
+      media: { kind: "pdf", src: "/assets/shutup-beta-branding.pdf" },
+    },
+  },
+  {
+    kind: "film",
+    label: "Shut Up Beta",
+    meta: "Logo animation · Motion",
+    item: {
+      title: "Shut Up Beta — logo animation",
+      client: "Branding",
+      desc: "The identity in motion. Also in the archive.",
+      media: { kind: "vimeo", h: { id: "1172823675" } },
+      links: [{ label: "See in the archive", href: "/portfolio/archive" }],
+    },
+  },
+];
+
+function DocGlyph({ film }: { film?: boolean }) {
+  if (film)
+    return (
+      <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+        <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none" />
+        <rect x="3" y="4.5" width="18" height="15" rx="3" />
+      </svg>
+    );
+  return (
+    <svg viewBox="0 0 24 24" className="h-[18px] w-[18px]" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M14 3v5h5" />
+      <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-5Z" />
+    </svg>
+  );
+}
 
 function BrandBookVisual() {
-  const [open, setOpen] = useState(false);
+  const [index, setIndex] = useState<number | null>(null);
   return (
     <>
-      <button
-        onClick={() => setOpen(true)}
-        aria-label="Open the Bharatvaarta brand book"
-        className="chrome-card sweep group block w-full overflow-hidden text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1"
-      >
-        <div className="relative flex aspect-[4/3] flex-col justify-between bg-bg-sunken p-6">
-          <span
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_80%_at_20%_0%,oklch(1_0_0/0.06),transparent_60%)]"
-          />
-          <div className="relative flex items-center justify-between">
-            <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
-              Brand book
-            </span>
-            <span className="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-text-faint">
-              PDF
-            </span>
-          </div>
-          <div className="relative">
-            <div className="font-display text-[clamp(1.75rem,3vw,2.25rem)] font-semibold leading-[1.05] tracking-tight text-text">
-              Bharatvaarta
-            </div>
-            <div className="mt-1 text-sm text-text-muted">
-              Identity system · type · logo
-            </div>
-            <div className="mt-4 flex gap-2" aria-hidden>
-              {BV_PALETTE.map((c) => (
-                <span
-                  key={c}
-                  className="h-5 w-5 rounded-full border border-line"
-                  style={{ background: c }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center justify-between gap-3 p-4">
-          <span className="text-sm text-text-muted">Full visual system</span>
-          <span className="inline-flex items-center gap-1.5 text-sm font-medium text-text">
-            Open
-            <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
-              ↗
-            </span>
+      <div className="chrome-card overflow-hidden">
+        <div className="flex items-center justify-between border-b border-line px-5 py-4">
+          <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
+            Brand books
+          </span>
+          <span className="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-text-faint">
+            Full visual systems
           </span>
         </div>
-      </button>
+        <ul>
+          {BRAND_DOCS.map((d, i) => (
+            <li key={d.item.title}>
+              <button
+                onClick={() => setIndex(i)}
+                aria-label={`Open ${d.item.title}`}
+                className="group flex w-full items-center gap-4 px-5 py-4 text-left transition-colors hover:bg-white/[0.03] [&:not(:last-child)]:border-b [&:not(:last-child)]:border-line"
+              >
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg border border-line bg-bg-sunken text-text-muted transition-colors group-hover:text-text">
+                  <DocGlyph film={d.kind === "film"} />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-display text-base font-medium tracking-tight text-text">
+                    {d.label}
+                  </span>
+                  <span className="block text-sm text-text-faint">{d.meta}</span>
+                </span>
+                <span className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-text-faint transition-all duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5 group-hover:text-text">
+                  Open
+                  <span aria-hidden>↗</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <MediaLightbox
-        items={[BRAND_BOOK]}
-        index={open ? 0 : null}
-        onClose={() => setOpen(false)}
+        items={BRAND_DOCS.map((d) => d.item)}
+        index={index}
+        onClose={() => setIndex(null)}
+        onIndex={setIndex}
       />
     </>
   );

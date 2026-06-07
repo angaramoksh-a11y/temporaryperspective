@@ -1,19 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import ClosingCTA from "./ClosingCTA";
 import PageHeroWord from "./PageHeroWord";
 import RemoteCompare from "./RemoteCompare";
-import WorkMarquee from "./WorkMarquee";
 import TweetEmbed from "./TweetEmbed";
 import Thumb from "./Thumb";
 import { RelatedCases } from "./caseParts";
-import { EdgeDivider } from "./ui";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 import { CredIconSvg } from "./testimonialBits";
 import { bharatvaartaContent as c } from "@/lib/work";
+import ShareBar from "./ShareBar";
 
 const ROSHAN_LINKEDIN = "https://www.linkedin.com/in/cariappack/";
 const BV_INSTAGRAM = "https://www.instagram.com/bharatvaarta/";
@@ -25,72 +24,204 @@ const lbItem: LightboxItem = {
   links: [{ label: "Roshan on LinkedIn", href: ROSHAN_LINKEDIN, external: true }],
 };
 
+const DELIVERABLES = [
+  "Brand & visual identity",
+  "Multi-cam studio shoot",
+  "Master edit & colour grade",
+  "Clips & distribution",
+  "Location & remote production",
+];
+
+function ScrollArrow({
+  dir,
+  disabled,
+  onClick,
+}: {
+  dir: 1 | -1;
+  disabled: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      disabled={disabled}
+      aria-label={dir === 1 ? "Scroll right" : "Scroll left"}
+      className="grid h-10 w-10 place-items-center rounded-full border border-line text-text-muted transition-[color,border-color,opacity] duration-300 ease-[var(--ease-out-quart)] hover:border-line-strong hover:text-text disabled:pointer-events-none disabled:opacity-30"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-4 w-4"
+        aria-hidden
+        style={{ transform: dir === 1 ? "none" : "scaleX(-1)" }}
+      >
+        <path d="M5 12h14M13 6l6 6-6 6" />
+      </svg>
+    </button>
+  );
+}
+
 export default function BharatvaartaCaseStudy() {
   const [lbOpen, setLbOpen] = useState(false);
+
+  // Work scroll row
+  const rowRef = useRef<HTMLDivElement>(null);
+  const drag = useRef({ down: false, startX: 0, scroll: 0, moved: 0 });
+  const [canLeft, setCanLeft] = useState(false);
+  const [canRight, setCanRight] = useState(true);
+  const [workIndex, setWorkIndex] = useState<number | null>(null);
+
+  const sync = useCallback(() => {
+    const el = rowRef.current;
+    if (!el) return;
+    const max = el.scrollWidth - el.clientWidth;
+    setCanLeft(el.scrollLeft > 4);
+    setCanRight(el.scrollLeft < max - 4);
+  }, []);
+
+  useEffect(() => {
+    sync();
+    const el = rowRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync);
+    return () => {
+      el.removeEventListener("scroll", sync);
+      window.removeEventListener("resize", sync);
+    };
+  }, [sync]);
+
+  const nudge = (dir: 1 | -1) => {
+    const el = rowRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * el.clientWidth * 0.82, behavior: "smooth" });
+  };
+
+  const onDown = (e: React.PointerEvent) => {
+    const el = rowRef.current;
+    if (!el) return;
+    drag.current = { down: true, startX: e.clientX, scroll: el.scrollLeft, moved: 0 };
+  };
+  const onMove = (e: React.PointerEvent) => {
+    const el = rowRef.current;
+    if (!el || !drag.current.down) return;
+    const dx = e.clientX - drag.current.startX;
+    drag.current.moved = Math.max(drag.current.moved, Math.abs(dx));
+    el.scrollLeft = drag.current.scroll - dx;
+  };
+  const onUp = () => { drag.current.down = false; };
+
+  const workItems: LightboxItem[] = c.marquee.map((t) => ({
+    title: t.title,
+    client: t.guest ?? "Bharatvaarta",
+    media: { kind: "youtube", id: t.id },
+  }));
 
   return (
     <>
       <Nav />
       <main>
-        {/* 1. Header — oversized metallic word */}
+        {/* 1. Header */}
         <PageHeroWord word="Bharatvaarta" eyebrow={c.eyebrow} sub={c.host} />
 
-        {/* 2. Testimonial video — poster → lightbox, pull quote caption below */}
-        <section className="relative px-6 pb-16 pt-2 lg:px-10 lg:pb-24">
-          <EdgeDivider />
-          <div className="mx-auto mt-12 max-w-[1200px]">
-            <div className="overflow-hidden rounded-2xl border border-line bg-bg-raised/15">
-              {/* video — poster with play button, opens lightbox */}
-              <button
-                onClick={() => setLbOpen(true)}
-                aria-label={`Play ${c.testimonialName} testimonial`}
-                className="group relative block aspect-video w-full overflow-hidden bg-bg-sunken"
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={`https://vumbnail.com/${c.testimonialVimeoId}.jpg`}
-                  alt={c.testimonialName}
-                  loading="eager"
-                  className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-500 ease-[var(--ease-out-quart)] group-hover:scale-[1.015] group-hover:brightness-95"
-                />
-                <span className="absolute inset-0 grid place-items-center">
-                  <span className="grid h-16 w-16 place-items-center rounded-full border border-white/25 bg-bg/45 backdrop-blur transition-all duration-300 ease-[var(--ease-out-quart)] group-hover:scale-110">
-                    <svg
-                      viewBox="0 0 24 24"
-                      className="h-6 w-6 translate-x-px fill-text"
-                      aria-hidden
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </span>
-              </button>
+        {/* share strip */}
+        <div className="mx-auto flex w-full max-w-[1400px] justify-end px-6 pb-2 lg:w-[86%] lg:px-0">
+          <ShareBar title="Bharatvaarta — Temporary Perspective" />
+        </div>
 
-              {/* speaker identity + LinkedIn */}
-              <div className="flex items-start justify-between gap-4 px-6 py-4">
-                <div>
-                  <p className="text-[0.9375rem] font-medium text-text">
-                    Roshan Cariappa
+        {/* 2. About + autoplay testimonial */}
+        <section className="relative pb-16 pt-2 lg:pb-24">
+          <div className="mx-auto mt-12 grid w-full max-w-[1400px] items-start gap-10 px-6 lg:w-[86%] lg:grid-cols-[1.3fr_1fr] lg:gap-12 lg:px-0">
+
+            {/* Left: show info + socials */}
+            <div>
+              <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                About the show
+              </h2>
+              <div className="mt-6 space-y-5">
+                {c.aboutShow.map((p, i) => (
+                  <p key={i} className="text-[clamp(1rem,1.5vw,1.125rem)] leading-[1.7] text-text">
+                    {p}
                   </p>
-                  <p className="mt-0.5 text-sm text-text-faint">
-                    Host, Bharatvaarta
-                  </p>
-                </div>
-                <a
-                  href={ROSHAN_LINKEDIN}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label="Roshan Cariappa on LinkedIn"
-                  className="inline-grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-line-strong bg-white/[0.03] text-text-faint transition-colors hover:border-white/30 hover:text-text"
-                >
-                  <CredIconSvg name="linkedin" className="h-[17px] w-[17px]" />
-                </a>
+                ))}
               </div>
 
-              {/* pull quote — italic caption */}
-              <p className="border-t border-line px-6 pb-5 pt-4 text-[0.9375rem] italic leading-snug text-text-muted">
-                {c.quote}
-              </p>
+              <div className="mt-8 flex flex-wrap items-center gap-3">
+                <a
+                  href={c.channel.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Bharatvaarta on YouTube, ${c.channel.handle}`}
+                  className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-white/[0.02] px-3.5 py-2 text-sm text-text-faint transition-colors hover:border-white/25 hover:text-text"
+                >
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 shrink-0" aria-hidden fill="currentColor">
+                    <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z" />
+                  </svg>
+                  {c.channel.handle}
+                </a>
+                <a
+                  href={BV_INSTAGRAM}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Bharatvaarta on Instagram"
+                  className="inline-flex items-center gap-2 rounded-lg border border-line-strong bg-white/[0.02] px-3.5 py-2 text-sm text-text-faint transition-colors hover:border-white/25 hover:text-text"
+                >
+                  <CredIconSvg name="instagram" className="h-[14px] w-[14px] shrink-0" />
+                  @bharatvaarta
+                </a>
+              </div>
+            </div>
+
+            {/* Right: compact autoplay card */}
+            <div className="flex flex-col">
+              <div className="overflow-hidden rounded-2xl border border-line bg-bg-raised/15">
+                <div className="relative aspect-video overflow-hidden bg-bg-sunken">
+                  <iframe
+                    src={`https://player.vimeo.com/video/${c.testimonialVimeoId}?background=1&autoplay=1&muted=1&loop=1&byline=0&title=0&controls=0`}
+                    className="absolute inset-0 h-full w-full"
+                    allow="autoplay"
+                    title={c.testimonialName}
+                  />
+                  <button
+                    onClick={() => setLbOpen(true)}
+                    aria-label="Play with sound"
+                    className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-bg/65 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors hover:border-white/35 hover:text-text"
+                  >
+                    <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden>
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                    </svg>
+                    Play with sound
+                  </button>
+                </div>
+
+                {/* Speaker identity + LinkedIn */}
+                <div className="flex items-start justify-between gap-4 px-5 py-4">
+                  <div>
+                    <p className="text-[0.9375rem] font-medium text-text">Roshan Cariappa</p>
+                    <p className="mt-0.5 text-sm text-text-faint">Host, Bharatvaarta</p>
+                  </div>
+                  <a
+                    href={ROSHAN_LINKEDIN}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label="Roshan Cariappa on LinkedIn"
+                    className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-line-strong bg-white/[0.03] px-3 py-2 text-sm text-text-faint transition-colors hover:border-white/30 hover:text-text"
+                  >
+                    <CredIconSvg name="linkedin" className="h-[14px] w-[14px] shrink-0" />
+                    Roshan Cariappa
+                  </a>
+                </div>
+
+                <p className="border-t border-line px-5 pb-5 pt-4 text-sm italic leading-snug text-text-muted">
+                  {c.quote}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -101,76 +232,68 @@ export default function BharatvaartaCaseStudy() {
           />
         </section>
 
-        {/* 3. About the show — prose left, channel card right */}
-        <section className="relative px-6 py-16 lg:px-10 lg:py-20">
-          <EdgeDivider />
-          <div className="mx-auto grid max-w-[1200px] items-start gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
+        {/* 3. Our role — VirtualCallout-style two-column */}
+        <section className="relative py-14 lg:py-20">
+          <div className="mx-auto grid w-full max-w-[1400px] items-start gap-10 px-6 lg:w-[86%] lg:grid-cols-2 lg:gap-16 lg:px-0">
+            {/* Left: text + deliverables */}
             <div>
-              <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight">
-                About the show
+              <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                Our role
               </h2>
-              <div className="mt-6 space-y-6">
-                {c.aboutShow.map((p, i) => (
-                  <p
-                    key={i}
-                    className="text-[clamp(1.0625rem,1.5vw,1.1875rem)] leading-[1.7] text-text"
-                  >
+              <div className="mt-6 space-y-5">
+                {c.ourRole.map((p, i) => (
+                  <p key={i} className="max-w-[54ch] leading-relaxed text-text-muted">
                     {p}
                   </p>
                 ))}
               </div>
+              <ul className="mt-7 flex flex-col gap-3">
+                {DELIVERABLES.map((item) => (
+                  <li key={item} className="flex items-center gap-2.5 text-sm text-text-muted">
+                    <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-text-faint" aria-hidden />
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="flex flex-col gap-3">
-              <ChannelBox />
-              {/* Instagram — a quiet second social link below the channel card */}
-              <a
-                href={BV_INSTAGRAM}
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Bharatvaarta on Instagram"
-                className="inline-flex w-fit items-center gap-2 rounded-lg border border-line-strong bg-white/[0.02] px-3 py-2 text-sm text-text-faint transition-colors hover:border-white/25 hover:text-text"
-              >
-                <CredIconSvg name="instagram" className="h-[15px] w-[15px]" />
-                @bharatvaarta
-              </a>
-            </div>
+
+            {/* Right: YouTube channel card */}
+            <a
+              href={c.channel.href}
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Bharatvaarta on YouTube"
+              className="glass sweep group block overflow-hidden rounded-2xl p-2.5"
+            >
+              <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                <Thumb
+                  id={c.channel.posterId}
+                  alt="Bharatvaarta on YouTube"
+                  className="brightness-[0.7] transition-[filter] duration-300 group-hover:brightness-[0.85]"
+                />
+              </div>
+              <div className="flex items-center justify-between px-1.5 pb-1 pt-3.5">
+                <div>
+                  <p className="font-medium leading-snug">Bharatvaarta</p>
+                  <p className="mt-1 text-sm text-text-faint">{c.channel.handle} on YouTube</p>
+                </div>
+                <span className="text-text-faint transition-colors group-hover:text-text">↗</span>
+              </div>
+            </a>
           </div>
         </section>
 
-        {/* 4. Our role — chrome-card grounds the prose on the page */}
-        <section className="relative px-6 py-16 lg:px-10 lg:py-20">
-          <EdgeDivider />
-          <div className="mx-auto max-w-[1200px]">
-            <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight">
-              Our role
-            </h2>
-            <div className="chrome-card mt-6 space-y-5 px-6 py-7 lg:px-8 lg:py-8">
-              {c.ourRole.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-[clamp(1.0625rem,1.5vw,1.1875rem)] leading-[1.7] text-text-muted"
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5. Before / after — VirtualCallout layout exactly */}
+        {/* 4. Before / after */}
         <section className="relative py-14 lg:py-28">
-          <EdgeDivider />
           <div className="mx-auto grid w-full max-w-[1400px] items-center gap-8 px-6 lg:w-[86%] lg:grid-cols-2 lg:gap-12 lg:px-0">
-            {/* left: kicker + H2 */}
             <div>
-              <p className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
-                {c.compare.label}
-              </p>
-              <h2 className="text-metal-static mt-4 text-balance font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-                {c.compare.line}
+              <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                The production jump.
               </h2>
+              <p className="mt-5 max-w-md text-[clamp(1rem,1.4vw,1.1rem)] leading-relaxed text-text-muted">
+                {c.compare.line}
+              </p>
             </div>
-            {/* right: RemoteCompare — sides unchanged */}
             <RemoteCompare
               ariaLabel="Compare before and after"
               sides={[
@@ -197,20 +320,67 @@ export default function BharatvaartaCaseStudy() {
           </div>
         </section>
 
-        {/* 6. Work showcase — one continuous marquee */}
+        {/* 5. Work showcase — simple drag-to-scroll row */}
         <section className="relative py-20 lg:py-24">
-          <EdgeDivider />
-          <div className="mx-auto mb-10 max-w-[1200px] px-6 lg:px-10">
-            <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight">
-              Over a hundred conversations.
-            </h2>
+          <div className="mx-auto mb-10 max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <div className="flex items-start justify-between gap-6">
+              <div>
+                <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3.5rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                  Over a hundred conversations.
+                </h2>
+                <p className="mt-4 max-w-lg text-[clamp(1rem,1.4vw,1.1rem)] leading-relaxed text-text-muted">
+                  Here are a few of them.
+                </p>
+              </div>
+              <div className="hidden shrink-0 items-center gap-2 sm:flex">
+                <ScrollArrow dir={-1} disabled={!canLeft} onClick={() => nudge(-1)} />
+                <ScrollArrow dir={1} disabled={!canRight} onClick={() => nudge(1)} />
+              </div>
+            </div>
           </div>
-          <WorkMarquee tiles={c.marquee} ariaLabel="Bharatvaarta episodes" />
+
+          <div
+            ref={rowRef}
+            onPointerDown={onDown}
+            onPointerMove={onMove}
+            onPointerUp={onUp}
+            onPointerLeave={onUp}
+            className="scroll-row fade-x flex cursor-grab gap-4 overflow-x-auto px-6 pb-6 active:cursor-grabbing lg:pl-[7%] lg:pr-10"
+          >
+            {c.marquee.map((t, i) => {
+              const alt = t.guest ? `${t.title}, ${t.guest}` : t.title;
+              return (
+                <figure key={t.id} className="w-[78vw] shrink-0 sm:w-[300px] lg:w-[340px]">
+                  <button
+                    onClick={() => { if (drag.current.moved > 6) return; setWorkIndex(i); }}
+                    aria-label={alt}
+                    className="group relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
+                  >
+                    <Thumb
+                      id={t.id}
+                      alt={alt}
+                      className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
+                    />
+                  </button>
+                  <figcaption className="mt-3 px-0.5">
+                    <p className="text-sm font-medium leading-snug text-text">{t.title}</p>
+                    {t.guest && <p className="mt-0.5 text-xs text-text-faint">{t.guest}</p>}
+                  </figcaption>
+                </figure>
+              );
+            })}
+          </div>
+
+          <MediaLightbox
+            items={workItems}
+            index={workIndex}
+            onClose={() => setWorkIndex(null)}
+            onIndex={setWorkIndex}
+          />
         </section>
 
-        {/* 7. The tweet */}
+        {/* 6. The tweet */}
         <section className="relative px-6 py-16 lg:px-10 lg:py-20">
-          <EdgeDivider />
           <div className="mx-auto max-w-[640px]">
             <h2 className="text-metal-static mb-8 text-center font-display text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium tracking-tight">
               {c.tweet.line}
@@ -219,63 +389,13 @@ export default function BharatvaartaCaseStudy() {
           </div>
         </section>
 
-        {/* 8. Other case studies */}
+        {/* 7. Other case studies */}
         <RelatedCases related={c.related} />
 
-        {/* 9. Closing CTA — constant on every page */}
+        {/* 8. Closing CTA */}
         <ClosingCTA subline="The work behind this show is the work we'd do for yours." />
       </main>
       <Footer />
     </>
-  );
-}
-
-// YouTube channel card: a recognizable still under the chrome-card treatment.
-function ChannelBox() {
-  return (
-    <a
-      href={c.channel.href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label={`Bharatvaarta on YouTube, ${c.channel.handle}`}
-      className="chrome-card sweep group block self-start overflow-hidden"
-    >
-      <div className="relative aspect-video w-full overflow-hidden">
-        <Thumb
-          id={c.channel.posterId}
-          alt="Bharatvaarta on YouTube"
-          className="brightness-[0.42] saturate-[0.9] transition-[filter,transform] duration-500 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-[0.6]"
-        />
-        <span aria-hidden className="absolute inset-0 bg-bg-sunken/55" />
-        <span
-          aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-bg-sunken via-bg-sunken/45 to-transparent"
-        />
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-bg/55 px-2.5 py-1 text-xs text-text backdrop-blur">
-          <svg
-            viewBox="0 0 24 24"
-            className="h-3.5 w-3.5"
-            aria-hidden
-            fill="currentColor"
-          >
-            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6Z" />
-          </svg>
-          YouTube
-        </span>
-      </div>
-      <div className="flex items-center justify-between gap-3 p-4">
-        <span>
-          <span className="block font-display text-lg font-medium tracking-tight text-text">
-            Bharatvaarta
-          </span>
-          <span className="mt-0.5 block text-xs text-text-faint">
-            {c.channel.handle}
-          </span>
-        </span>
-        <span className="shrink-0 text-text-muted transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5 group-hover:text-text">
-          ↗
-        </span>
-      </div>
-    </a>
   );
 }

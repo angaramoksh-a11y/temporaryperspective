@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import Beliefs from "@/components/Beliefs";
 import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
 import { EdgeDivider } from "@/components/ui";
-import { siteTestimonials, team, vimeoPoster } from "@/lib/work";
+import { siteTestimonials, team, vimeoPoster, caseStudies } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "The studio — Temporary Perspective",
@@ -33,23 +34,40 @@ export default async function AboutPage() {
     <>
       <Nav />
       <main>
-        {/* 1. Studio statement */}
-        <section className="relative px-6 pb-20 pt-36 lg:px-10 lg:pb-28 lg:pt-48">
-          <div className="mx-auto max-w-[1400px]">
-            <h1 className="font-display text-[clamp(2.75rem,7vw,5.5rem)] font-light leading-[1.02] tracking-tight">
+
+        {/* 1. Hero */}
+        <section className="relative px-6 pb-24 pt-36 lg:px-10 lg:pb-32 lg:pt-48">
+          <div className="mx-auto w-full max-w-[1400px] lg:w-[86%] lg:px-0">
+            <h1 className="text-metal font-display text-[clamp(3rem,8vw,6.5rem)] font-medium leading-[1.02] tracking-[-0.03em]">
               The studio.
             </h1>
             <div className="mt-8 max-w-2xl space-y-5">
-              <p className="text-[clamp(1.25rem,1.9vw,1.6rem)] leading-[1.5] text-text">
+              <p className="text-[clamp(1.125rem,1.8vw,1.4rem)] leading-[1.55] text-text">
                 Temporary Perspective is a podcast studio in Mumbai, built for B2B
                 founders who want a show worth taking seriously.
               </p>
-              <p className="text-[clamp(1rem,1.5vw,1.15rem)] leading-relaxed text-text-muted">
+              <p className="text-[clamp(1rem,1.4vw,1.1rem)] leading-relaxed text-text-muted">
                 100+ episodes shipped. Politics, fintech, and the kind of
                 long-form conversation most studios don&apos;t attempt. We handle
                 the whole thing: brand, shoot, edit, growth. So the founder can
                 focus on the conversation, not the production behind it.
               </p>
+            </div>
+
+            {/* stat strip */}
+            <div className="mt-14 flex flex-wrap gap-x-12 gap-y-6">
+              {[
+                { n: "100+", label: "Episodes shipped" },
+                { n: "< 7 days", label: "Shot to published" },
+                { n: "3", label: "Active shows" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="text-metal-static font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-tight">
+                    {s.n}
+                  </p>
+                  <p className="mt-1 text-sm text-text-faint">{s.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -57,16 +75,14 @@ export default async function AboutPage() {
         {/* 2. The team */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <div className="mb-12 flex flex-col gap-4">
-              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
-                The people behind the shows.
-              </h2>
-            </div>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <h2 className="text-metal-static mb-14 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+              The people behind the shows.
+            </h2>
+            <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
               {team.map((m) => (
                 <div key={m.name} className="group flex flex-col">
-                  <div className="sweep relative aspect-square w-full overflow-hidden rounded-xl border border-line-strong bg-bg-raised/50 transition-[transform] duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-0.5">
+                  <div className="sweep relative aspect-square w-full overflow-hidden rounded-2xl border border-line-strong bg-bg-raised/50 transition-[transform] duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-1">
                     {m.headshot ? (
                       <Image
                         src={m.headshot}
@@ -122,29 +138,108 @@ export default async function AboutPage() {
           </div>
         </section>
 
-        {/* 2.5 What people say (testimonial preview) */}
+        {/* 3a. Case studies */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <div className="mb-12 flex flex-col gap-4">
-              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
-                What people say.
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+                The shows.
               </h2>
+              <p className="max-w-md text-text-muted sm:text-right">
+                Three clients. Three very different formats.
+              </p>
             </div>
-            <Testimonials items={testimonials} />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              {caseStudies.map((cs) => (
+                <Link
+                  key={cs.href}
+                  href={cs.href}
+                  className="glass sweep group flex flex-col overflow-hidden rounded-2xl p-2.5"
+                >
+                  <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={`https://vumbnail.com/${cs.vimeoId}.jpg`}
+                      alt={cs.client}
+                      loading="lazy"
+                      className="h-full w-full object-cover brightness-[0.78] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:brightness-100"
+                    />
+                    {cs.status && (
+                      <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-bg/60 px-2.5 py-1 text-xs text-text-muted backdrop-blur">
+                        <span className="chrome-breathe h-1.5 w-1.5 rounded-full bg-chrome" />
+                        {cs.status}
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-1 px-1.5 pb-1 pt-3.5">
+                    <p className="font-display text-lg font-medium tracking-tight text-text">
+                      {cs.client}
+                    </p>
+                    <p className="text-[0.8125rem] text-text-faint">{cs.tag}</p>
+                    <p className="mt-2 flex-1 text-sm leading-relaxed text-text-muted">
+                      {cs.result}
+                    </p>
+                    <span className="mt-3 inline-flex items-center gap-1.5 text-sm text-text-faint transition-colors group-hover:text-text">
+                      View case study
+                      <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
+                        →
+                      </span>
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+
+            <div className="mt-8">
+              <Link
+                href="/case-studies"
+                className="group inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text"
+              >
+                See all case studies
+                <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
+                  →
+                </span>
+              </Link>
+            </div>
           </div>
         </section>
 
-        {/* 3. What we believe */}
-        <section className="relative py-24 lg:py-32">
+        {/* 3b. Testimonials — link directly to /testimonials#<vimeoId> */}
+        <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-            <div className="mb-12 flex flex-col gap-4">
-              <h2 className="font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-light tracking-tight">
-                What we believe.
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+                In their own words.
               </h2>
+              <p className="max-w-md text-text-muted sm:text-right">
+                Founders and creators on working with the studio.
+              </p>
             </div>
+            <Testimonials items={testimonials} linkMode />
+          </div>
+        </section>
+
+        {/* 4. What we believe */}
+        <section className="relative py-24 lg:py-28">
+          <EdgeDivider />
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <h2 className="text-metal-static mb-12 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+              What we believe.
+            </h2>
             <Beliefs />
+          </div>
+        </section>
+
+        {/* 5. Closing one-liner */}
+        <section className="relative py-20 lg:py-24">
+          <EdgeDivider />
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+            <p className="text-metal font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-medium leading-[1.3] tracking-[-0.02em]">
+              The show belongs to you. The studio is ours to run.
+            </p>
           </div>
         </section>
 

@@ -128,8 +128,9 @@ export default function Nav() {
   const [hoveredSub, setHoveredSub] = useState<string | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [expanded, setExpanded] = useState<string | null>(null);
-  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const openTimer  = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const closeTimer   = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const openTimer    = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const subHoverTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   // Mirror of openCat in a ref so timer callbacks always see the latest value
   // without introducing stale closures or extra deps.
   const menuIsOpen = useRef(false);
@@ -181,7 +182,7 @@ export default function Nav() {
     if (menuIsOpen.current) {
       setOpenCat(label);
     } else {
-      openTimer.current = setTimeout(() => setOpenCat(label), 180);
+      openTimer.current = setTimeout(() => setOpenCat(label), 250);
     }
   };
 
@@ -190,6 +191,15 @@ export default function Nav() {
   const scheduleClose = () => {
     clearTimeout(openTimer.current);
     closeTimer.current = setTimeout(() => setOpenCat(null), 350);
+  };
+
+  // Sub-item hover debounce — prevents the panel from flickering when the
+  // cursor crosses a left-rail item on its way to the preview content.
+  // 180 ms is long enough to filter accidental grazes, short enough that an
+  // intentional hover still feels instant.
+  const scheduleSubHover = (href: string) => {
+    clearTimeout(subHoverTimer.current);
+    subHoverTimer.current = setTimeout(() => setHoveredSub(href), 180);
   };
 
   const current = categories.find((c) => c.label === openCat && c.items) as
@@ -411,7 +421,7 @@ export default function Nav() {
                       <StudioMenu
                         items={current!.items}
                         hovered={hoveredSub ?? ""}
-                        onHover={setHoveredSub}
+                        onHover={scheduleSubHover}
                         active={hoveredSub}
                         reduce={!!reduce}
                       />

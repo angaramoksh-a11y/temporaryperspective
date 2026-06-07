@@ -16,7 +16,7 @@ const primary = [
 
 const legal = [
   { label: "Privacy", href: "/privacy" },
-  { label: "Terms", href: "/terms-and-conditions" },
+  { label: "Terms and Conditions", href: "/terms-and-conditions" },
 ];
 
 const socials: { icon: CredIcon; href: string; label: string }[] = [

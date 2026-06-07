@@ -143,36 +143,38 @@ export default function MediaLightbox({
           <button
             aria-label="Close"
             onClick={onClose}
-            className="fixed inset-0 cursor-default bg-[oklch(0.02_0.003_264/0.95)] backdrop-blur-xl"
+            className="fixed inset-0 cursor-default bg-bg-sunken/85 backdrop-blur-xl"
           />
-          <div className="flex min-h-full items-center justify-center p-4 sm:p-6">
+          {/* Close — viewport top-right, well clear of any player settings icons */}
+          <button
+            onClick={onClose}
+            aria-label="Close"
+            className="absolute right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-bg/80 text-text-muted backdrop-blur-md transition-colors hover:border-white/30 hover:text-text"
+          >
+            ✕
+          </button>
+
+          <div className={`flex min-h-full items-center justify-center ${isPdf ? "px-[5vw] pb-[5vw] pt-0 sm:px-[8vw] sm:pb-[8vw]" : "p-4 sm:p-8"}`}>
             <motion.div
               ref={dialogRef}
               role="dialog"
               aria-modal="true"
               aria-label={item.title}
-              initial={{ opacity: 0, scale: 0.98, y: 8 }}
+              initial={{ opacity: 0, scale: 0.97, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.98 }}
-              transition={{ duration: 0.3, ease }}
+              exit={{ opacity: 0, scale: 0.98, y: 8 }}
+              transition={{ duration: 0.35, ease }}
               className={`chrome-card relative z-10 w-full ${
-                isPdf ? "max-w-[900px]" : "max-w-[1100px]"
+                isPdf ? "max-w-[980px]" : "max-w-[1100px]"
               }`}
             >
-              <button
-                onClick={onClose}
-                aria-label="Close"
-                className="absolute right-3 top-3 z-30 grid h-9 w-9 place-items-center rounded-full border border-line bg-bg/60 text-text-muted backdrop-blur transition-colors hover:text-text"
-              >
-                ✕
-              </button>
 
               {/* media */}
               <div className="relative flex w-full items-center justify-center bg-black">
                 <div
                   className={
                     isPdf
-                      ? "h-[82vh] w-full"
+                      ? "h-[78vh] w-full"
                       : vertical
                         ? "mx-auto aspect-[9/16] h-[58vh] max-h-[560px] lg:h-[78vh] lg:max-h-[680px]"
                         : "aspect-video w-full"
