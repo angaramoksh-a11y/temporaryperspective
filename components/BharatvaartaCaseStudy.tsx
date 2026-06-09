@@ -24,6 +24,13 @@ const lbItem: LightboxItem = {
   links: [{ label: "Roshan on LinkedIn", href: ROSHAN_LINKEDIN, external: true }],
 };
 
+const brandLbItem: LightboxItem = {
+  title: "Bharatvaarta — brand book",
+  client: "Branding",
+  desc: "Logo, palette, typography, and the show's full visual system.",
+  media: { kind: "pdf", src: "/assets/bv-branding.pdf" },
+};
+
 const DELIVERABLES = [
   "Brand & visual identity",
   "Multi-cam studio shoot",
@@ -68,6 +75,7 @@ function ScrollArrow({
 
 export default function BharatvaartaCaseStudy() {
   const [lbOpen, setLbOpen] = useState(false);
+  const [brandOpen, setBrandOpen] = useState(false);
 
   // Work scroll row
   const rowRef = useRef<HTMLDivElement>(null);
@@ -257,30 +265,83 @@ export default function BharatvaartaCaseStudy() {
               </ul>
             </div>
 
-            {/* Right: YouTube channel card */}
-            <a
-              href={c.channel.href}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Bharatvaarta on YouTube"
-              className="glass sweep group block overflow-hidden rounded-2xl p-2.5"
-            >
-              <div className="relative aspect-video w-full overflow-hidden rounded-xl">
-                <Thumb
-                  id={c.channel.posterId}
-                  alt="Bharatvaarta on YouTube"
-                  className="brightness-[0.7] transition-[filter] duration-300 group-hover:brightness-[0.85]"
-                />
-              </div>
-              <div className="flex items-center justify-between px-1.5 pb-1 pt-3.5">
-                <div>
-                  <p className="font-medium leading-snug">Bharatvaarta</p>
-                  <p className="mt-1 text-sm text-text-faint">{c.channel.handle} on YouTube</p>
+            {/* Right: stacked deliverables — YouTube channel + brand book */}
+            <div className="flex flex-col gap-4">
+              <a
+                href={c.channel.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Bharatvaarta on YouTube"
+                className="glass sweep group block overflow-hidden rounded-2xl p-2.5"
+              >
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl">
+                  <Thumb
+                    id={c.channel.posterId}
+                    alt="Bharatvaarta on YouTube"
+                    className="brightness-[0.7] transition-[filter] duration-300 group-hover:brightness-[0.85]"
+                  />
                 </div>
-                <span className="text-text-faint transition-colors group-hover:text-text">↗</span>
-              </div>
-            </a>
+                <div className="flex items-center justify-between px-1.5 pb-1 pt-3.5">
+                  <div>
+                    <p className="font-medium leading-snug">Bharatvaarta</p>
+                    <p className="mt-1 text-sm text-text-faint">{c.channel.handle} on YouTube</p>
+                  </div>
+                  <span className="text-text-faint transition-colors group-hover:text-text">↗</span>
+                </div>
+              </a>
+
+              {/* Brand book — opens the PDF in the shared lightbox */}
+              <button
+                type="button"
+                onClick={() => setBrandOpen(true)}
+                aria-label="Open the Bharatvaarta brand book"
+                className="glass sweep group flex items-start gap-3 rounded-2xl p-4 text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 sm:gap-4"
+              >
+                <span
+                  aria-hidden
+                  className="chrome-card grid h-12 w-12 shrink-0 place-items-center rounded-xl text-text-muted transition-colors group-hover:text-text sm:h-14 sm:w-14"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5 sm:h-6 sm:w-6"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M14 3v5h5" />
+                    <path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-5Z" />
+                  </svg>
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex items-center justify-between gap-3">
+                    <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
+                      Brand book
+                    </span>
+                    <span
+                      aria-hidden
+                      className="inline-flex items-center gap-1 text-sm font-medium text-text-faint transition-all duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5 group-hover:text-text"
+                    >
+                      Open ↗
+                    </span>
+                  </span>
+                  <span className="mt-1 block font-display text-[1.05rem] font-medium leading-snug tracking-tight text-text sm:text-lg">
+                    The full visual system
+                  </span>
+                  <span className="mt-1.5 block text-sm leading-snug text-text-muted">
+                    Logo, palette, typography. Built from scratch for the show.
+                  </span>
+                </span>
+              </button>
+            </div>
           </div>
+
+          <MediaLightbox
+            items={[brandLbItem]}
+            index={brandOpen ? 0 : null}
+            onClose={() => setBrandOpen(false)}
+          />
         </section>
 
         {/* 4. Before / after */}

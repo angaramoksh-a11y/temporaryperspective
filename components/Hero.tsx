@@ -13,7 +13,7 @@ const rise = {
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] flex-col overflow-hidden pb-10 pt-24 sm:pt-28 lg:justify-center lg:py-24">
+    <section className="relative flex flex-col overflow-hidden pb-12 pt-20 sm:pt-24 lg:min-h-[100svh] lg:justify-center lg:py-24">
       {/* Hero-local stage. A near-black veil crushes the backdrop behind the
           headline so the H1 reads crisp full white and the silk noise calms.
           The whole group is masked to dissolve into the global silk at the top
@@ -46,18 +46,19 @@ export default function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-10 px-6 sm:gap-12 lg:w-[86%] lg:grid-cols-[minmax(0,560px)_minmax(0,640px)] lg:justify-center lg:gap-12 lg:px-0">
-        {/* text column */}
+      <div className="relative z-10 mx-auto grid w-full max-w-[1400px] grid-cols-1 items-center gap-8 px-6 sm:gap-12 lg:w-[86%] lg:grid-cols-[minmax(0,560px)_minmax(0,640px)] lg:justify-center lg:gap-12 lg:px-0">
+        {/* text column — first on mobile so the value prop is above the fold,
+            beside the film on desktop */}
         <motion.div
           initial="hidden"
           animate="show"
           transition={{ staggerChildren: 0.09, delayChildren: 0.15 }}
-          className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left"
+          className="order-1 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left"
         >
           {/* proof line */}
           <motion.div variants={rise}>
             <Link
-              href="/case-studies"
+              href="/testimonials"
               className="glass edge-gradient sweep group relative inline-flex items-center gap-2 rounded-full py-1.5 pl-4 pr-3 text-sm text-text-muted transition-colors hover:text-text"
             >
               <span
@@ -68,7 +69,7 @@ export default function Hero() {
                     "radial-gradient(closest-side, oklch(0.99 0.002 264 / 0.18), oklch(0.99 0.002 264 / 0))",
                 }}
               />
-              See case studies
+              Hear from clients
               <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-0.5">
                 →
               </span>
@@ -109,9 +110,9 @@ export default function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* film — on top + centred on mobile (re-layout), beside the text at lg.
+        {/* film — under the text on mobile, beside it at lg.
             Capped width on small screens so the 16:9 card never balloons. */}
-        <div className="order-1 mx-auto w-full max-w-[520px] lg:order-2 lg:mx-0 lg:max-w-none">
+        <div className="order-2 mx-auto w-full max-w-[520px] lg:order-2 lg:mx-0 lg:max-w-none">
           <HeroFilm id="1197960218" caption="The studio, in 60 seconds." />
         </div>
       </div>

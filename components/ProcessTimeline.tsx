@@ -10,7 +10,7 @@ import {
   useTransform,
 } from "motion/react";
 import { phases, type Phase } from "@/lib/work";
-import PhaseVisual from "./ProcessVisuals";
+import PhaseVisual, { PHASES_WITH_VISUAL } from "./ProcessVisuals";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 const foundational = (p: Phase) => p.label === "Foundational";
@@ -32,6 +32,7 @@ function TimelineNode({ phase, index }: { phase: Phase; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const gold = foundational(phase);
+  const hasVisual = PHASES_WITH_VISUAL.has(phase.id);
 
   // Branding (foundational) is always considered in-view — it's the entry point.
   const scrollInView = useInView(ref, { once: true, amount: 0.3 });
@@ -66,7 +67,13 @@ function TimelineNode({ phase, index }: { phase: Phase; index: number }) {
         transition={{ duration: 0.7, ease }}
         className="glass sweep group overflow-hidden rounded-3xl p-6 lg:p-9"
       >
-        <div className="grid items-center gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12">
+        <div
+          className={
+            hasVisual
+              ? "grid items-start gap-8 lg:grid-cols-[1fr_1fr] lg:gap-12"
+              : "max-w-2xl"
+          }
+        >
           {/* text */}
           <div className="min-w-0">
             <div className="flex items-center gap-3">
@@ -105,9 +112,11 @@ function TimelineNode({ phase, index }: { phase: Phase; index: number }) {
           </div>
 
           {/* visual */}
-          <div className="min-w-0">
-            <PhaseVisual phaseId={phase.id} />
-          </div>
+          {hasVisual && (
+            <div className="min-w-0">
+              <PhaseVisual phaseId={phase.id} />
+            </div>
+          )}
         </div>
       </motion.article>
     </div>

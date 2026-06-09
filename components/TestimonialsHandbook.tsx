@@ -164,13 +164,16 @@ function TestimonialCard({
   onOpen: () => void;
   onOpenProject: (item: PItem) => void;
 }) {
+  const clientCreds = row.credentials.filter((c) => c.side === "client");
+  const speakerCreds = row.credentials.filter((c) => c.side === "speaker");
+
   return (
     <article
       id={row.vimeoId}
       className="rounded-2xl border border-line bg-bg-raised/15 p-6 lg:p-8"
     >
       <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-12">
-        {/* ── Left: title card ─────────────────────────────────────────── */}
+        {/* ── Left: title card (client side) ───────────────────────────── */}
         <div className="flex flex-col">
           {/* primary identifier — show/brand name (client) as the big headline */}
           <h2 className="font-display text-[clamp(1.75rem,2.8vw,2.5rem)] font-semibold leading-[1.05] tracking-tight text-text">
@@ -186,10 +189,10 @@ function TestimonialCard({
             )}
           </p>
 
-          {/* social icon links — ≥32px tap targets */}
-          {row.credentials.length > 0 && (
+          {/* client-side links (show / channel / company) */}
+          {clientCreds.length > 0 && (
             <div className="mt-5">
-              <CredChips items={row.credentials} iconOnly />
+              <CredChips items={clientCreds} />
             </div>
           )}
 
@@ -265,7 +268,7 @@ function TestimonialCard({
           )}
         </div>
 
-        {/* ── Right: video + pull quote ────────────────────────────────── */}
+        {/* ── Right: video + speaker links + pull quote ────────────────── */}
         <div className="flex flex-col">
           <VideoThumb
             vimeoId={row.vimeoId}
@@ -275,11 +278,18 @@ function TestimonialCard({
             onOpen={onOpen}
           />
 
-          {/* person name below video — always shown as attribution */}
-          <p className="mt-2.5 text-sm font-medium text-text">{row.name}</p>
+          {/* speaker-side links replace the name attribution. If the person has
+              no LinkedIn/Instagram listed, fall back to plain text. */}
+          {speakerCreds.length > 0 ? (
+            <div className="mt-3">
+              <CredChips items={speakerCreds} />
+            </div>
+          ) : (
+            <p className="mt-2.5 text-sm font-medium text-text">{row.name}</p>
+          )}
 
           {/* pull quote — caption style, italic, no quotation marks */}
-          <p className="mt-0.5 text-[0.9375rem] italic leading-snug text-text-muted">
+          <p className="mt-3 text-[0.9375rem] italic leading-snug text-text-muted">
             {row.quote}
           </p>
         </div>

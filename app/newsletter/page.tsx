@@ -2,14 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import PageHeroWord from "@/components/PageHeroWord";
 import ClosingCTA from "@/components/ClosingCTA";
 import NewsletterSignup from "@/components/NewsletterSignup";
+import { EdgeDivider } from "@/components/ui";
 import { newsletterPosts } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Notes from the studio — Temporary Perspective",
+  title: "Newsletter — Temporary Perspective",
   description:
-    "Notes on running a podcast that's actually worth watching. From the studio behind Bharatvaarta, Bureau, and Qapita.",
+    "Short, occasional notes on running a podcast worth watching, from the studio behind Bharatvaarta, Bureau, and Qapita.",
 };
 
 export default function NewsletterPage() {
@@ -17,63 +19,76 @@ export default function NewsletterPage() {
     <>
       <Nav />
       <main>
-        {/* 1. Intro + signup */}
-        <section className="relative flex min-h-[60vh] flex-col items-center justify-center px-6 py-28 text-center lg:px-10">
-          <h1 className="font-thunder text-[clamp(3rem,12vw,10rem)] uppercase leading-[0.9] tracking-[-0.01em]">
-            Notes from the studio.
-          </h1>
-          <p className="mt-6 max-w-xl text-[clamp(1rem,1.6vw,1.25rem)] leading-relaxed text-text-muted">
-            Notes on running a podcast that&apos;s actually worth watching. From
-            the studio behind Bharatvaarta, Bureau, and Qapita.
-          </p>
-          <div className="mt-9 flex justify-center">
-            <NewsletterSignup size="lg" />
+        <PageHeroWord word="Newsletter" eyebrow="From the studio" />
+
+        {/* Signup, sat directly under the hero word */}
+        <section className="relative px-6 pb-20 lg:px-10 lg:pb-24">
+          <div className="mx-auto flex max-w-[1200px] flex-col items-center gap-5 text-center">
+            <p className="max-w-xl text-[clamp(1rem,1.5vw,1.2rem)] leading-relaxed text-text-muted">
+              Short notes on the craft of running a podcast worth watching. The
+              ones we&apos;d send a founder before their first shoot.
+            </p>
+            <div className="w-full max-w-md">
+              <NewsletterSignup size="lg" />
+            </div>
           </div>
         </section>
 
-        {/* 2. Post list */}
-        <section className="relative px-6 pb-24 lg:px-10 lg:pb-28">
-          <div className="mx-auto max-w-[1000px] border-t border-line">
-            {newsletterPosts.map((post, i) => (
-              <Link
-                key={post.slug}
-                href={`/newsletter/${post.slug}`}
-                className="sweep group grid grid-cols-1 items-center border-b border-line py-7 transition-[transform,background] duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 hover:bg-white/[0.015] sm:grid-cols-[176px_1fr] sm:gap-8"
-              >
-                <div className="relative hidden aspect-video w-44 shrink-0 items-end overflow-hidden rounded-lg border border-line bg-bg-raised/40 p-3 sm:flex">
-                  <span
-                    aria-hidden
-                    className="absolute inset-x-0 top-0 h-px"
-                    style={{
-                      background:
-                        "linear-gradient(90deg, transparent, oklch(1 0 0 / 0.4) 50%, transparent)",
-                    }}
-                  />
-                  <span className="pointer-events-none absolute right-3 top-2 font-thunder text-5xl leading-none text-line-strong">
-                    {String(newsletterPosts.length - i).padStart(2, "0")}
-                  </span>
-                  <span className="relative font-mono text-[0.75rem] uppercase tracking-[0.18em] text-text-faint">
-                    {post.date}
-                  </span>
-                </div>
+        {/* Posts */}
+        <section className="relative px-6 py-20 lg:px-10 lg:py-28">
+          <EdgeDivider />
+          <div className="mx-auto max-w-[1200px]">
+            <div className="mb-12 flex items-end justify-between gap-6">
+              <div className="max-w-xl">
+                <h2 className="text-metal-static font-display text-[clamp(2rem,4vw,3.25rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                  Recent dispatches
+                </h2>
+                <p className="mt-4 max-w-md text-base leading-relaxed text-text-muted">
+                  No schedule, no thinkpieces. Just what the work has been
+                  teaching us, written down.
+                </p>
+              </div>
+              <span className="hidden font-mono text-xs uppercase tracking-[0.18em] text-text-faint md:block">
+                {String(newsletterPosts.length).padStart(2, "0")} posts
+              </span>
+            </div>
 
-                <div>
-                  <h2 className="font-display text-[clamp(1.375rem,2.6vw,2rem)] font-normal leading-snug tracking-tight text-text">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {newsletterPosts.map((post, i) => (
+                <Link
+                  key={post.slug}
+                  href={`/newsletter/${post.slug}`}
+                  className="glass sweep group flex flex-col rounded-2xl p-7 transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1"
+                >
+                  <div className="flex items-center justify-between font-mono text-[0.75rem] uppercase tracking-[0.18em] text-text-faint">
+                    <span>{post.date}</span>
+                    <span>
+                      {String(newsletterPosts.length - i).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3 className="mt-5 font-display text-[1.35rem] font-medium leading-snug tracking-tight text-text">
                     {post.title}
-                  </h2>
-                  <p className="mt-2 max-w-xl text-[0.95rem] leading-relaxed text-text-muted">
+                  </h3>
+                  <p className="mt-3 flex-1 text-[0.95rem] leading-relaxed text-text-muted">
                     {post.excerpt}
                   </p>
-                  <div className="mt-3 flex flex-wrap items-center gap-x-2 font-mono text-[0.75rem] uppercase tracking-[0.15em] text-text-faint">
-                    <span>{post.author}</span>
-                    <span aria-hidden>·</span>
-                    <span>{post.dateLong}</span>
-                    <span aria-hidden>·</span>
-                    <span>{post.readingTime}</span>
+                  <div className="mt-7 flex items-center justify-between border-t border-line pt-4 text-[0.8125rem] text-text-faint">
+                    <span>
+                      {post.author} · {post.readingTime}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-text">
+                      Read
+                      <span
+                        aria-hidden
+                        className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1"
+                      >
+                        →
+                      </span>
+                    </span>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 

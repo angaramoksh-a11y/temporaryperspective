@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import {
@@ -130,7 +131,13 @@ export default function MediaLightbox({
     }
   }
 
-  return (
+  // Portal to <body> so `position: fixed` resolves against the viewport even
+  // when an ancestor (e.g. framer-motion's transformed parent) is a containing
+  // block. Without this, the lightbox gets clipped inside transformed cards on
+  // /process. Guard against SSR (no document).
+  if (typeof document === "undefined") return null;
+
+  return createPortal(
     <AnimatePresence>
       {open && item && (
         <motion.div
@@ -266,7 +273,8 @@ export default function MediaLightbox({
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 }
 

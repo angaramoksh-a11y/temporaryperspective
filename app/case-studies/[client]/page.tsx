@@ -67,10 +67,10 @@ export default async function CaseStudyPage({
         <section className="relative px-6 pb-12 pt-32 lg:px-10 lg:pt-40">
           <div className="mx-auto max-w-[1400px]">
             <Link
-              href="/case-studies"
+              href="/portfolio"
               className="text-sm text-text-faint transition-colors hover:text-text"
             >
-              ← All case studies
+              ← All work
             </Link>
             <div className="mt-8 flex flex-col gap-4">
               <SectionLabel>{cs.tag}</SectionLabel>

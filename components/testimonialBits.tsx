@@ -45,47 +45,24 @@ export function CredIconSvg({
   );
 }
 
-export function CredChips({
-  items,
-  iconOnly = false,
-}: {
-  items: Credential[];
-  iconOnly?: boolean;
-}) {
+// Square chrome chip with icon + destination label. The label spells out where
+// the link leads (e.g. "@Bharatvaarta on YouTube", "Roshan on LinkedIn") so the
+// user always knows the destination without guessing from the icon alone.
+export function CredChips({ items }: { items: Credential[] }) {
   if (!items.length) return null;
-
-  // Icon-only: a row of social marks, each in its own legible chrome circle.
-  if (iconOnly)
-    return (
-      <div className="flex flex-wrap items-center gap-2">
-        {items.map((c) => (
-          <a
-            key={c.href}
-            href={c.href}
-            target="_blank"
-            rel="noreferrer"
-            aria-label={c.label}
-            title={c.label}
-            className="inline-grid h-9 w-9 place-items-center rounded-full border border-line-strong bg-white/[0.03] text-text-muted transition-colors hover:border-white/40 hover:bg-white/[0.07] hover:text-text"
-          >
-            <CredIconSvg name={c.icon} className="h-[18px] w-[18px]" />
-          </a>
-        ))}
-      </div>
-    );
-
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap items-center gap-2">
       {items.map((c) => (
         <a
           key={c.href}
           href={c.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex items-center gap-1.5 rounded-full border border-line-strong bg-white/[0.02] px-2.5 py-1 text-xs text-text-muted transition-colors hover:border-white/30 hover:text-text"
+          title={c.label}
+          className="inline-flex h-9 items-center gap-2 rounded-md border border-line-strong bg-white/[0.03] px-3 text-[0.8125rem] font-medium text-text-muted transition-colors hover:border-white/40 hover:bg-white/[0.07] hover:text-text"
         >
-          <CredIconSvg name={c.icon} />
-          {c.label}
+          <CredIconSvg name={c.icon} className="h-4 w-4 shrink-0 text-text-faint" />
+          <span>{c.label}</span>
         </a>
       ))}
     </div>

@@ -27,7 +27,7 @@ const categories: Category[] = [
     items: [
       { label: "Portfolio", href: "/portfolio", desc: "The shows we produce, episode by episode." },
       { label: "Full archive", href: "/portfolio/archive", desc: "Every episode and clip. Filter by client or format." },
-      { label: "Case studies", href: "/case-studies", desc: "The shows, told by the clients." },
+      { label: "Testimonials", href: "/testimonials", desc: "Clients on the shows we built with them." },
     ],
   },
   {
@@ -35,7 +35,6 @@ const categories: Category[] = [
     items: [
       { label: "Our process", href: "/process", desc: "How we run a show." },
       { label: "Remote production", href: "/virtual", desc: "When your guest's in another city." },
-      { label: "Testimonials", href: "/testimonials", desc: "What clients say." },
       { label: "About us", href: "/about", desc: "Who runs the studio." },
     ],
   },
@@ -66,11 +65,12 @@ const WORK_PREVIEWS: Record<string, Preview[]> = {
     { ytId: "f1hRTb6MIZ8", href: "/portfolio/archive", title: "Manish Sabharwal", line: "Long-form podcast" },
     { posterSrc: "https://vumbnail.com/1169858512.jpg", href: "/portfolio/archive", title: "ORMH", line: "Product film" },
   ],
-  // Case studies → all three.
-  "/case-studies": [
-    { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "The Catapult Code" },
-    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "100+ episodes" },
-    { posterSrc: "https://vumbnail.com/1195342176.jpg", href: "/case-studies/bureau", title: "Bureau", line: "Fraud Forum" },
+  // Testimonials → the three case-study clients (entry points into each show's
+  // long-form case study).
+  "/testimonials": [
+    { posterSrc: "https://vumbnail.com/1169858825.jpg", href: "/case-studies/bharatvaarta", title: "Bharatvaarta", line: "Politics · Policy · Culture" },
+    { posterSrc: "https://vumbnail.com/1195342176.jpg", href: "/case-studies/bureau", title: "Bureau", line: "Fintech · Fraud Prevention" },
+    { posterSrc: "https://vumbnail.com/1196195127.jpg", href: "/case-studies/qapita", title: "Qapita", line: "Founder stories" },
   ],
 };
 const WORK_DEFAULT = "default";
@@ -97,12 +97,6 @@ const STUDIO_PROCESS = [
   { n: "02", label: "Production", body: "Multi-cam, lit, sound.", href: "/process#production" },
   { n: "03", label: "Post", body: "Edit, grade, clips.", href: "/process#post" },
   { n: "04", label: "Growth", body: "Published, grown.", href: "/process#growth" },
-];
-
-const STUDIO_TESTIMONIALS: { poster: string; name: string; line: string; href: string }[] = [
-  { poster: "https://vumbnail.com/1169859676.jpg", name: "Tarini Shah", line: "Creator · 540k+", href: "/testimonials#1169859676" },
-  { poster: "https://vumbnail.com/1169859867.jpg", name: "Meet", line: "Founder, Ettara", href: "/testimonials" },
-  { poster: "https://vumbnail.com/1197937165.jpg", name: "Ishpreet Balbir", line: "Creator · 230k+", href: "/testimonials" },
 ];
 
 // Two-letter initials for the team tiles (matches the /about fallback).
@@ -726,7 +720,6 @@ function StudioMenu({
 function StudioPreview({ href }: { href: string }) {
   if (!href) return null;
   if (href === "/virtual") return <RemotePreview />;
-  if (href === "/testimonials") return <TestimonialsPreview />;
   if (href === "/about") return <AboutPreview />;
   return <ProcessPreview />;
 }
@@ -806,43 +799,6 @@ function RemotePreview() {
       <p className="mt-3 text-sm text-text-faint">
         Same online format, shot like a studio. When your guest&apos;s in another city.
       </p>
-    </div>
-  );
-}
-
-function TestimonialsPreview() {
-  return (
-    <div className="flex h-full flex-col justify-center">
-      <div className="grid grid-cols-3 gap-4">
-        {STUDIO_TESTIMONIALS.map((t) => (
-          <Link
-            key={t.name}
-            href={t.href}
-            className="group/card flex flex-col overflow-hidden rounded-xl border border-line transition-colors hover:border-accent/40"
-          >
-            <div className="relative aspect-video w-full overflow-hidden bg-bg-sunken">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={t.poster}
-                alt={t.name}
-                loading="lazy"
-                className="h-full w-full object-cover brightness-[0.8] transition-[filter] duration-300 group-hover/card:brightness-100"
-              />
-              <span className="absolute inset-0 grid place-items-center">
-                <span className="grid h-9 w-9 place-items-center rounded-full border border-line-strong bg-bg/55 backdrop-blur transition-transform duration-300 group-hover/card:scale-110">
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px text-text" fill="currentColor" aria-hidden>
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </span>
-              </span>
-            </div>
-            <div className="px-3 py-2.5">
-              <p className="text-[0.95rem] text-text">{t.name}</p>
-              <p className="text-[0.8125rem] text-text-faint">{t.line}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
     </div>
   );
 }

@@ -4,10 +4,10 @@ import { EdgeDivider } from "./ui";
 export function CaseBackLink() {
   return (
     <Link
-      href="/case-studies"
+      href="/portfolio"
       className="text-sm text-text-faint transition-colors hover:text-text"
     >
-      ← All case studies
+      ← All work
     </Link>
   );
 }

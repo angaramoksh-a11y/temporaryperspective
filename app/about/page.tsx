@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import PageHeroWord from "@/components/PageHeroWord";
 import Beliefs from "@/components/Beliefs";
 import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
@@ -14,6 +15,12 @@ export const metadata: Metadata = {
   description:
     "A B2B podcast production studio in Mumbai. We build the studio; the show stays yours.",
 };
+
+const STATS = [
+  { n: "100+", label: "Episodes shipped" },
+  { n: "< 7 days", label: "Shot to published" },
+  { n: "3", label: "Active shows" },
+];
 
 function monogram(name: string) {
   const parts = name.trim().split(/\s+/);
@@ -34,33 +41,28 @@ export default async function AboutPage() {
     <>
       <Nav />
       <main>
-
         {/* 1. Hero */}
-        <section className="relative px-6 pb-24 pt-36 lg:px-10 lg:pb-32 lg:pt-48">
-          <div className="mx-auto w-full max-w-[1400px] lg:w-[86%] lg:px-0">
-            <h1 className="text-metal font-display text-[clamp(3rem,8vw,6.5rem)] font-medium leading-[1.02] tracking-[-0.03em]">
-              The studio.
-            </h1>
-            <div className="mt-8 max-w-2xl space-y-5">
-              <p className="text-[clamp(1.125rem,1.8vw,1.4rem)] leading-[1.55] text-text">
-                Temporary Perspective is a podcast studio in Mumbai, built for B2B
-                founders who want a show worth taking seriously.
-              </p>
-              <p className="text-[clamp(1rem,1.4vw,1.1rem)] leading-relaxed text-text-muted">
-                100+ episodes shipped. Politics, fintech, and the kind of
-                long-form conversation most studios don&apos;t attempt. We handle
-                the whole thing: brand, shoot, edit, growth. So the founder can
-                focus on the conversation, not the production behind it.
-              </p>
-            </div>
+        <PageHeroWord
+          word="The studio"
+          sub="Temporary Perspective is a podcast studio in Mumbai, built for B2B founders who want a show worth taking seriously."
+        />
 
-            {/* stat strip */}
-            <div className="mt-14 flex flex-wrap gap-x-12 gap-y-6">
-              {[
-                { n: "100+", label: "Episodes shipped" },
-                { n: "< 7 days", label: "Shot to published" },
-                { n: "3", label: "Active shows" },
-              ].map((s) => (
+        {/* 2. The team — with the studio's intro paragraph + stats above the faces */}
+        <section className="relative py-24 lg:py-28">
+          <EdgeDivider />
+          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+            <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
+              The people behind the shows.
+            </h2>
+            <p className="mt-6 max-w-2xl text-[clamp(1rem,1.4vw,1.1rem)] leading-relaxed text-text-muted">
+              100+ episodes shipped. Politics, fintech, and the kind of long-form
+              conversation most studios don&apos;t attempt. We handle the whole
+              thing: brand, shoot, edit, growth. So the founder can focus on the
+              conversation, not the production behind it.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-x-12 gap-y-6">
+              {STATS.map((s) => (
                 <div key={s.label}>
                   <p className="text-metal-static font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-tight">
                     {s.n}
@@ -69,17 +71,8 @@ export default async function AboutPage() {
                 </div>
               ))}
             </div>
-          </div>
-        </section>
 
-        {/* 2. The team */}
-        <section className="relative py-24 lg:py-28">
-          <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
-            <h2 className="text-metal-static mb-14 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
-              The people behind the shows.
-            </h2>
-            <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
+            <div className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
               {team.map((m) => (
                 <div key={m.name} className="group flex flex-col">
                   <div className="sweep relative aspect-square w-full overflow-hidden rounded-2xl border border-line-strong bg-bg-raised/50 transition-[transform] duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-1">
@@ -141,10 +134,10 @@ export default async function AboutPage() {
         {/* 3a. Case studies */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
             <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
-                The shows.
+                Case studies
               </h2>
               <p className="max-w-md text-text-muted sm:text-right">
                 Three clients. Three very different formats.
@@ -191,41 +184,29 @@ export default async function AboutPage() {
                 </Link>
               ))}
             </div>
-
-            <div className="mt-8">
-              <Link
-                href="/case-studies"
-                className="group inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-text"
-              >
-                See all case studies
-                <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:translate-x-1">
-                  →
-                </span>
-              </Link>
-            </div>
           </div>
         </section>
 
-        {/* 3b. Testimonials — link directly to /testimonials#<vimeoId> */}
+        {/* 3b. Testimonials — inline lightbox on click */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
             <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
-                In their own words.
+                Testimonials
               </h2>
               <p className="max-w-md text-text-muted sm:text-right">
                 Founders and creators on working with the studio.
               </p>
             </div>
-            <Testimonials items={testimonials} linkMode />
+            <Testimonials items={testimonials} />
           </div>
         </section>
 
         {/* 4. What we believe */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
             <h2 className="text-metal-static mb-12 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
               What we believe.
             </h2>
@@ -236,7 +217,7 @@ export default async function AboutPage() {
         {/* 5. Closing one-liner */}
         <section className="relative py-20 lg:py-24">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
+          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
             <p className="text-metal font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-medium leading-[1.3] tracking-[-0.02em]">
               The show belongs to you. The studio is ours to run.
             </p>

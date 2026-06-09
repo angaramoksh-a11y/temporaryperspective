@@ -326,7 +326,15 @@ export type TestimonialCategory =
   | "Podcasters & B2B"
   | "Founders";
 export type CredIcon = "instagram" | "linkedin" | "youtube" | "website";
-export type Credential = { label: string; href: string; icon: CredIcon };
+// `side` decides which column the link renders in on /testimonials:
+//   - "client": the show, channel, or company (left column, with the title card)
+//   - "speaker": the person on the cover (right column, with the video)
+export type Credential = {
+  label: string;
+  href: string;
+  icon: CredIcon;
+  side: "client" | "speaker";
+};
 export type TestimonialProject = { label: string; href?: string };
 
 export type SiteTestimonial = {
@@ -365,9 +373,9 @@ export const siteTestimonials: SiteTestimonial[] = [
       "My name is Brendan Marshall and I'm an advisor to Qapita. I spent the last few days with Temporary Perspective, had a wonderful time, learnt a lot about how to deliver a great show on a podcast. And I think what's really clear is that everyone on this team cares. They care about the product they're making, but also the people who were part of that, including our guest. They're very meticulous about all those details, and great people to work with.",
     ],
     credentials: [
-      { label: "Qapita", href: "https://www.qapita.com", icon: "website" },
-      { label: "Qapita on LinkedIn", href: "https://www.linkedin.com/company/qapita/posts/?feedView=all", icon: "linkedin" },
-      { label: "Brendan on LinkedIn", href: "https://www.linkedin.com/in/brendantmarshall/", icon: "linkedin" },
+      { label: "qapita.com", href: "https://www.qapita.com", icon: "website", side: "client" },
+      { label: "Qapita on LinkedIn", href: "https://www.linkedin.com/company/qapita/posts/?feedView=all", icon: "linkedin", side: "client" },
+      { label: "Brendan on LinkedIn", href: "https://www.linkedin.com/in/brendantmarshall/", icon: "linkedin", side: "speaker" },
     ],
     projects: [{ label: "The Catapult Code", href: "/case-studies/qapita" }],
     preview: true,
@@ -383,14 +391,16 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       {
-        label: "@Bharatvaarta",
+        label: "@Bharatvaarta on YouTube",
         href: "https://www.youtube.com/@Bharatvaarta",
         icon: "youtube",
+        side: "client",
       },
       {
         label: "Roshan on LinkedIn",
         href: "https://www.linkedin.com/in/cariappack/",
         icon: "linkedin",
+        side: "speaker",
       },
     ],
     projects: [{ label: "Bharatvaarta", href: "/case-studies/bharatvaarta" }],
@@ -410,9 +420,10 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       {
-        label: "Bureau",
+        label: "Bureau on LinkedIn",
         href: "https://www.linkedin.com/company/bureauidentity/",
         icon: "linkedin",
+        side: "client",
       },
     ],
     projects: [
@@ -433,14 +444,16 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       {
-        label: "@tarini_shah",
+        label: "@tarini_shah on Instagram",
         href: "https://www.instagram.com/tarini_shah/",
         icon: "instagram",
+        side: "speaker",
       },
       {
-        label: "LinkedIn",
+        label: "Tarini on LinkedIn",
         href: "https://www.linkedin.com/in/tarini-shah-043b042a4/",
         icon: "linkedin",
+        side: "speaker",
       },
     ],
     projects: [
@@ -461,14 +474,16 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       {
-        label: "@ishpreetbalbir",
+        label: "@ishpreetbalbir on Instagram",
         href: "https://www.instagram.com/ishpreetbalbir/",
         icon: "instagram",
+        side: "speaker",
       },
       {
-        label: "LinkedIn",
+        label: "Ishpreet on LinkedIn",
         href: "https://www.linkedin.com/in/ishpreetbalbir/",
         icon: "linkedin",
+        side: "speaker",
       },
     ],
     projects: [
@@ -489,14 +504,16 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       {
-        label: "@chashmishkhushi",
+        label: "@chashmishkhushi on Instagram",
         href: "https://www.instagram.com/chashmishkhushi/",
         icon: "instagram",
+        side: "speaker",
       },
       {
-        label: "LinkedIn",
+        label: "Khushbu on LinkedIn",
         href: "https://www.linkedin.com/in/khushbuchandarana/",
         icon: "linkedin",
+        side: "speaker",
       },
     ],
     projects: [{ label: "Ishi Ki Khushi (Eps 5-8)", href: "/portfolio/archive?q=ishi-ki-khushi" }],
@@ -511,7 +528,7 @@ export const siteTestimonials: SiteTestimonial[] = [
       "Working with Temporary Perspective, it's never only been about finishing the job and ticking off tasks — they've been so involved in each and every part of the process. They helped us think, ideate, plan the shoots, and finally shoot and get it done. They've been so involved that now it feels like they're a part of Team Ettara. It's very rare to find people who care so much, who take ownership of others' projects to this extent — not just on set, but behind the scenes. The kind of hard work they've put in, not caring about their own sleep schedules or other commitments — that's what sets them apart for me.",
     ],
     credentials: [
-      { label: "Ettara", href: "https://ettara.co/", icon: "website" },
+      { label: "ettara.co", href: "https://ettara.co/", icon: "website", side: "client" },
     ],
     projects: [
       { label: "Website content shoot", href: "/portfolio/archive" },

@@ -12,12 +12,19 @@ import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
  * each with a single tasteful demo, in the studio's chrome/glass language. Real
  * Bharatvaarta assets where they exist; everything respects reduced motion.
  */
+// Phases that render a right-column visual. Guest Prep is intentionally text-only —
+// the brief is described in the copy; a mocked-up doc adds noise without proof.
+export const PHASES_WITH_VISUAL = new Set([
+  "branding",
+  "production",
+  "post",
+  "growth",
+]);
+
 export default function PhaseVisual({ phaseId }: { phaseId: string }) {
   switch (phaseId) {
     case "branding":
       return <BrandBookVisual />;
-    case "guest-prep":
-      return <GuestBriefVisual />;
     case "production":
       return (
         <RemoteCompare
@@ -205,89 +212,7 @@ function BrandBookVisual() {
   );
 }
 
-/* ---------- Guest Prep — the researched brief ----------------------------- */
-
-const HOOKS = [
-  "What does the public misunderstand most about the deep state?",
-  "If you rebuilt India's intelligence apparatus today, what changes?",
-  "How is AI quietly rewriting the rules of statecraft?",
-];
-
-const ANTI = [
-  "“Tell us about your career.”",
-  "“What is intelligence?”",
-  "Anything he's answered on three other shows.",
-];
-
-function BriefBlock({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="mt-4 border-t border-line pt-4">
-      <span className="text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
-        {label}
-      </span>
-      {children}
-    </div>
-  );
-}
-
-function GuestBriefVisual() {
-  return (
-    <div className="chrome-card p-5 lg:p-6">
-      <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
-        Guest brief · Bharatvaarta
-      </span>
-      <h3 className="mt-2 font-display text-2xl font-semibold tracking-tight text-text">
-        Vikram Sood
-      </h3>
-      <p className="mt-1 text-sm text-text-muted">
-        Former Chief, R&amp;AW · author, The Unending Game
-      </p>
-
-      <BriefBlock label="Why this guest">
-        <p className="mt-2 text-sm leading-relaxed text-text-muted">
-          One of the few who can speak to intelligence as both insider and
-          historian. The &ldquo;deep state&rdquo; framing is having a global
-          moment — he&apos;s the most credible Indian voice on it.
-        </p>
-      </BriefBlock>
-
-      <BriefBlock label="Hook angles">
-        <ol className="mt-3 flex flex-col gap-2.5">
-          {HOOKS.map((q, i) => (
-            <li key={i} className="flex gap-3">
-              <span className="pt-0.5 font-mono text-[0.75rem] text-text-faint">
-                Q{i + 1}
-              </span>
-              <span className="text-sm leading-snug text-text">{q}</span>
-            </li>
-          ))}
-        </ol>
-      </BriefBlock>
-
-      <BriefBlock label="Don't ask">
-        <ul className="mt-3 flex flex-col gap-2">
-          {ANTI.map((a, i) => (
-            <li
-              key={i}
-              className="flex items-baseline gap-2 text-sm text-text-faint"
-            >
-              <span aria-hidden>✕</span>
-              <span className="line-through opacity-70">{a}</span>
-            </li>
-          ))}
-        </ul>
-      </BriefBlock>
-    </div>
-  );
-}
-
-/* ---------- Post — edit styles + clip count ------------------------------- */
+/* ---------- Post — edit styles ------------------------------------------- */
 
 type Cut = {
   key: string;
@@ -336,29 +261,9 @@ const EDIT_CUTS: Cut[] = [
   },
 ];
 
-function ClipCell() {
-  return (
-    <div className="relative aspect-[9/16] w-[72px] shrink-0 overflow-hidden rounded-md border border-line bg-bg-sunken">
-      <span
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.06] to-transparent"
-      />
-      <span
-        aria-hidden
-        className="absolute left-1/2 top-1/2 block h-0 w-0 -translate-x-1/2 -translate-y-1/2 border-y-[5px] border-l-[8px] border-y-transparent border-l-white/60"
-      />
-      <span
-        aria-hidden
-        className="absolute inset-x-1.5 bottom-1.5 h-1 rounded-full bg-white/15"
-      />
-    </div>
-  );
-}
-
 function PostVisual() {
   const reduce = useReducedMotion();
   const [edit, setEdit] = useState("hooked");
-  const [clips, setClips] = useState("6");
   const [lightbox, setLightbox] = useState<number | null>(null);
 
   const idx = Math.max(
@@ -372,7 +277,6 @@ function PostVisual() {
     client: c.tag,
     media: { kind: "youtube", id: c.id, start: c.start },
   }));
-  const count = Number(clips);
 
   return (
     <div className="w-full">
@@ -413,31 +317,6 @@ function PostVisual() {
       </div>
       <p className="mt-3 text-sm leading-relaxed text-text-muted">
         {active.caption}
-      </p>
-
-      <div className="mt-6 flex items-center gap-3">
-        <span className="text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
-          Clips
-        </span>
-        <Segmented
-          ariaLabel="Clips per episode"
-          layoutId="post-clips"
-          options={[
-            { value: "3", label: "3" },
-            { value: "6", label: "6" },
-            { value: "12", label: "12" },
-          ]}
-          value={clips}
-          onChange={setClips}
-        />
-      </div>
-      <div className="scroll-row fade-x mt-3 flex gap-2 overflow-x-auto pb-1">
-        {Array.from({ length: count }).map((_, i) => (
-          <ClipCell key={i} />
-        ))}
-      </div>
-      <p className="mt-3 text-sm text-text-muted">
-        {count} vertical cuts per episode — captioned, built to travel.
       </p>
 
       <MediaLightbox

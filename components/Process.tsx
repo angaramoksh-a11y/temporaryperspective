@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { GhostButton } from "./ui";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
@@ -28,23 +28,10 @@ const BRAND_BOOKS: LightboxItem[] = [
   },
 ];
 
-// How many ms each per-episode step stays lit before moving to the next.
-const STEP_MS = 900;
-
 export default function Process() {
   const [pdf, setPdf] = useState<number | null>(null);
   const [runKey, setRunKey] = useState(0);
   const [running, setRunning] = useState(false);
-  // Which per-episode step is currently lit. Starts cycling immediately.
-  const [litStep, setLitStep] = useState(0);
-
-  // Cycle through per-episode steps on mount, indefinitely.
-  useEffect(() => {
-    const id = setInterval(() => {
-      setLitStep((s) => (s + 1) % REPEAT.length);
-    }, STEP_MS);
-    return () => clearInterval(id);
-  }, []);
 
   const handleRepeat = () => {
     if (running) return;
@@ -131,38 +118,30 @@ export default function Process() {
             </div>
 
             <ol className="mt-4 grid gap-x-4 gap-y-5 sm:grid-cols-2 lg:grid-cols-4">
-              {REPEAT.map((p, i) => {
-                const lit = litStep === i;
-                return (
-                  <li key={p.id}>
-                    <Link href={`/process#${p.id}`} className="group/node block">
-                      <span className="flex items-center gap-2">
-                        {/* cycling indicator dot */}
-                        <span
-                          className={`h-1.5 w-1.5 shrink-0 rounded-full transition-all duration-500 ${
-                            lit
-                              ? "bg-chrome shadow-[0_0_8px_1px_oklch(0.85_0.03_240/0.9)] scale-125"
-                              : "bg-line-strong scale-100"
-                          }`}
-                          aria-hidden
-                        />
-                        <span className={`font-mono text-xs transition-colors duration-500 ${lit ? "text-text" : "text-text-faint"}`}>
-                          {String(i + 1).padStart(2, "0")}
-                        </span>
+              {REPEAT.map((p, i) => (
+                <li key={p.id}>
+                  <Link href={`/process#${p.id}`} className="group/node block">
+                    <span className="flex items-center gap-2">
+                      <span
+                        aria-hidden
+                        className="h-1.5 w-1.5 shrink-0 rounded-full bg-line-strong transition-all duration-300 ease-[var(--ease-out-quart)] group-hover/node:scale-125 group-hover/node:bg-chrome group-hover/node:shadow-[0_0_8px_1px_oklch(0.85_0.03_240/0.9)]"
+                      />
+                      <span className="font-mono text-xs text-text-faint transition-colors duration-300 group-hover/node:text-text">
+                        {String(i + 1).padStart(2, "0")}
                       </span>
-                      <span className="mt-1.5 flex items-center gap-1.5 font-display text-base font-medium tracking-tight text-text">
-                        {p.title}
-                        <span className="text-text-faint opacity-0 transition-opacity duration-200 group-hover/node:opacity-100">
-                          →
-                        </span>
+                    </span>
+                    <span className="mt-1.5 flex items-center gap-1.5 font-display text-base font-medium tracking-tight text-text">
+                      {p.title}
+                      <span className="text-text-faint opacity-0 transition-opacity duration-200 group-hover/node:opacity-100">
+                        →
                       </span>
-                      <span className="mt-1 block text-sm leading-snug text-text-muted">
-                        {p.body}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
+                    </span>
+                    <span className="mt-1 block text-sm leading-snug text-text-muted">
+                      {p.body}
+                    </span>
+                  </Link>
+                </li>
+              ))}
             </ol>
 
             {/* Start → Day 7 meter */}

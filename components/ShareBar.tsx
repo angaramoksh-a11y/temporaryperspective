@@ -100,7 +100,7 @@ export default function ShareBar({ title }: { title?: string }) {
         onClick={copyLink}
         aria-label={copied ? "Link copied" : "Copy link"}
         title={copied ? "Copied!" : "Copy link"}
-        className="grid h-9 w-9 place-items-center rounded-full border border-line bg-bg-raised/40 text-text-muted backdrop-blur transition-colors hover:border-line-strong hover:text-text"
+        className="grid h-9 w-9 place-items-center rounded-md border border-line bg-bg-raised/40 text-text-muted backdrop-blur transition-colors hover:border-line-strong hover:text-text"
       >
         <AnimatePresence mode="wait" initial={false}>
           {copied ? (
@@ -138,7 +138,7 @@ export default function ShareBar({ title }: { title?: string }) {
         aria-label="Share this page"
         aria-expanded={open}
         title="Share"
-        className="grid h-9 w-9 place-items-center rounded-full border border-line bg-bg-raised/40 text-text-muted backdrop-blur transition-colors hover:border-line-strong hover:text-text"
+        className="grid h-9 w-9 place-items-center rounded-md border border-line bg-bg-raised/40 text-text-muted backdrop-blur transition-colors hover:border-line-strong hover:text-text"
       >
         <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={1.7} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
           <circle cx="18" cy="5" r="3" />

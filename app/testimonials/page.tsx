@@ -137,7 +137,7 @@ const CONFIG: Record<
     groups: [
       {
         items: [
-          { label: "Catalogue shoot", media: v("1172801163") },
+          { label: "Founders Video", media: v("1172801163") },
           {
             label: "BTS reel",
             href: "https://www.instagram.com/reel/DNBFk15yCSM/",
