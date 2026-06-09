@@ -1,0 +1,24 @@
+/**
+ * Cloudflare Worker config for temporaryperspective.com.
+ *
+ * This is a static-assets-only Worker — Next.js builds to ./out (via
+ * `output: "export"` in next.config.ts), and Cloudflare serves that
+ * directory at the edge.
+ *
+ * Build pipeline (configured in the Cloudflare dashboard for the `podcast`
+ * project, Settings → Build & deploy commands):
+ *   - Build:  `npm run build`   → produces ./out
+ *   - Deploy: `npx wrangler deploy`   → uploads ./out as Worker assets
+ *
+ * Don't rename `name` — it pins to the existing Worker whose Custom Domain
+ * is temporaryperspective.com.
+ */
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "podcast",
+  "compatibility_date": "2025-04-01",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
