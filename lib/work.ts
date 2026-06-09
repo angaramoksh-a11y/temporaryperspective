@@ -425,6 +425,12 @@ export const siteTestimonials: SiteTestimonial[] = [
         icon: "linkedin",
         side: "client",
       },
+      {
+        label: "Rahi on LinkedIn",
+        href: "https://www.linkedin.com/in/rahi-bhattacharjee-3a4456135/",
+        icon: "linkedin",
+        side: "speaker",
+      },
     ],
     projects: [
       { label: "Bureau Fraud Forum", href: "/case-studies/bureau" },
