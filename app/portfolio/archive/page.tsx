@@ -9,6 +9,13 @@ import { archiveItems, resolveThumb, workItemKey } from "@/lib/work";
 export const metadata: Metadata = {
   title: "The archive — Temporary Perspective",
   description: "Every episode, every piece. The full Temporary Perspective library.",
+  openGraph: {
+    title: "The archive — Temporary Perspective",
+    description: "Every episode, every piece. The full Temporary Perspective library.",
+    url: "https://temporaryperspective.com/portfolio/archive",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default async function ArchivePage() {

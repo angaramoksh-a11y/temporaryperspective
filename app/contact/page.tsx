@@ -7,6 +7,48 @@ export const metadata: Metadata = {
   title: "Book a call — Temporary Perspective",
   description:
     "A short call to see if we're the right studio for your show. No pitch deck, no quote on the call.",
+  openGraph: {
+    title: "Book a call — Temporary Perspective",
+    description:
+      "A short call to see if we're the right studio for your show. No pitch deck, no quote on the call.",
+    url: "https://temporaryperspective.com/contact",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
+};
+
+const localBusinessSchema = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Temporary Perspective",
+  url: "https://temporaryperspective.com",
+  logo: "https://temporaryperspective.com/logo-white.svg",
+  telephone: "+91-99204-21611",
+  email: "hey@temporaryperspective.com",
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Mumbai",
+    addressRegion: "Maharashtra",
+    addressCountry: "IN",
+  },
+  areaServed: [
+    "Mumbai",
+    "Bangalore",
+    "Delhi",
+    "Chennai",
+    "Hyderabad",
+    "San Francisco",
+    "New York",
+  ],
+  priceRange: "$$$",
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "10:00",
+      closes: "19:00",
+    },
+  ],
 };
 
 export default function ContactPage() {
@@ -92,6 +134,10 @@ export default function ContactPage() {
         </section>
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
     </>
   );
 }

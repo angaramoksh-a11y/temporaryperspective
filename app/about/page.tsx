@@ -14,6 +14,13 @@ export const metadata: Metadata = {
   title: "The studio — Temporary Perspective",
   description:
     "A B2B podcast production studio in Mumbai. We build the studio; the show stays yours.",
+  openGraph: {
+    title: "The studio — Temporary Perspective",
+    description: "A B2B podcast production studio in Mumbai. We build the studio; the show stays yours.",
+    url: "https://temporaryperspective.com/about",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const STATS = [

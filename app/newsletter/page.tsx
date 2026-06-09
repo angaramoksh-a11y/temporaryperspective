@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   title: "Newsletter — Temporary Perspective",
   description:
     "Short, occasional notes on running a podcast worth watching, from the studio behind Bharatvaarta, Bureau, and Qapita.",
+  openGraph: {
+    title: "Newsletter — Temporary Perspective",
+    description: "Short, occasional notes on running a podcast worth watching, from the studio behind Bharatvaarta, Bureau, and Qapita.",
+    url: "https://temporaryperspective.com/newsletter",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function NewsletterPage() {

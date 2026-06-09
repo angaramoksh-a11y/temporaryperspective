@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "Portfolio — Temporary Perspective",
   description:
     "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
+  openGraph: {
+    title: "Portfolio — Temporary Perspective",
+    description: "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
+    url: "https://temporaryperspective.com/portfolio",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function PortfolioPage() {

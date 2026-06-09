@@ -22,6 +22,13 @@ export async function generateMetadata({
   return {
     title: `${name} — Temporary Perspective`,
     description: "Every episode, every piece. The full Temporary Perspective library.",
+    openGraph: {
+      title: `${name} — Temporary Perspective`,
+      description: "Every episode, every piece. The full Temporary Perspective library.",
+      url: `https://temporaryperspective.com/portfolio/archive/${slug}`,
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

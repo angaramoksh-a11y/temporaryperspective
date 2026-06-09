@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "Questions — Temporary Perspective",
   description:
     "Common questions about working with Temporary Perspective: scope, pricing, remote shoots, editing, timelines, and what we need from you.",
+  openGraph: {
+    title: "Questions — Temporary Perspective",
+    description: "Common questions about working with Temporary Perspective: scope, pricing, remote shoots, editing, timelines, and what we need from you.",
+    url: "https://temporaryperspective.com/faq",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const faqJsonLd = {

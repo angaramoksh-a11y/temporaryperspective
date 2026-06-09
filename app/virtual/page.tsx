@@ -10,6 +10,13 @@ export const metadata: Metadata = {
   title: "Remote production — Temporary Perspective",
   description:
     "When your guest can't be in the room, we make it look like they were. A crew at both ends, recorded properly, cut as one conversation.",
+  openGraph: {
+    title: "Remote production — Temporary Perspective",
+    description: "When your guest can't be in the room, we make it look like they were. A crew at both ends, recorded properly, cut as one conversation.",
+    url: "https://temporaryperspective.com/virtual",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 const STEPS = [

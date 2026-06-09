@@ -39,6 +39,13 @@ export async function generateMetadata({
   return {
     title: `${cs.client} — Temporary Perspective`,
     description: cs.result,
+    openGraph: {
+      title: `${cs.client} — Temporary Perspective`,
+      description: cs.result,
+      url: `https://temporaryperspective.com/case-studies/${client}`,
+      type: "website",
+    },
+    twitter: { card: "summary_large_image" },
   };
 }
 

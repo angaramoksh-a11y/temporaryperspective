@@ -9,6 +9,13 @@ export const metadata: Metadata = {
   title: "The process — Temporary Perspective",
   description:
     "How we run a podcast, end to end. Branding, guest prep, production, post, and growth, with Bharatvaarta as the running example.",
+  openGraph: {
+    title: "The process — Temporary Perspective",
+    description: "How we run a podcast, end to end. Branding, guest prep, production, post, and growth, with Bharatvaarta as the running example.",
+    url: "https://temporaryperspective.com/process",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function ProcessPage() {

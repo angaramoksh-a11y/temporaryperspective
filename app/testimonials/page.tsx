@@ -12,6 +12,13 @@ export const metadata: Metadata = {
   title: "Testimonials — Temporary Perspective",
   description:
     "In their own words: podcasters, founders, and creators on working with Temporary Perspective.",
+  openGraph: {
+    title: "Testimonials — Temporary Perspective",
+    description: "In their own words: podcasters, founders, and creators on working with Temporary Perspective.",
+    url: "https://temporaryperspective.com/testimonials",
+    type: "website",
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 // Page order, by testimonial video id. Founders/B2B lead, then creators —
