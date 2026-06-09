@@ -535,6 +535,7 @@ export const siteTestimonials: SiteTestimonial[] = [
     ],
     credentials: [
       { label: "ettara.co", href: "https://ettara.co/", icon: "website", side: "client" },
+      { label: "Meet on LinkedIn", href: "https://www.linkedin.com/in/meet-shah-/", icon: "linkedin", side: "speaker" },
     ],
     projects: [
       { label: "Website content shoot", href: "/portfolio/archive" },
