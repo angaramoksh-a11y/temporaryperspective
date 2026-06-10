@@ -6,12 +6,6 @@ import RemoteCompare, { REMOTE_SIDES } from "./RemoteCompare";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-const POINTS = [
-  "Crew at both ends",
-  "Recorded properly, locally",
-  "Cut as one conversation",
-];
-
 export default function VirtualCallout() {
   return (
     <section className="relative py-14 lg:py-28">
@@ -26,19 +20,9 @@ export default function VirtualCallout() {
             An online podcast doesn&apos;t need to look like a Zoom call.
           </h2>
           <p className="mt-5 max-w-md leading-relaxed text-text-muted">
-            Most online episodes are recorded on a laptop webcam — soft, flat,
-            lifeless. We put a real camera, proper light, and clean sound on your
-            guest (and your host), wherever they are. Same online format, shot
-            like a studio.
+            A real camera, proper light, and clean sound on your guest and your
+            host, wherever they are.
           </p>
-          <ul className="mt-6 flex flex-col gap-2.5">
-            {POINTS.map((p) => (
-              <li key={p} className="flex items-center gap-2.5 text-sm text-text-muted">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-text-faint" aria-hidden />
-                {p}
-              </li>
-            ))}
-          </ul>
           <div className="mt-8">
             <ArrowLink href="/virtual">Learn more</ArrowLink>
           </div>
