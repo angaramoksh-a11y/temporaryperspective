@@ -66,7 +66,7 @@ export default async function AboutPage() {
         {/* 2. The team — with the studio's intro paragraph + stats above the faces */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[88%] lg:px-0">
             <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
               The people behind the shows.
             </h2>
@@ -227,16 +227,6 @@ export default async function AboutPage() {
               What we believe.
             </h2>
             <Beliefs />
-          </div>
-        </section>
-
-        {/* 5. Closing one-liner */}
-        <section className="relative py-20 lg:py-24">
-          <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
-            <p className="text-metal font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-medium leading-[1.3] tracking-[-0.02em]">
-              The show belongs to you. The studio is ours to run.
-            </p>
           </div>
         </section>
 

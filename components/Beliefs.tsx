@@ -16,7 +16,7 @@ function BeliefCard({ text, index }: { text: string; index: number }) {
       initial={{ opacity: 0, y: 20 }}
       animate={inView ? { opacity: 1, y: 0 } : undefined}
       transition={{ duration: 0.6, ease, delay: index * 0.07 }}
-      className="glass sweep rounded-2xl p-6 lg:p-8"
+      className="glass rounded-2xl p-6 lg:p-8"
     >
       <span className="font-mono text-sm text-text-faint">
         {String(index + 1).padStart(2, "0")}
