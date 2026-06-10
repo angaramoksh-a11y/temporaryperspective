@@ -9,8 +9,37 @@ import Thumb from "./Thumb";
 import { RelatedCases } from "./caseParts";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 import { CredIconSvg } from "./testimonialBits";
-import { bureauContent as c } from "@/lib/work";
+import { bureauContent as c, siteTestimonials } from "@/lib/work";
+import { videoObjectSchema } from "@/lib/schema";
 import ShareBar from "./ShareBar";
+
+const rahiTranscript =
+  siteTestimonials.find((t) => t.vimeoId === c.testimonialVimeoId)?.transcript ?? [];
+
+const bureauLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    videoObjectSchema({
+      name: `${c.testimonialName} on Temporary Perspective`,
+      description: rahiTranscript[0] ?? c.quote.text,
+      source: "vimeo",
+      embedId: c.testimonialVimeoId,
+      uploadDate: "2025-01-01",
+    }),
+    ...c.formats.flatMap((f) =>
+      f.tiles.map((t) =>
+        videoObjectSchema({
+          name: t.guest ? `${f.heading} — ${t.guest}` : f.heading,
+          description: `${f.body} Produced for Bureau by Temporary Perspective.`,
+          source: "youtube",
+          embedId: t.id,
+          publisherName: "Bureau",
+          publisherUrl: "https://www.linkedin.com/company/bureauidentity/",
+        }),
+      ),
+    ),
+  ],
+};
 
 const RAHI_LINKEDIN =
   "https://www.linkedin.com/company/bureauidentity/";
@@ -371,6 +400,10 @@ export default function BureauCaseStudy() {
         <ClosingCTA subline="Want a show like Bureau? Start with a call." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bureauLd) }}
+      />
     </>
   );
 }

@@ -14,6 +14,11 @@ const primary = [
   { label: "FAQ", href: "/faq" },
 ];
 
+const resources = [
+  { label: "Glossary", href: "/glossary" },
+  { label: "State of B2B Podcasts 2026", href: "/state-of-b2b-podcasts-2026" },
+];
+
 const legal = [
   { label: "Privacy", href: "/privacy" },
   { label: "Terms and Conditions", href: "/terms-and-conditions" },
@@ -89,18 +94,41 @@ export default function Footer() {
             ))}
           </nav>
 
-          {/* legal */}
-          <nav className="flex flex-col gap-3 text-sm">
-            {legal.map((l) => (
-              <Link
-                key={l.href}
-                href={l.href}
-                className="w-fit text-text-muted transition-colors hover:text-text"
-              >
-                {l.label}
-              </Link>
-            ))}
-          </nav>
+          {/* resources + legal */}
+          <div className="flex flex-col gap-8">
+            <div>
+              <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                Resources
+              </p>
+              <nav className="flex flex-col gap-3 text-sm">
+                {resources.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="w-fit text-text-muted transition-colors hover:text-text"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+            <div>
+              <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-text-faint">
+                Legal
+              </p>
+              <nav className="flex flex-col gap-3 text-sm">
+                {legal.map((l) => (
+                  <Link
+                    key={l.href}
+                    href={l.href}
+                    className="w-fit text-text-muted transition-colors hover:text-text"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </nav>
+            </div>
+          </div>
         </div>
 
         {/* Lifted above the fixed Vignette (z-30) so the legal line stays crisp */}

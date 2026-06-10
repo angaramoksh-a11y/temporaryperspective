@@ -38,8 +38,12 @@ export function embed(
     params.set("iv_load_policy", "3");
     params.set("fs", "0");
     params.set("disablekb", "1");
-    params.set("loop", "1");
-    params.set("playlist", id); // loop requires playlist for a single video
+    // YouTube ignores `start` on re-loop — a mid-video start snaps back to 0:00
+    // on every repeat, showing the wrong scene. Only loop when starting from 0.
+    if (!start) {
+      params.set("loop", "1");
+      params.set("playlist", id);
+    }
   }
   return `https://www.youtube-nocookie.com/embed/${id}?${params.toString()}`;
 }
@@ -888,7 +892,7 @@ export const newsletterPosts: NewsletterPost[] = [
     readingTime: "5 min read",
     date: "May 2026",
     dateLong: "May 10, 2026",
-    author: "Moksh",
+    author: "Hatim",
     body: [
       {
         paragraphs: [
@@ -997,31 +1001,33 @@ export const team: {
 }[] = [
   {
     name: "Angara Moksh",
-    role: "CEO",
+    role: "Founder & CEO",
     line: "Runs strategy and the room. The first call and the last cut.",
     linkedin: "https://www.linkedin.com/in/angaramoksh/",
     headshot: "/moksh.jpg",
   },
   {
-    name: "Manav",
+    name: "Bendi Manav",
     role: "Production Head",
     line: "Owns what happens on set, from the cameras to the calm.",
     linkedin: "https://www.linkedin.com/in/manavbendi/",
+    headshot: "/manav.jpg",
   },
   {
-    name: "Hatim",
+    name: "Motiwala Hatim",
     role: "Post-Production Head",
     line: "Turns a day of footage into an hour worth watching twice.",
     linkedin: "https://www.linkedin.com/in/motiwala-hatim/",
+    headshot: "/hatim.jpg",
   },
   {
-    name: "Rudra",
+    name: "Jaiswal Rudra",
     role: "CMO",
     line: "Makes sure the right people find the work.",
     linkedin: "https://www.linkedin.com/in/rudra-jaiswal-878100241/",
   },
   {
-    name: "Tejas",
+    name: "Bainalwar Tejas",
     role: "Lead Designer",
     line: "The brand systems behind every show we build.",
     linkedin: null,

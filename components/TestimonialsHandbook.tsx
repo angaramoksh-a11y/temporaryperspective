@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import type { Credential } from "@/lib/work";
 import MediaLightbox, {
   type LightboxItem,
@@ -28,6 +28,7 @@ export type HandbookRow = {
   note?: string;
   role: string;
   quote: string;
+  transcript?: string[];
   credentials: Credential[];
   caseStudy?: string;
   groups: HandbookGroup[];
@@ -164,6 +165,7 @@ function TestimonialCard({
   onOpen: () => void;
   onOpenProject: (item: PItem) => void;
 }) {
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
   const clientCreds = row.credentials.filter((c) => c.side === "client");
   const speakerCreds = row.credentials.filter((c) => c.side === "speaker");
 
@@ -172,7 +174,7 @@ function TestimonialCard({
       id={row.vimeoId}
       className="rounded-2xl border border-line bg-bg-raised/15 p-6 lg:p-8"
     >
-      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[2fr_3fr] lg:items-start lg:gap-12">
+      <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[2fr_3fr] lg:items-center lg:gap-12">
         {/* ── Left: title card (client side) ───────────────────────────── */}
         <div className="flex flex-col">
           {/* primary identifier — show/brand name (client) as the big headline */}
@@ -189,10 +191,11 @@ function TestimonialCard({
             )}
           </p>
 
-          {/* client-side links (show / channel / company) */}
-          {clientCreds.length > 0 && (
+          {/* social / channel links — client-side (show, channel) + speaker-side
+              (person's LinkedIn, Instagram) both live in the title column */}
+          {(clientCreds.length > 0 || speakerCreds.length > 0) && (
             <div className="mt-5">
-              <CredChips items={clientCreds} />
+              <CredChips items={[...clientCreds, ...speakerCreds]} />
             </div>
           )}
 
@@ -254,16 +257,12 @@ function TestimonialCard({
             </div>
           )}
 
-          {/* case study — proper button, consistent with other CTAs */}
           {row.caseStudy && (
             <Link
               href={row.caseStudy}
-              className="group/cs mt-5 inline-flex h-10 w-fit items-center gap-2 rounded-[var(--radius-btn)] border border-line-strong px-4 text-sm font-medium text-text transition-colors hover:border-white/30 hover:bg-white/[0.04]"
+              className="mt-5 w-fit text-sm text-text-faint underline-offset-4 transition-colors hover:text-text hover:underline"
             >
-              View case study
-              <span className="transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover/cs:translate-x-0.5">
-                →
-              </span>
+              Full story →
             </Link>
           )}
         </div>
@@ -278,20 +277,48 @@ function TestimonialCard({
             onOpen={onOpen}
           />
 
-          {/* speaker-side links replace the name attribution. If the person has
-              no LinkedIn/Instagram listed, fall back to plain text. */}
-          {speakerCreds.length > 0 ? (
-            <div className="mt-3">
-              <CredChips items={speakerCreds} />
-            </div>
-          ) : (
-            <p className="mt-2.5 text-sm font-medium text-text">{row.name}</p>
-          )}
-
           {/* pull quote — caption style, italic, no quotation marks */}
           <p className="mt-3 text-[0.9375rem] italic leading-snug text-text-muted">
             {row.quote}
           </p>
+
+          {/* transcript toggle */}
+          {row.transcript && row.transcript.length > 0 && (
+            <div className="mt-4">
+              <button
+                onClick={() => setTranscriptOpen((o) => !o)}
+                className="text-[0.8125rem] text-text-faint transition-colors hover:text-text"
+              >
+                {transcriptOpen ? "Close transcript ↑" : "Read transcript ↓"}
+              </button>
+              <AnimatePresence initial={false}>
+                {transcriptOpen && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{
+                      duration: reduce ? 0 : 0.25,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                    style={{ overflow: "hidden" }}
+                  >
+                    <div className="mt-4 border-t border-line pt-4">
+                      <p className="mb-3 text-[0.75rem] font-medium uppercase tracking-[0.14em] text-text-faint">
+                        Transcript — {row.name}, recorded for Temporary
+                        Perspective.
+                      </p>
+                      <div className="max-w-[68ch] space-y-4 text-[0.9375rem] leading-[1.7] text-text-muted">
+                        {row.transcript.map((para, i) => (
+                          <p key={i}>{para}</p>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
       </div>
     </article>

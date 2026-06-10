@@ -69,12 +69,12 @@ export default function WorkGrid() {
   return (
     <section className="relative pb-24 pt-2 lg:pb-28 lg:pt-4">
       <div className="mx-auto max-w-[1400px] px-6 lg:px-10">
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 lg:gap-6">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:gap-6">
           {workLibrary.map((ep, i) => (
             <Tile
               key={ep.id}
               ep={ep}
-              col={i % 4}
+              col={i % 3}
               hovered={hovered === ep.id}
               onHover={setHovered}
               onOpen={(e) => {

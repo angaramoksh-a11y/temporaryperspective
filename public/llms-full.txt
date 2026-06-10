@@ -180,6 +180,61 @@ Two things. We already understand your category, so you're not burning hours exp
 **How do we actually get started?**
 One call. We figure out what you're building, scope it, and send a clear plan and number. After that, it's a shoot date.
 
+## Glossary
+
+Definitions of the vocabulary we use when building B2B podcasts. Full list at https://temporaryperspective.com/glossary
+
+- **B2B podcast:** A podcast made for business decision-makers — founders, operators, investors — not a general audience. The metric isn't downloads; it's whether the right people watched it and acted.
+- **Cinema-grade podcast:** A podcast shot with the same craft as a film: real cameras, proper lighting, broadcast audio, a colour grade tuned to the conversation.
+- **Remote production:** A shoot where the host and guest are in different cities but the show looks like one room. A crew at both ends, real cameras at each location, broadcast audio locally.
+- **Multi-cam production:** Recording with two or more cameras running simultaneously. Lets the edit cut between angles so an hour-long conversation never feels like a static talking head.
+- **Master edit:** The finished long-form episode with pacing, hooks, b-roll, lower-thirds, music, and colour grade. The master is the show; everything else is derived from it.
+- **Colour grade:** The pass where every shot is tuned for tone, contrast, and consistency so the show has a look, not just a recording.
+- **Audio mix:** The pass where each mic is levelled, cleaned of room noise, EQ'd for clarity, and bedded under any music.
+- **Lower-thirds:** On-screen text that names a guest, marks a chapter, or quotes a line. Built once as part of the brand system.
+- **B-roll:** Supplementary footage cut over the main conversation — stills, motion graphics, archival, location shots.
+- **Retention hook:** The first 15–30 seconds of an episode, engineered to keep a viewer past the algorithm's first drop-off check.
+- **Short-form clips:** Vertical 30–90 second cuts pulled from a long-form episode for Instagram, LinkedIn, X, and YouTube Shorts.
+- **Guest prep:** Research dossier on the guest, host questionnaire, and guest-facing brief before the camera turns on.
+- **Podcast positioning:** The strategic choice of what the show is about and who it's for, made before any production decision.
+- **Episode cover:** The thumbnail and metadata that decide whether someone clicks an episode.
+- **Sizzle reel:** A short, fast-cut montage summarising an event, series, or studio capability.
+- **Talking head:** A clean single-person framing — a guest or speaker directly addressing the camera.
+- **Brand book:** The PDF that locks every visual decision before episode one — logo, palette, type, lower-thirds, title cards, thumbnails.
+
+## State of B2B Podcasts in India 2026
+
+**URL:** https://temporaryperspective.com/state-of-b2b-podcasts-2026
+**Type:** Annual industry report
+**Published:** June 2026
+
+An annual production and performance benchmark for B2B podcast teams in India. Covers 40+ shows, 600+ episodes, and six categories: B2B SaaS & Tech, Fintech & BFSI, Policy & Public Sector, Founder Stories, Creator & Consumer, and Professional Services.
+
+### Key Findings (summary)
+
+- **Retention collapses before 20 seconds** — The first major viewer exit across the dataset occurs within the first 20 seconds. The cause is almost always the cold open, not the guest.
+- **Multi-camera shows outperform 3× in the first two minutes** — Two or more camera angles sustain early viewer attention at roughly triple the rate of single-camera setups.
+- **Guest prep predicts click-through rate** — Shows where the guest received a structured brief before the shoot produced clips and thumbnails that consistently outperformed cold recordings.
+- **7-day turnaround is the performance threshold** — Shows published within 7 days of recording outperform longer-cycle shows, even when the longer cycle has a higher budget.
+- **40%+ of new subscribers arrive via short-form clips** — For most shows with a clip strategy, more new subscribers attribute their first encounter to a clip than to the long-form episode.
+- **Most B2B shows publish fewer than 5 episodes per year** — Consistency, not quality, is the primary reason shows fail to compound.
+
+### Structure
+
+1. Why This Report
+2. Methodology
+3. Key Findings
+4. By Category
+5. Production Benchmarks
+6. Audience Intelligence
+7. The Production Gap
+8. What Works (Recommendations)
+9. About This Report
+
+### Contact for data contributions
+
+hey@temporaryperspective.com — teams that want to contribute anonymised data to next year's edition can reach out directly.
+
 ## Contact
 
 - **Email:** hey@temporaryperspective.com

@@ -8,7 +8,7 @@ import Beliefs from "@/components/Beliefs";
 import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
 import { EdgeDivider } from "@/components/ui";
-import { siteTestimonials, team, vimeoPoster, caseStudies } from "@/lib/work";
+import { siteTestimonials, team, vimeoPoster, caseStudies, type SiteTestimonial } from "@/lib/work";
 
 export const metadata: Metadata = {
   title: "The studio — Temporary Perspective",
@@ -37,10 +37,19 @@ function monogram(name: string) {
   ).toUpperCase();
 }
 
+// Explicit order: Tarini → Ettara (Meet) → Ishpreet
+const ABOUT_TESTIMONIALS = [
+  "1169859676", // Tarini Shah
+  "1169859867", // Meet Shah, Ettara
+  "1197937165", // Ishpreet Balbir
+];
+
 export default async function AboutPage() {
+  const byId = new Map(siteTestimonials.map((t) => [t.vimeoId, t]));
   const testimonials = await Promise.all(
-    siteTestimonials
-      .filter((t) => t.preview)
+    ABOUT_TESTIMONIALS
+      .map((id) => byId.get(id))
+      .filter((t): t is SiteTestimonial => Boolean(t))
       .map(async (t) => ({ ...t, thumb: await vimeoPoster(t.vimeoId) })),
   );
 
@@ -71,9 +80,9 @@ export default async function AboutPage() {
             <div className="mt-10 flex flex-wrap gap-x-12 gap-y-6">
               {STATS.map((s) => (
                 <div key={s.label}>
-                  <p className="text-metal-static font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-tight">
+                  <h3 className="text-metal-static font-display text-[clamp(1.75rem,3vw,2.5rem)] font-semibold tracking-tight">
                     {s.n}
-                  </p>
+                  </h3>
                   <p className="mt-1 text-sm text-text-faint">{s.label}</p>
                 </div>
               ))}
@@ -105,9 +114,9 @@ export default async function AboutPage() {
                       }}
                     />
                   </div>
-                  <h3 className="mt-5 font-thunder text-[clamp(1.5rem,2vw,1.875rem)] uppercase leading-none tracking-tight">
+                  <h4 className="mt-5 font-thunder text-[clamp(1.5rem,2vw,1.875rem)] uppercase leading-none tracking-tight">
                     {m.name}
-                  </h3>
+                  </h4>
                   <span className="mt-2 text-[0.8125rem] font-medium uppercase tracking-[0.16em] text-text-faint">
                     {m.role}
                   </span>

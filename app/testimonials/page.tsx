@@ -7,6 +7,7 @@ import TestimonialsHandbook, {
   type HandbookRow,
 } from "@/components/TestimonialsHandbook";
 import { siteTestimonials, vimeoPoster } from "@/lib/work";
+import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Testimonials — Temporary Perspective",
@@ -172,6 +173,7 @@ export default async function TestimonialsPage() {
         note: t.note,
         role: t.role,
         quote: t.quote,
+        transcript: t.transcript,
         credentials: t.credentials,
         caseStudy: cfg?.caseStudy,
         groups: cfg?.groups ?? [],
@@ -180,7 +182,8 @@ export default async function TestimonialsPage() {
     }),
   );
 
-  // Review + VideoObject schema (transcripts live here only, for SEO/GEO).
+  // Review + VideoObject schema. uploadDate placeholders flagged: real dates
+  // should replace "2025-01-01" once confirmed with the client.
   const ld = {
     "@context": "https://schema.org",
     "@graph": ordered.flatMap((t) => [
@@ -191,14 +194,13 @@ export default async function TestimonialsPage() {
         itemReviewed: { "@type": "Organization", name: "Temporary Perspective" },
         reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
       },
-      {
-        "@type": "VideoObject",
+      videoObjectSchema({
         name: `${t.name} on Temporary Perspective`,
-        description: t.quote,
-        embedUrl: `https://player.vimeo.com/video/${t.vimeoId}`,
-        thumbnailUrl: `https://vumbnail.com/${t.vimeoId}.jpg`,
+        description: t.transcript[0] ?? t.quote,
+        source: "vimeo",
+        embedId: t.vimeoId,
         uploadDate: "2025-01-01",
-      },
+      }),
     ]),
   };
 

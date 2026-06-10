@@ -8,8 +8,23 @@ import PageHeroWord from "./PageHeroWord";
 import { RelatedCases } from "./caseParts";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 import { CredIconSvg } from "./testimonialBits";
-import { qapitaContent as c } from "@/lib/work";
+import { qapitaContent as c, siteTestimonials } from "@/lib/work";
+import { videoObjectSchema } from "@/lib/schema";
 import ShareBar from "./ShareBar";
+
+const brendanTranscript =
+  siteTestimonials.find((t) => t.vimeoId === c.testimonialVimeoId)?.transcript ?? [];
+
+const qapitaLd = {
+  "@context": "https://schema.org",
+  ...videoObjectSchema({
+    name: `${c.testimonialName} on Temporary Perspective`,
+    description: brendanTranscript[0] ?? "Brendan Marshall on working with Temporary Perspective for The Catapult Code.",
+    source: "vimeo",
+    embedId: c.testimonialVimeoId,
+    uploadDate: "2025-01-01",
+  }),
+};
 
 const BRENDAN_LINKEDIN = "https://www.linkedin.com/in/brendantmarshall/";
 const QAPITA_LINKEDIN =
@@ -227,6 +242,10 @@ export default function QapitaCaseStudy() {
         <ClosingCTA subline="Want a show like The Catapult Code? Start with a call." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(qapitaLd) }}
+      />
     </>
   );
 }

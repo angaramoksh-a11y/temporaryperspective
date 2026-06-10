@@ -8,7 +8,7 @@ import ClosingCTA from "@/components/ClosingCTA";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import ShareBar from "@/components/ShareBar";
 import { EdgeDivider } from "@/components/ui";
-import { newsletterPosts, embed } from "@/lib/work";
+import { newsletterPosts, team, embed } from "@/lib/work";
 
 export function generateStaticParams() {
   return newsletterPosts.map((p) => ({ slug: p.slug }));
@@ -45,6 +45,9 @@ export default async function PostPage({
   if (idx === -1) notFound();
   const post = newsletterPosts[idx];
   const related = newsletterPosts[(idx + 1) % newsletterPosts.length];
+  const author = team.find((m) =>
+    m.name.toLowerCase().includes(post.author.toLowerCase()),
+  );
 
   const articleSchema = {
     "@context": "https://schema.org",
@@ -103,12 +106,43 @@ export default async function PostPage({
                 </div>
               </div>
 
-              <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm">
-                <span className="text-text-muted">{post.author}</span>
-                <span aria-hidden className="text-text-faint">·</span>
-                <span className="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-text-faint">
-                  {post.dateLong}
-                </span>
+              <div className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2">
+                {author ? (
+                  <div className="flex items-center gap-3">
+                    {/* Initials plate */}
+                    <div
+                      aria-hidden
+                      className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line bg-surface text-[0.75rem] font-semibold uppercase tracking-widest text-text-muted"
+                    >
+                      {author.name
+                        .split(" ")
+                        .map((n) => n[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      {author.linkedin ? (
+                        <a
+                          href={author.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm font-medium text-text transition-colors hover:text-chrome"
+                        >
+                          {author.name}
+                        </a>
+                      ) : (
+                        <span className="text-sm font-medium text-text">
+                          {author.name}
+                        </span>
+                      )}
+                      <span className="text-[0.75rem] text-text-faint">
+                        {author.role}
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <span className="text-sm text-text-muted">{post.author}</span>
+                )}
                 <span aria-hidden className="text-text-faint">·</span>
                 <span className="font-mono text-[0.75rem] uppercase tracking-[0.14em] text-text-faint">
                   {post.readingTime}

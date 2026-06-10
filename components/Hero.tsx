@@ -113,7 +113,7 @@ export default function Hero() {
         {/* film — under the text on mobile, beside it at lg.
             Capped width on small screens so the 16:9 card never balloons. */}
         <div className="order-2 mx-auto w-full max-w-[520px] lg:order-2 lg:mx-0 lg:max-w-none">
-          <HeroFilm id="1197960218" caption="The studio, in 60 seconds." />
+          <HeroFilm id="1197960218" caption="Our 60-second pitch — the studio, in their words." />
         </div>
       </div>
     </section>

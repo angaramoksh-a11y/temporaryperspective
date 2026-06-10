@@ -51,7 +51,8 @@ const sections: LegalSection[] = [
   {
     heading: "Ownership and usage",
     paras: [
-      "Final deliverables are licensed for your use as agreed in the project agreement. We retain the right to show finished work in our portfolio, on social media, and in promotional material, unless your agreement says otherwise.",
+      "Final deliverables are licensed for your use as agreed in the project agreement.",
+      "We retain the unconditional right to use, display, and distribute any work we produce, in whole or in part, across our portfolio, social channels, case studies, and promotional material, at any time, regardless of the project's status, your agreement terms, or any dispute. This right is non-revocable and survives the end of our engagement.",
       "Raw files (project timelines, full footage, editable source files) are not included unless your agreement specifically covers them.",
     ],
   },
@@ -64,7 +65,8 @@ const sections: LegalSection[] = [
   {
     heading: "Cancellation",
     paras: [
-      "If you cancel after work has begun, the upfront payment is non-refundable.",
+      "Once a shoot date is locked, the advance is non-refundable. If you cancel the booking for any reason, that amount is gone.",
+      "If you cancel within 48 hours of a confirmed shoot, the full project sum becomes payable. No exceptions. The entire amount is due regardless of how much work has or hasn't been completed at that point.",
       "If we have to cancel (rare, but possible), we'll issue a fair, proportionate refund for unfinished work.",
     ],
   },

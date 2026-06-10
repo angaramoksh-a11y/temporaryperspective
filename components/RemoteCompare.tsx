@@ -151,11 +151,26 @@ export default function RemoteCompare({
               className="pointer-events-none absolute inset-0 h-full w-full"
             />
           )}
-          {/* quiet hover veil for the click affordance, no button, no caption */}
+          {/* hover gradient + play icon make the click affordance obvious */}
           <span
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg-sunken/30 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-bg-sunken/40 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
           />
+          <span
+            aria-hidden
+            className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          >
+            <span className="grid h-14 w-14 place-items-center rounded-full border border-white/20 bg-bg/60 backdrop-blur-sm">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="h-5 w-5 translate-x-0.5 text-text"
+                aria-hidden
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+          </span>
         </button>
       </div>
 

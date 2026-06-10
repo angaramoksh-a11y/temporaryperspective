@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHeroWord from "@/components/PageHeroWord";
+import VirtualCallout from "@/components/VirtualCallout";
 import ClosingCTA from "@/components/ClosingCTA";
-import RemoteCompare, { REMOTE_SIDES } from "@/components/RemoteCompare";
 import { EdgeDivider } from "@/components/ui";
+import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
   title: "Remote production — Temporary Perspective",
@@ -38,6 +39,28 @@ const STEPS = [
   },
 ];
 
+const remoteVideosLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    videoObjectSchema({
+      name: "Remote production — with a crew at both ends",
+      description:
+        "An online podcast recorded with a cinema camera, proper lighting, and clean sound at the guest's location — making a two-city shoot look like a single studio.",
+      source: "youtube",
+      embedId: "w-LissfW42g",
+      uploadDate: "2026-01-01",
+    }),
+    videoObjectSchema({
+      name: "Remote production — without a crew (laptop webcam)",
+      description:
+        "A typical online podcast recorded without a dedicated crew — showing the difference a properly staffed remote setup makes.",
+      source: "youtube",
+      embedId: "dHa-yEApqDE",
+      uploadDate: "2026-01-01",
+    }),
+  ],
+};
+
 export default function VirtualPage() {
   return (
     <>
@@ -50,15 +73,8 @@ export default function VirtualPage() {
           sub="When your guest can't be in the room, we make it look like they were."
         />
 
-        {/* 2. The with / without comparison */}
-        <section className="relative px-6 pb-8 lg:px-10">
-          <div className="mx-auto max-w-[1080px]">
-            <RemoteCompare
-              ariaLabel="Compare remote production"
-              sides={REMOTE_SIDES}
-            />
-          </div>
-        </section>
+        {/* 2. With/without comparison — two-column callout layout */}
+        <VirtualCallout showLink={false} />
 
         {/* 3. How it works */}
         <section className="relative py-20 lg:py-28">
@@ -93,6 +109,10 @@ export default function VirtualPage() {
         <ClosingCTA subline="Tell us where your guest is. We'll bring the studio to them." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(remoteVideosLd) }}
+      />
     </>
   );
 }

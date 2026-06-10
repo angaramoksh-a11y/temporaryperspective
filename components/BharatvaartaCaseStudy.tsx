@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useRef, useCallback, useEffect } from "react";
+import Link from "next/link";
+import { AnimatePresence, motion } from "motion/react";
 import Nav from "./Nav";
 import Footer from "./Footer";
 import ClosingCTA from "./ClosingCTA";
@@ -11,8 +13,37 @@ import Thumb from "./Thumb";
 import { RelatedCases } from "./caseParts";
 import MediaLightbox, { type LightboxItem } from "./MediaLightbox";
 import { CredIconSvg } from "./testimonialBits";
-import { bharatvaartaContent as c } from "@/lib/work";
+import { bharatvaartaContent as c, siteTestimonials } from "@/lib/work";
+import { videoObjectSchema } from "@/lib/schema";
 import ShareBar from "./ShareBar";
+
+const roshanTranscript =
+  siteTestimonials.find((t) => t.vimeoId === c.testimonialVimeoId)?.transcript ?? [];
+
+const bvLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    videoObjectSchema({
+      name: `${c.testimonialName} on Temporary Perspective`,
+      description: roshanTranscript[0] ?? c.quote,
+      source: "vimeo",
+      embedId: c.testimonialVimeoId,
+      uploadDate: "2025-01-01",
+    }),
+    ...c.marquee.map((t) =>
+      videoObjectSchema({
+        name: t.guest ? `${t.title} — ${t.guest}` : t.title,
+        description: t.guest
+          ? `${t.title}, featuring ${t.guest}. A Bharatvaarta episode produced by Temporary Perspective.`
+          : `${t.title} — a Bharatvaarta episode produced by Temporary Perspective.`,
+        source: "youtube",
+        embedId: t.id,
+        publisherName: "Bharatvaarta",
+        publisherUrl: "https://www.youtube.com/@Bharatvaarta",
+      }),
+    ),
+  ],
+};
 
 const ROSHAN_LINKEDIN = "https://www.linkedin.com/in/cariappack/";
 const BV_INSTAGRAM = "https://www.instagram.com/bharatvaarta/";
@@ -76,6 +107,7 @@ function ScrollArrow({
 export default function BharatvaartaCaseStudy() {
   const [lbOpen, setLbOpen] = useState(false);
   const [brandOpen, setBrandOpen] = useState(false);
+  const [transcriptOpen, setTranscriptOpen] = useState(false);
 
   // Work scroll row
   const rowRef = useRef<HTMLDivElement>(null);
@@ -226,9 +258,42 @@ export default function BharatvaartaCaseStudy() {
                   </a>
                 </div>
 
-                <p className="border-t border-line px-5 pb-5 pt-4 text-sm italic leading-snug text-text-muted">
+                <p className="border-t border-line px-5 pt-4 text-sm italic leading-snug text-text-muted">
                   {c.quote}
                 </p>
+
+                {roshanTranscript.length > 0 && (
+                  <div className="px-5 pb-5 pt-3">
+                    <button
+                      onClick={() => setTranscriptOpen((o) => !o)}
+                      className="text-[0.8125rem] text-text-faint transition-colors hover:text-text"
+                    >
+                      {transcriptOpen ? "Close transcript ↑" : "Read transcript ↓"}
+                    </button>
+                    <AnimatePresence initial={false}>
+                      {transcriptOpen && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                          style={{ overflow: "hidden" }}
+                        >
+                          <div className="mt-3 border-t border-line pt-3">
+                            <p className="mb-2 text-[0.75rem] font-medium uppercase tracking-[0.14em] text-text-faint">
+                              Transcript — Roshan Cariappa, recorded for Temporary Perspective.
+                            </p>
+                            <div className="space-y-3 text-[0.875rem] leading-[1.7] text-text-muted">
+                              {roshanTranscript.map((para, i) => (
+                                <p key={i}>{para}</p>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -263,6 +328,16 @@ export default function BharatvaartaCaseStudy() {
                   </li>
                 ))}
               </ul>
+              <p className="mt-5 text-sm text-text-faint">
+                Retention and production data from this show contributed to the{" "}
+                <Link
+                  href="/state-of-b2b-podcasts-2026"
+                  className="text-text-muted underline-offset-4 transition-colors hover:text-text hover:underline"
+                >
+                  State of B2B Podcasts in India 2026
+                </Link>{" "}
+                report.
+              </p>
             </div>
 
             {/* Right: stacked deliverables — YouTube channel + brand book */}
@@ -457,6 +532,10 @@ export default function BharatvaartaCaseStudy() {
         <ClosingCTA subline="The work behind this show is the work we'd do for yours." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bvLd) }}
+      />
     </>
   );
 }

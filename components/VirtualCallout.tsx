@@ -6,7 +6,7 @@ import RemoteCompare, { REMOTE_SIDES } from "./RemoteCompare";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export default function VirtualCallout() {
+export default function VirtualCallout({ showLink = true }: { showLink?: boolean }) {
   return (
     <section className="relative py-14 lg:py-28">
       <div className="mx-auto grid w-full max-w-[1400px] items-center gap-8 px-6 lg:w-[86%] lg:grid-cols-2 lg:gap-12 lg:px-0">
@@ -23,9 +23,11 @@ export default function VirtualCallout() {
             A real camera, proper light, and clean sound on your guest and your
             host, wherever they are.
           </p>
-          <div className="mt-8">
-            <ArrowLink href="/virtual">Learn more</ArrowLink>
-          </div>
+          {showLink && (
+            <div className="mt-8">
+              <ArrowLink href="/virtual">Learn more</ArrowLink>
+            </div>
+          )}
         </motion.div>
 
         <motion.div

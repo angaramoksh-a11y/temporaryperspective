@@ -2,16 +2,16 @@ import { ImageResponse } from "next/og";
 import { ogCard, ogSize, ogContentType } from "@/lib/og";
 
 export const dynamic = "force-static";
-export const alt = "Temporary Perspective — B2B podcast studio, Mumbai";
+export const alt = "Testimonials — Temporary Perspective";
 export const size = ogSize;
 export const contentType = ogContentType;
 
 export default function Image() {
   return new ImageResponse(
     ogCard({
-      headline: "Cinema-grade podcasts for India's hardest-to-book guests.",
-      sub: "B2B podcast production, Mumbai.",
-      tag: "STUDIO",
+      headline: "In their own words.",
+      sub: "Founders, hosts, and content leads on working with TP.",
+      tag: "TESTIMONIALS",
     }),
     { ...ogSize },
   );

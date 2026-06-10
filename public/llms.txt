@@ -63,4 +63,6 @@ Mumbai, Bangalore, Delhi, Chennai, Hyderabad (India); San Francisco, New York (U
 - [About](https://temporaryperspective.com/about) — Studio story, team, and convictions
 - [Newsletter](https://temporaryperspective.com/newsletter) — Notes on running a show worth watching
 - [FAQ](https://temporaryperspective.com/faq) — Common questions on scope, pricing, timelines, remote shoots
+- [Glossary](https://temporaryperspective.com/glossary) — How we talk about B2B podcast production: definitions of every term we use.
+- [State of B2B Podcasts in India 2026](https://temporaryperspective.com/state-of-b2b-podcasts-2026) — Annual production and performance benchmark: 40+ shows, 600+ episodes, six categories. What separates a show that compounds from one that stalls.
 - [Book a Call](https://temporaryperspective.com/contact) — 30-minute call with Moksh

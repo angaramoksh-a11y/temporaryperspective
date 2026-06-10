@@ -111,7 +111,7 @@ export default function Process() {
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.15 }}
                   >
-                    {running ? "running…" : "repeat"}
+                    {running ? "running…" : "next episode"}
                   </motion.span>
                 </AnimatePresence>
               </button>
