@@ -309,7 +309,7 @@ export async function resolveThumb(i: WorkItem): Promise<string> {
   try {
     const src = vimeoLink(clip);
     const res = await fetch(
-      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(src)}&width=640`,
+      `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(src)}&width=960`,
       { next: { revalidate: 86400 } },
     );
     if (!res.ok) throw new Error(String(res.status));

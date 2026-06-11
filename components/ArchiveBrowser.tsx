@@ -6,33 +6,18 @@ import WorkLightbox from "./WorkLightbox";
 
 const PER_PAGE = 48;
 
+type Orient = "h" | "v";
+
+const orientOf = (it: ResolvedWorkItem): Orient =>
+  it.orientation === "vertical" ? "v" : "h";
+
 // ─── icons ───────────────────────────────────────────────────────────────────
 
 function SearchIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0 text-text-faint" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg viewBox="0 0 24 24" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <circle cx="11" cy="11" r="7" />
       <path d="M21 21l-4.35-4.35" />
-    </svg>
-  );
-}
-
-function GridH() {
-  return (
-    <svg viewBox="0 0 18 18" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-      <rect x="1" y="1" width="16" height="9" rx="1.5" />
-      <rect x="1" y="12" width="7" height="5" rx="1" />
-      <rect x="10" y="12" width="7" height="5" rx="1" />
-    </svg>
-  );
-}
-
-function GridV() {
-  return (
-    <svg viewBox="0 0 18 18" className="h-3.5 w-3.5" fill="currentColor" aria-hidden>
-      <rect x="1" y="1" width="9" height="16" rx="1.5" />
-      <rect x="12" y="1" width="5" height="7" rx="1" />
-      <rect x="12" y="10" width="5" height="7" rx="1" />
     </svg>
   );
 }
@@ -49,40 +34,115 @@ export default function ArchiveBrowser({
   const [query, setQuery] = useState("");
   const [selClients, setSelClients] = useState<string[]>([]);
   const [selFormats, setSelFormats] = useState<string[]>([]);
-  const [page, setPage] = useState(0);
-  const [orient, setOrient] = useState<"h" | "v">("h");
+  const [limit, setLimit] = useState(PER_PAGE);
+  const [mobileSearch, setMobileSearch] = useState(false);
   const [active, setActive] = useState<ResolvedWorkItem | null>(() =>
     initialSlug ? items.find((i) => i.slug === initialSlug) ?? null : null,
   );
+  // Deep links into a vertical piece open the library in vertical mode.
+  const [orient, setOrient] = useState<Orient>(() => {
+    const it = initialSlug ? items.find((i) => i.slug === initialSlug) : null;
+    return it ? orientOf(it) : "h";
+  });
   const searchRef = useRef<HTMLInputElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
 
-  const clients = useMemo(
-    () => [...new Set(items.map((i) => i.client))].sort(),
-    [items],
+  // ── derived facets ────────────────────────────────────────────────────────
+  const tokens = useMemo(
+    () => query.trim().toLowerCase().split(/\s+/).filter(Boolean),
+    [query],
   );
-  const formats = useMemo(
-    () => [...new Set(items.map((i) => i.format))],
-    [items],
-  );
-
-  const filtered = useMemo(() => {
-    const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    return items.filter((it) => {
+  const matchesQuery = useCallback(
+    (it: ResolvedWorkItem) => {
+      if (!tokens.length) return true;
       const hay = `${it.client} ${it.format} ${(it.tags ?? []).join(" ")} ${
         it.desc ?? ""
       } ${it.title ?? ""} ${it.slug}`.toLowerCase();
-      const matchQ = tokens.every((t) => hay.includes(t));
-      const matchClient = !selClients.length || selClients.includes(it.client);
-      const matchFormat = !selFormats.length || selFormats.includes(it.format);
-      // Orientation filter: H shows only horizontal/unspecified; V shows only vertical.
-      const matchOrient =
-        orient === "v"
-          ? it.orientation === "vertical"
-          : it.orientation !== "vertical";
-      return matchQ && matchClient && matchFormat && matchOrient;
-    });
-  }, [items, query, selClients, selFormats, orient]);
+      return tokens.every((t) => hay.includes(t));
+    },
+    [tokens],
+  );
 
+  // Library size per orientation (query-aware, so the tabs answer "what's there")
+  const tabCounts = useMemo(() => {
+    const c: Record<Orient, number> = { h: 0, v: 0 };
+    for (const it of items) if (matchesQuery(it)) c[orientOf(it)]++;
+    return c;
+  }, [items, matchesQuery]);
+
+  // Which formats / clients exist per orientation (from the full catalog, so
+  // switching modes can never strand a selection on an impossible facet).
+  const formatsIn = useMemo(() => {
+    const m: Record<Orient, string[]> = { h: [], v: [] };
+    for (const it of items) {
+      const o = orientOf(it);
+      if (!m[o].includes(it.format)) m[o].push(it.format);
+    }
+    return m;
+  }, [items]);
+  const clientsIn = useMemo(() => {
+    const m: Record<Orient, string[]> = { h: [], v: [] };
+    for (const it of items) {
+      const o = orientOf(it);
+      if (!m[o].includes(it.client)) m[o].push(it.client);
+    }
+    m.h.sort();
+    m.v.sort();
+    return m;
+  }, [items]);
+
+  // Live counts per option, respecting every other active facet.
+  const formatCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const it of items) {
+      if (orientOf(it) !== orient || !matchesQuery(it)) continue;
+      if (selClients.length && !selClients.includes(it.client)) continue;
+      m.set(it.format, (m.get(it.format) ?? 0) + 1);
+    }
+    return m;
+  }, [items, orient, matchesQuery, selClients]);
+  const clientCounts = useMemo(() => {
+    const m = new Map<string, number>();
+    for (const it of items) {
+      if (orientOf(it) !== orient || !matchesQuery(it)) continue;
+      if (selFormats.length && !selFormats.includes(it.format)) continue;
+      m.set(it.client, (m.get(it.client) ?? 0) + 1);
+    }
+    return m;
+  }, [items, orient, matchesQuery, selFormats]);
+
+  const filtered = useMemo(
+    () =>
+      items.filter(
+        (it) =>
+          orientOf(it) === orient &&
+          matchesQuery(it) &&
+          (!selClients.length || selClients.includes(it.client)) &&
+          (!selFormats.length || selFormats.includes(it.format)),
+      ),
+    [items, orient, matchesQuery, selClients, selFormats],
+  );
+  const shown = filtered.slice(0, limit);
+  const hasFilters = !!(query || selClients.length || selFormats.length);
+
+  // ── actions ───────────────────────────────────────────────────────────────
+  const switchOrient = (o: Orient) => {
+    if (o === orient) return;
+    setOrient(o);
+    setSelFormats((s) => s.filter((f) => formatsIn[o].includes(f)));
+    setSelClients((s) => s.filter((c) => clientsIn[o].includes(c)));
+  };
+  const toggleFormat = (f: string) =>
+    setSelFormats((s) => (s.includes(f) ? s.filter((x) => x !== f) : [...s, f]));
+  const toggleClient = (c: string) =>
+    setSelClients((s) => (s.includes(c) ? s.filter((x) => x !== c) : [...s, c]));
+  const clearAll = () => {
+    setQuery("");
+    setSelClients([]);
+    setSelFormats([]);
+  };
+
+  // ── effects ───────────────────────────────────────────────────────────────
   // Prefill from ?q=
   useEffect(() => {
     const q = new URLSearchParams(window.location.search).get("q");
@@ -122,189 +182,291 @@ export default function ArchiveBrowser({
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const current = Math.min(page, pageCount - 1);
-  const shown = filtered.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
+  // Facet changes: re-arm the page size and, when the user is deep in the
+  // grid, bring the top of the results back under the deck.
+  const firstRun = useRef(true);
+  useEffect(() => {
+    if (firstRun.current) {
+      firstRun.current = false;
+      return;
+    }
+    setLimit(PER_PAGE);
+    const el = gridRef.current;
+    if (el && el.getBoundingClientRect().top < 180) {
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    }
+  }, [orient, selClients, selFormats]);
+  useEffect(() => setLimit(PER_PAGE), [query]);
 
-  const reset = () => setPage(0);
-  const toggle = (set: typeof setSelClients) => (v: string) => {
-    reset();
-    set((s) => (s.includes(v) ? s.filter((x) => x !== v) : [...s, v]));
-  };
-  const toggleClient = toggle(setSelClients);
-  const toggleFormat = toggle(setSelFormats);
-
-  const chips = [
-    ...selClients.map((c) => ({ label: c, remove: () => toggleClient(c) })),
-    ...selFormats.map((f) => ({ label: f, remove: () => toggleFormat(f) })),
-  ];
-
-  // Grid layout varies by orientation
+  // ── layout ────────────────────────────────────────────────────────────────
   const gridCols =
     orient === "v"
       ? "grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 2xl:grid-cols-6"
       : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5";
   const tileAspect = orient === "v" ? "aspect-[9/16]" : "aspect-video";
+  const gridKey = `${orient}|${selFormats.join("+")}|${selClients.join("+")}`;
 
   return (
     <section className="relative">
+      {/* ── control deck: a second glass slab, same width as the nav ───────── */}
+      <div className="sticky top-[84px] z-40 px-3 sm:top-[88px] sm:px-4">
+        <div className="glass mx-auto w-full max-w-[1400px] rounded-2xl lg:w-[88%]">
 
-      {/* ── sticky controls ─────────────────────────────────────────────────── */}
-      <div className="sticky top-[80px] z-30 bg-bg/75 backdrop-blur-xl">
-        <div className="mx-auto max-w-[1400px] border-b border-line px-6 lg:px-10">
-          <div className="flex flex-wrap items-center gap-3 py-4">
+          {/* row 1: orientation tabs · client · search */}
+          <div className="flex items-center gap-1.5 px-3 py-2.5 sm:gap-2 sm:px-4">
+            {/* mobile search takeover */}
+            {mobileSearch && (
+              <div className="flex flex-1 items-center gap-2 sm:hidden">
+                <div className="relative flex flex-1 items-center text-text-faint">
+                  <span className="pointer-events-none absolute left-3.5">
+                    <SearchIcon />
+                  </span>
+                  <input
+                    autoFocus
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search the library"
+                    aria-label="Search the archive"
+                    className="h-9 w-full rounded-full border border-line bg-bg-sunken/70 pl-9 pr-3 text-sm text-text outline-none transition-[border-color] placeholder:text-text-faint focus:border-white/25"
+                  />
+                </div>
+                <button
+                  onClick={() => {
+                    setQuery("");
+                    setMobileSearch(false);
+                  }}
+                  aria-label="Close search"
+                  className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-line text-text-muted transition-colors hover:text-text"
+                >
+                  ✕
+                </button>
+              </div>
+            )}
 
-            {/* search pill */}
-            <div className="relative flex min-w-0 flex-1 items-center sm:max-w-[300px]">
-              <span className="pointer-events-none absolute left-3.5">
-                <SearchIcon />
-              </span>
-              <input
-                ref={searchRef}
-                value={query}
-                onChange={(e) => { reset(); setQuery(e.target.value); }}
-                placeholder="Search…"
-                aria-label="Search the archive"
-                className="h-9 w-full rounded-full border border-line bg-bg-sunken/70 pl-9 pr-3 text-sm text-text outline-none transition-[border-color] placeholder:text-text-faint focus:border-white/25"
-              />
-              {/* ⌘K badge — hidden on mobile, hidden when focused */}
-              {!query && (
-                <span className="pointer-events-none absolute right-3.5 hidden items-center gap-1 sm:flex" aria-hidden>
-                  <kbd className="inline-flex h-5 items-center rounded border border-line px-1.5 font-mono text-[10px] text-text-faint">⌘K</kbd>
-                </span>
-              )}
-            </div>
-
-            {/* H / V orientation toggle */}
             <div
-              role="group"
-              aria-label="Grid orientation"
-              className="inline-flex items-center gap-0.5 rounded-full border border-line bg-bg-sunken/70 p-1"
+              className={`${
+                mobileSearch ? "hidden sm:flex" : "flex"
+              } flex-1 items-center gap-2`}
             >
-              {(["h", "v"] as const).map((o) => {
-                const on = orient === o;
-                return (
-                  <button
-                    key={o}
-                    onClick={() => setOrient(o)}
-                    aria-pressed={on}
-                    aria-label={o === "h" ? "Horizontal grid" : "Vertical grid"}
-                    className={`grid h-7 w-7 place-items-center rounded-full transition-colors duration-200 ${
-                      on ? "bg-text text-bg" : "text-text-muted hover:text-text"
-                    }`}
-                  >
-                    {o === "h" ? <GridH /> : <GridV />}
-                  </button>
-                );
-              })}
-            </div>
+              {/* orientation tabs — labeled, with live counts */}
+              <div
+                role="group"
+                aria-label="Orientation"
+                className="inline-flex shrink-0 items-center gap-0.5 rounded-full border border-line bg-bg-sunken/70 p-1"
+              >
+                {(["h", "v"] as const).map((o) => {
+                  const on = orient === o;
+                  return (
+                    <button
+                      key={o}
+                      onClick={() => switchOrient(o)}
+                      aria-pressed={on}
+                      className={`flex h-8 items-center gap-2 rounded-full px-3 text-[0.8125rem] font-medium transition-colors duration-200 sm:px-4 ${
+                        on ? "bg-text text-bg" : "text-text-muted hover:text-text"
+                      }`}
+                    >
+                      <span
+                        aria-hidden
+                        className={`hidden rounded-[3px] border sm:inline-block ${
+                          o === "h" ? "h-2.5 w-4" : "h-4 w-2.5"
+                        } ${on ? "border-bg/70" : "border-current opacity-60"}`}
+                      />
+                      {o === "h" ? "Landscape" : "Vertical"}
+                      <span
+                        className={`hidden text-xs sm:inline ${
+                          on ? "text-bg/60" : "text-text-faint"
+                        }`}
+                      >
+                        {tabCounts[o]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
 
-            {/* filter dropdowns — pushed right */}
-            <div className="flex items-center gap-2 sm:ml-auto">
-              <FilterMenu
-                label="Client"
-                options={clients}
-                selected={selClients}
-                onToggle={toggleClient}
-                onClear={() => { reset(); setSelClients([]); }}
-              />
-              <FilterMenu
-                label="Format"
-                options={formats}
-                selected={selFormats}
-                onToggle={toggleFormat}
-                onClear={() => { reset(); setSelFormats([]); }}
-              />
+              <div className="ml-auto flex items-center gap-2">
+                {/* client menu */}
+                <FilterMenu
+                  label="Client"
+                  options={clientsIn[orient].map((c) => ({
+                    value: c,
+                    count: clientCounts.get(c) ?? 0,
+                  }))}
+                  selected={selClients}
+                  onToggle={toggleClient}
+                  onClear={() => setSelClients([])}
+                />
+
+                {/* search — compact, desktop */}
+                <div className="relative hidden items-center text-text-faint sm:flex">
+                  <span className="pointer-events-none absolute left-3.5">
+                    <SearchIcon />
+                  </span>
+                  <input
+                    ref={searchRef}
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Search"
+                    aria-label="Search the archive"
+                    className="h-9 w-44 rounded-full border border-line bg-bg-sunken/70 pl-9 pr-9 text-sm text-text outline-none transition-[border-color] placeholder:text-text-faint focus:border-white/25 lg:w-52"
+                  />
+                  {query ? (
+                    <button
+                      onClick={() => setQuery("")}
+                      aria-label="Clear search"
+                      className="absolute right-1.5 grid h-6 w-6 place-items-center rounded-full text-text-faint transition-colors hover:text-text"
+                    >
+                      ✕
+                    </button>
+                  ) : (
+                    <kbd
+                      aria-hidden
+                      className="pointer-events-none absolute right-3 inline-flex h-5 items-center rounded border border-line px-1.5 font-mono text-[10px] text-text-faint"
+                    >
+                      ⌘K
+                    </kbd>
+                  )}
+                </div>
+
+                {/* search — icon trigger, mobile */}
+                <button
+                  onClick={() => setMobileSearch(true)}
+                  aria-label="Search the archive"
+                  className="grid h-9 w-9 place-items-center rounded-full border border-line bg-bg-sunken/70 text-text-muted transition-colors hover:text-text sm:hidden"
+                >
+                  <SearchIcon />
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* active filter chips */}
-          {chips.length > 0 && (
-            <div className="flex flex-wrap gap-2 pb-3">
-              {chips.map((chip) => (
-                <button
-                  key={chip.label}
-                  onClick={chip.remove}
-                  className="inline-flex items-center gap-1.5 rounded-full border border-line-strong px-3 py-1 text-xs text-text-muted transition-colors hover:text-text"
+          {/* row 2: format chips, scoped to the current orientation */}
+          <div className="flex items-center gap-1.5 overflow-x-auto border-t border-line px-3 py-2.5 [scrollbar-width:none] sm:px-4 [&::-webkit-scrollbar]:hidden">
+            <Chip active={selFormats.length === 0} onClick={() => setSelFormats([])}>
+              All
+            </Chip>
+            {formatsIn[orient].map((f) => {
+              const n = formatCounts.get(f) ?? 0;
+              const on = selFormats.includes(f);
+              return (
+                <Chip
+                  key={f}
+                  active={on}
+                  disabled={!n && !on}
+                  onClick={() => toggleFormat(f)}
                 >
-                  {chip.label}
-                  <span className="text-text-faint" aria-hidden>✕</span>
-                </button>
-              ))}
-            </div>
-          )}
+                  {f}
+                  <span className={`text-xs ${on ? "text-text-muted" : "text-text-faint"}`}>
+                    {n}
+                  </span>
+                </Chip>
+              );
+            })}
+            {selClients.length > 0 && (
+              <span aria-hidden className="mx-1 h-4 w-px shrink-0 bg-line" />
+            )}
+            {selClients.map((c) => (
+              <Chip key={c} active removable onClick={() => toggleClient(c)}>
+                {c}
+              </Chip>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── grid ─────────────────────────────────────────────────────────────── */}
-      <div className="mx-auto max-w-[1400px] px-6 py-10 lg:px-10 lg:py-14">
-        {shown.length === 0 ? (
-          <p className="py-24 text-center text-text-faint">
-            No work matches those filters. Try broader filters or clear them.
+      {/* ── results ──────────────────────────────────────────────────────────── */}
+      <div
+        ref={gridRef}
+        className="scroll-mt-[11.5rem] px-6 pb-12 pt-8 lg:px-4 lg:pb-16 lg:pt-10"
+      >
+        <div className="mx-auto w-full max-w-[1400px] lg:w-[88%]">
+        <div className="mb-6 flex items-baseline gap-4">
+          <p className="text-sm text-text-faint">
+            {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
           </p>
+          {hasFilters && (
+            <button
+              onClick={clearAll}
+              className="text-sm text-text-faint underline decoration-line underline-offset-4 transition-colors hover:text-text"
+            >
+              Clear all
+            </button>
+          )}
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="flex flex-col items-center py-20 text-center">
+            <p className="text-text-muted">Nothing in the library matches.</p>
+            <button
+              onClick={clearAll}
+              className="sweep mt-6 inline-flex h-10 items-center rounded-full border border-line-strong px-5 text-sm font-medium text-text-muted transition-colors hover:text-text"
+            >
+              Clear all filters
+            </button>
+          </div>
         ) : (
-          <>
-            <p className="mb-6 text-sm text-text-faint">
-              {filtered.length} {filtered.length === 1 ? "piece" : "pieces"}
-            </p>
-
-            <div className={`grid ${gridCols} gap-x-4 gap-y-7 lg:gap-x-5`}>
-              {shown.map((it) => {
-                const title = it.title ?? it.desc ?? it.client;
-                const sub = it.title || it.desc ? `${it.client} · ${it.format}` : it.format;
-                return (
-                  <button
-                    key={it.key}
-                    onClick={() => setActive(it)}
-                    aria-label={`Play ${it.client}, ${it.format}`}
-                    className="group block text-left"
+          <div
+            key={gridKey}
+            className={`grid-rise grid ${gridCols} gap-x-4 gap-y-7 lg:gap-x-5`}
+          >
+            {shown.map((it) => {
+              const title = it.title ?? it.desc ?? it.client;
+              const sub =
+                it.title || it.desc ? `${it.client} · ${it.format}` : it.format;
+              return (
+                <button
+                  key={it.key}
+                  onClick={() => setActive(it)}
+                  aria-label={`Play ${it.client}, ${it.format}`}
+                  className="group block text-left"
+                >
+                  <div
+                    className={`relative ${tileAspect} overflow-hidden rounded-xl border border-line bg-bg-sunken transition-colors duration-300 group-hover:border-accent/30`}
                   >
-                    <div className={`relative ${tileAspect} overflow-hidden rounded-xl border border-line bg-bg-sunken`}>
-                      {/* Only same-orientation items appear in each mode — no blurred fill needed */}
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={it.thumb}
-                        alt=""
-                        loading="lazy"
-                        className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
-                      />
-                      <span className="absolute inset-0 z-20 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                        <span className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-bg/45 backdrop-blur">
-                          <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={it.thumb}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => {
+                        const el = e.currentTarget;
+                        if (it.yt && !el.dataset.fallback) {
+                          el.dataset.fallback = "1";
+                          el.src = `https://i.ytimg.com/vi/${it.yt}/hqdefault.jpg`;
+                        }
+                      }}
+                      className="h-full w-full object-cover brightness-[0.8] transition-[filter,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.03] group-hover:brightness-100"
+                    />
+                    <span className="absolute inset-0 z-20 grid place-items-center opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                      <span className="grid h-11 w-11 place-items-center rounded-full border border-white/30 bg-bg/45 backdrop-blur">
+                        <svg viewBox="0 0 24 24" className="h-4 w-4 translate-x-px fill-text" aria-hidden>
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
                       </span>
-                    </div>
-                    <p className="mt-2.5 truncate text-sm text-text transition-colors group-hover:text-white">
-                      {title}
-                    </p>
-                    <p className="mt-0.5 truncate text-xs text-text-faint">{sub}</p>
-                  </button>
-                );
-              })}
-            </div>
-          </>
-        )}
-
-        {pageCount > 1 && (
-          <div className="mt-14 flex items-center justify-center gap-2">
-            {Array.from({ length: pageCount }, (_, i) => (
-              <button
-                key={i}
-                onClick={() => setPage(i)}
-                aria-current={i === current}
-                className={`h-9 min-w-9 rounded-lg px-3 text-sm transition-colors ${
-                  i === current
-                    ? "bg-text font-medium text-bg"
-                    : "border border-line text-text-muted hover:text-text"
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
+                    </span>
+                  </div>
+                  <p className="mt-2.5 truncate text-sm text-text transition-colors group-hover:text-white">
+                    {title}
+                  </p>
+                  <p className="mt-0.5 truncate text-xs text-text-faint">{sub}</p>
+                </button>
+              );
+            })}
           </div>
         )}
+
+          {filtered.length > limit && (
+            <div className="mt-12 flex justify-center">
+              <button
+                onClick={() => setLimit((l) => l + PER_PAGE)}
+                className="sweep inline-flex h-11 items-center rounded-full border border-line-strong px-6 text-sm font-medium text-text-muted transition-colors hover:text-text"
+              >
+                Show {Math.min(PER_PAGE, filtered.length - limit)} more
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <WorkLightbox
@@ -314,6 +476,44 @@ export default function ArchiveBrowser({
         onClose={() => setActive(null)}
       />
     </section>
+  );
+}
+
+// ─── Chip ─────────────────────────────────────────────────────────────────────
+
+function Chip({
+  active,
+  disabled,
+  removable,
+  onClick,
+  children,
+}: {
+  active?: boolean;
+  disabled?: boolean;
+  removable?: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      aria-pressed={active}
+      className={`flex h-8 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 text-[0.8125rem] transition-colors duration-200 ${
+        active
+          ? "border-accent/40 bg-accent/10 text-text"
+          : disabled
+            ? "border-line text-text-faint opacity-40"
+            : "border-line text-text-muted hover:border-line-strong hover:text-text"
+      }`}
+    >
+      {children}
+      {removable && (
+        <span aria-hidden className="text-text-faint">
+          ✕
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -327,7 +527,7 @@ function FilterMenu({
   onClear,
 }: {
   label: string;
-  options: string[];
+  options: { value: string; count: number }[];
   selected: string[];
   onToggle: (v: string) => void;
   onClear: () => void;
@@ -350,11 +550,11 @@ function FilterMenu({
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
-        className="sweep flex h-9 items-center gap-2 rounded-full border border-line bg-bg-sunken/70 px-4 text-sm text-text-muted transition-colors hover:text-text"
+        className="flex h-9 items-center gap-2 rounded-full border border-line bg-bg-sunken/70 px-3.5 text-sm text-text-muted transition-colors hover:text-text sm:px-4"
       >
         {label}
         {selected.length > 0 && (
-          <span className="grid h-4.5 min-w-4.5 place-items-center rounded-full bg-text px-1 text-[10px] font-medium text-bg leading-none py-0.5">
+          <span className="grid h-4.5 min-w-4.5 place-items-center rounded-full bg-text px-1 py-0.5 text-[10px] font-medium leading-none text-bg">
             {selected.length}
           </span>
         )}
@@ -371,7 +571,8 @@ function FilterMenu({
             onClick={() => setOpen(false)}
             className="fixed inset-0 z-10 cursor-default"
           />
-          <div className="absolute right-0 z-20 mt-2 max-h-[60vh] w-60 origin-top-right animate-[fadein_.15s_ease] overflow-y-auto rounded-2xl border border-line bg-bg-raised p-1.5 shadow-xl shadow-black/40"
+          <div
+            className="absolute right-0 z-20 mt-2 max-h-[60vh] w-64 origin-top-right animate-[fadein_.15s_ease] overflow-y-auto rounded-2xl border border-line bg-bg-raised p-1.5 shadow-xl shadow-black/40"
             style={{ backgroundImage: "linear-gradient(180deg, oklch(1 0 0 / 0.04), transparent 28%)" }}
           >
             <div className="flex items-center justify-between px-3 py-2">
@@ -385,17 +586,28 @@ function FilterMenu({
               )}
             </div>
             {options.map((o) => {
-              const on = selected.includes(o);
+              const on = selected.includes(o.value);
+              const dead = !o.count && !on;
               return (
                 <button
-                  key={o}
-                  onClick={() => onToggle(o)}
-                  className="flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm text-text-muted transition-colors hover:bg-white/[0.04] hover:text-text"
+                  key={o.value}
+                  onClick={() => onToggle(o.value)}
+                  disabled={dead}
+                  className={`flex w-full items-center gap-3 rounded-xl px-3 py-2 text-left text-sm transition-colors ${
+                    dead
+                      ? "text-text-faint opacity-40"
+                      : "text-text-muted hover:bg-white/[0.04] hover:text-text"
+                  }`}
                 >
-                  <span className={`grid h-4 w-4 shrink-0 place-items-center rounded border text-[10px] ${on ? "border-text bg-text text-bg" : "border-line-strong"}`}>
+                  <span
+                    className={`grid h-4 w-4 shrink-0 place-items-center rounded border text-[10px] ${
+                      on ? "border-text bg-text text-bg" : "border-line-strong"
+                    }`}
+                  >
                     {on && "✓"}
                   </span>
-                  {o}
+                  <span className="min-w-0 flex-1 truncate">{o.value}</span>
+                  <span className="text-xs text-text-faint">{o.count}</span>
                 </button>
               );
             })}

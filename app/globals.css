@@ -266,6 +266,21 @@ body {
   }
 }
 
+/* Quiet entrance for the archive grid when a filter changes. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.grid-rise {
+  animation: rise 0.35s var(--ease-out-quart);
+}
+
 @keyframes breathe {
   0%,
   100% {
@@ -459,6 +474,7 @@ body {
   .text-metal,
   .marquee-track,
   .rim-glow::after,
+  .grid-rise,
   .sweep::after {
     animation: none;
     transition: none;
