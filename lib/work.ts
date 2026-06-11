@@ -172,6 +172,7 @@ const vimeoSeeds: WorkSeed[] = (
     { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301876", hash: "c6150cd478" }, v: { id: "1195301875", hash: "482906e52d" }, desc: "Deepak Sharma (Investor) at Bureau Fraud Forum" },
 
     { client: "Ignosis", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195304346", hash: "79f1fb2591" }, desc: "Event edit" },
+    { slug: "ignosis-saas-edit", title: "Ignosis — SaaS Edit", client: "Ignosis", format: "Motion graphics", source: "vimeo", orientation: "horizontal", h: { id: "1200381808" }, desc: "SaaS motion graphics edit", tags: ["saas", "motion-graphics"] },
 
     // My Fin short-form (vertical)
     { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169859907" }, desc: "Outfits" },
@@ -1000,34 +1001,34 @@ export const team: {
   headshot?: string;
 }[] = [
   {
-    name: "Angara Moksh",
+    name: "Moksh Angara",
     role: "Founder & CEO",
     line: "Runs strategy and the room. The first call and the last cut.",
     linkedin: "https://www.linkedin.com/in/angaramoksh/",
     headshot: "/moksh.jpg",
   },
   {
-    name: "Bendi Manav",
+    name: "Manav Bendi",
     role: "Production Head",
     line: "Owns what happens on set, from the cameras to the calm.",
     linkedin: "https://www.linkedin.com/in/manavbendi/",
     headshot: "/manav.jpg",
   },
   {
-    name: "Motiwala Hatim",
+    name: "Hatim Motiwala",
     role: "Post-Production Head",
     line: "Turns a day of footage into an hour worth watching twice.",
     linkedin: "https://www.linkedin.com/in/motiwala-hatim/",
     headshot: "/hatim.jpg",
   },
   {
-    name: "Jaiswal Rudra",
+    name: "Rudra Jaiswal",
     role: "CMO",
     line: "Makes sure the right people find the work.",
     linkedin: "https://www.linkedin.com/in/rudra-jaiswal-878100241/",
   },
   {
-    name: "Bainalwar Tejas",
+    name: "Tejas Bainalwar",
     role: "Lead Designer",
     line: "The brand systems behind every show we build.",
     linkedin: null,

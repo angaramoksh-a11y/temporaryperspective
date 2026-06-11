@@ -150,7 +150,7 @@ export default async function AboutPage() {
         {/* 3a. Case studies */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[88%] lg:px-0">
             <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
                 Case studies
@@ -206,7 +206,7 @@ export default async function AboutPage() {
         {/* 3b. Testimonials — inline lightbox on click */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[88%] lg:px-0">
             <div className="mb-12 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <h2 className="text-metal-static font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
                 Testimonials
@@ -222,7 +222,7 @@ export default async function AboutPage() {
         {/* 4. What we believe */}
         <section className="relative py-24 lg:py-28">
           <EdgeDivider />
-          <div className="mx-auto w-full max-w-[1200px] px-6 lg:px-10">
+          <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[88%] lg:px-0">
             <h2 className="text-metal-static mb-12 font-display text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium tracking-tight">
               What we believe.
             </h2>
