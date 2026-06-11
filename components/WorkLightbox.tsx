@@ -175,11 +175,12 @@ export default function WorkLightbox({
             onClick={onClose}
             className="fixed inset-0 cursor-default bg-bg-sunken/80 backdrop-blur-xl"
           />
-          {/* Close — viewport top-right, clear of player controls */}
+          {/* Close — fixed so it stays pinned to the viewport top-right while
+              the overlay content scrolls under it */}
           <button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-bg/80 text-text-muted backdrop-blur-md transition-colors hover:border-white/30 hover:text-text"
+            className="fixed right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-full border border-line-strong bg-bg/80 text-text-muted backdrop-blur-md transition-colors hover:border-white/30 hover:text-text"
           >
             ✕
           </button>

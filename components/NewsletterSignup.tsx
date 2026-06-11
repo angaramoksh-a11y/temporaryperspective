@@ -3,10 +3,12 @@
 import { useState } from "react";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const SIGNUP_ADDRESS = "hey@temporaryperspective.com";
 
 // Inline email capture. Chromium hairline frame, light sweep on the button,
-// inline validation, and a one-way morph to a "Subscribed" confirmation. There
-// is no backend wired yet, so submit only validates and confirms locally.
+// inline validation. The site is statically exported, so there is no Next API
+// route to post to; until a provider is wired, submit opens a prefilled mailto
+// to the studio inbox so signups reach a real human instead of vanishing.
 export default function NewsletterSignup({
   size = "lg",
 }: {
@@ -19,11 +21,19 @@ export default function NewsletterSignup({
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (done) return;
-    if (!EMAIL.test(email.trim())) {
+    const addr = email.trim();
+    if (!EMAIL.test(addr)) {
       setError("That email doesn't look right.");
       return;
     }
     setError(null);
+    // TODO(newsletter): replace this mailto stopgap with a real subscribe call
+    // (e.g. Buttondown / ConvertKit / Formspree POST) right here, and only
+    // setDone(true) on a 2xx response. Must be a third-party endpoint — the
+    // site is `output: "export"`, so Next API routes don't exist at runtime.
+    window.location.href = `mailto:${SIGNUP_ADDRESS}?subject=${encodeURIComponent(
+      "Newsletter signup",
+    )}&body=${encodeURIComponent(`Please add ${addr} to the newsletter list.`)}`;
     setDone(true);
   };
 
@@ -64,7 +74,7 @@ export default function NewsletterSignup({
         >
           {done ? (
             <>
-              Subscribed
+              One step left
               <span aria-hidden className="text-accent">
                 ✓
               </span>
@@ -80,13 +90,21 @@ export default function NewsletterSignup({
         }`}
         role={error ? "alert" : undefined}
       >
-        {error
-          ? error
-          : done
-            ? "You're on the list. Watch your inbox."
-            : lg
-              ? "Occasional notes, no spam. Unsubscribe anytime."
-              : " "}
+        {error ? (
+          error
+        ) : done ? (
+          <>
+            We opened an email draft to{" "}
+            <a href={`mailto:${SIGNUP_ADDRESS}`} className="underline underline-offset-2 hover:text-text">
+              {SIGNUP_ADDRESS}
+            </a>
+            {" "}— hit send and you&apos;re on the list.
+          </>
+        ) : lg ? (
+          "Occasional notes, no spam. Unsubscribe anytime."
+        ) : (
+          " "
+        )}
       </p>
     </div>
   );

@@ -199,6 +199,19 @@ export default function ArchiveBrowser({
   }, [orient, selClients, selFormats]);
   useEffect(() => setLimit(PER_PAGE), [query]);
 
+  // A search that only matches the other orientation must not dead-end: with no
+  // chips narrowing things, hop to the side that has the results. Guarded so it
+  // fires only when the query itself changes — never when the user explicitly
+  // picks a tab.
+  const lastAutoQuery = useRef("");
+  useEffect(() => {
+    if (query === lastAutoQuery.current) return;
+    lastAutoQuery.current = query;
+    if (!query.trim() || selFormats.length || selClients.length) return;
+    const other: Orient = orient === "h" ? "v" : "h";
+    if (tabCounts[orient] === 0 && tabCounts[other] > 0) switchOrient(other);
+  });
+
   // ── layout ────────────────────────────────────────────────────────────────
   const gridCols =
     orient === "v"
@@ -396,15 +409,37 @@ export default function ArchiveBrowser({
         </div>
 
         {filtered.length === 0 ? (
-          <div className="flex flex-col items-center py-20 text-center">
-            <p className="text-text-muted">Nothing in the library matches.</p>
-            <button
-              onClick={clearAll}
-              className="sweep mt-6 inline-flex h-10 items-center rounded-full border border-line-strong px-5 text-sm font-medium text-text-muted transition-colors hover:text-text"
-            >
-              Clear all filters
-            </button>
-          </div>
+          (() => {
+            const other: Orient = orient === "h" ? "v" : "h";
+            const otherCount = tokens.length ? tabCounts[other] : 0;
+            const here = orient === "h" ? "landscape" : "vertical";
+            const there = other === "h" ? "Landscape" : "Vertical";
+            return (
+              <div className="flex flex-col items-center py-20 text-center">
+                <p className="text-text-muted">
+                  {otherCount > 0
+                    ? `No ${here} matches.`
+                    : "Nothing in the library matches."}
+                </p>
+                <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+                  {otherCount > 0 && (
+                    <button
+                      onClick={() => switchOrient(other)}
+                      className="sweep inline-flex h-10 items-center rounded-full bg-text px-5 text-sm font-medium text-bg transition-transform hover:scale-[1.02]"
+                    >
+                      {otherCount} {otherCount === 1 ? "match" : "matches"} in {there} →
+                    </button>
+                  )}
+                  <button
+                    onClick={clearAll}
+                    className="sweep inline-flex h-10 items-center rounded-full border border-line-strong px-5 text-sm font-medium text-text-muted transition-colors hover:text-text"
+                  >
+                    Clear all filters
+                  </button>
+                </div>
+              </div>
+            );
+          })()
         ) : (
           <div
             key={gridKey}

@@ -1,4 +1,3 @@
-import { CAL_LINK } from "@/lib/work";
 import MetallicLogo from "./MetallicLogo";
 import { EdgeDivider, Magnetic, PrimaryButton } from "./ui";
 
@@ -25,7 +24,7 @@ export default function ClosingCTA({
           )}
         </div>
         <Magnetic>
-          <PrimaryButton href={CAL_LINK} size="lg">
+          <PrimaryButton href="/contact" size="lg">
             Book a call
           </PrimaryButton>
         </Magnetic>

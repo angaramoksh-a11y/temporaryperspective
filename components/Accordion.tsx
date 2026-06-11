@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { motion, useInView } from "motion/react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -22,6 +22,7 @@ function Row({
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.4 });
+  const panelId = useId();
 
   return (
     <motion.div
@@ -34,6 +35,7 @@ function Row({
       <button
         onClick={onToggle}
         aria-expanded={open}
+        aria-controls={panelId}
         className="flex w-full cursor-pointer items-start justify-between gap-5 px-6 py-5 text-left transition-colors duration-300 ease-[var(--ease-out-quart)] hover:bg-white/[0.025] lg:px-7"
       >
         <span className="text-[1.0625rem] font-medium leading-snug text-text">
@@ -49,6 +51,7 @@ function Row({
       </button>
 
       <div
+        id={panelId}
         className={`grid transition-[grid-template-rows,background-color] duration-300 ease-[var(--ease-out-quart)] ${open ? "bg-white/[0.022]" : ""}`}
         style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
       >

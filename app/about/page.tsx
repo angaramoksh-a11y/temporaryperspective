@@ -89,7 +89,7 @@ export default async function AboutPage() {
             </div>
 
             <div className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-5">
-              {team.map((m) => (
+              {team.map((m, i) => (
                 <div key={m.name} className="group flex flex-col">
                   <div className="sweep relative aspect-square w-full overflow-hidden rounded-2xl border border-line-strong bg-bg-raised/50 transition-[transform] duration-300 ease-[var(--ease-out-quart)] group-hover:-translate-y-1">
                     {m.headshot ? (
@@ -97,6 +97,9 @@ export default async function AboutPage() {
                         src={m.headshot}
                         alt={m.name}
                         fill
+                        // First row is in the initial viewport; manav.jpg gets
+                        // flagged as LCP, so fetch these eagerly from <head>.
+                        preload={i < 3}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                         className="object-cover grayscale transition-[filter] duration-500 ease-[var(--ease-out-quart)] group-hover:grayscale-0"
                       />

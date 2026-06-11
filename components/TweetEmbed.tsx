@@ -36,7 +36,7 @@ export default function TweetEmbed({ url }: { url: string }) {
       <div ref={ref} className="flex justify-center">
         <blockquote
           className="twitter-tweet"
-          data-theme="light"
+          data-theme="dark"
           data-dnt="true"
           data-conversation="none"
         >

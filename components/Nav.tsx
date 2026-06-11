@@ -107,7 +107,7 @@ function monogram(name: string) {
 // The recognizable name (the studio is known by "Moksh", not "Angara").
 function shortName(name: string) {
   const parts = name.trim().split(/\s+/);
-  return parts.length > 1 ? parts[parts.length - 1] : name;
+  return parts.length > 1 ? parts[0] : name;
 }
 
 const under = (p: string, href: string) => p === href || p.startsWith(`${href}/`);
@@ -233,7 +233,7 @@ export default function Nav() {
         initial={{ borderRadius: 12 }}
         animate={{ borderRadius: isOpen ? 16 : 12 }}
         transition={smooth}
-        className="glass relative mx-auto w-full max-w-[1400px] overflow-hidden lg:w-[88%]"
+        className="glass relative z-50 mx-auto w-full max-w-[1400px] overflow-hidden lg:w-[88%]"
       >
         {/* darken the glass so the links stay legible over a bright backdrop */}
         <div aria-hidden className="pointer-events-none absolute inset-0 bg-bg/55" />
@@ -343,9 +343,23 @@ export default function Nav() {
                       type="button"
                       aria-haspopup="true"
                       aria-expanded={isThis}
-                      onFocus={() => {
-                        open(c.label);
-                        setHoveredTop(c.label);
+                      // Click/tap toggles the menu (touch devices get no hover);
+                      // hover behavior above is unchanged.
+                      onClick={() => {
+                        if (openCat === c.label) {
+                          open(null);
+                        } else {
+                          open(c.label);
+                          setHoveredTop(c.label);
+                        }
+                      }}
+                      // Keyboard focus only — mouse/touch focus must not open the
+                      // menu, or the click toggle above would immediately undo it.
+                      onFocus={(e) => {
+                        if (e.target.matches(":focus-visible")) {
+                          open(c.label);
+                          setHoveredTop(c.label);
+                        }
                       }}
                       className={`relative z-10 inline-flex items-center gap-1 rounded-[var(--radius-btn)] px-5 py-1.5 text-[1.05rem] font-semibold transition-colors ${textCls}`}
                     >
