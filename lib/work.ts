@@ -172,7 +172,8 @@ const vimeoSeeds: WorkSeed[] = (
     { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301876", hash: "c6150cd478" }, v: { id: "1195301875", hash: "482906e52d" }, desc: "Deepak Sharma (Investor) at Bureau Fraud Forum" },
 
     { client: "Ignosis", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195304346", hash: "79f1fb2591" }, desc: "Event edit" },
-    { slug: "ignosis-saas-edit", title: "Ignosis — SaaS Edit", client: "Ignosis", format: "Motion graphics", source: "vimeo", orientation: "horizontal", h: { id: "1200381808" }, desc: "SaaS motion graphics edit", tags: ["saas", "motion-graphics"] },
+    { slug: "ignosis-saas-edit", title: "Ignosis — SaaS Edit", client: "Ignosis", format: "SaaS Edit", source: "vimeo", orientation: "horizontal", h: { id: "1200381808" }, desc: "SaaS motion graphics edit", tags: ["saas", "motion-graphics"] },
+    { slug: "saas-edit-1200403846", title: "SaaS Edit", client: "SaaS Edit", format: "SaaS Edit", source: "vimeo", orientation: "horizontal", h: { id: "1200403846" }, tags: ["saas", "motion-graphics"] },
 
     // My Fin short-form (vertical)
     { client: "My Fin", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1169859907" }, desc: "Outfits" },
@@ -211,21 +212,20 @@ const vimeoSeeds: WorkSeed[] = (
     { slug: "loreal-tarini", title: "L'Oréal — Tarini", client: "L'Oréal", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197941354" }, tags: ["ad", "beauty", "tarini"] },
     { slug: "amazon-prime-day", title: "Amazon Prime Day", client: "Amazon", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197943312" }, tags: ["ad", "prime-day", "d_starrr_"] },
     { slug: "good-things-take-time", title: "Good Things Take Time", client: "Ishpreet × Muskan", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197949652" }, tags: ["creator", "narrative", "ishpreet"] },
-    // TODO(owner): confirm client + tags for See You Online
-    { slug: "see-you-online", title: "See You Online", client: "See You Online", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197941945" }, tags: [] },
+    { slug: "see-you-online", title: "See You Online", client: "See You Online", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197941945" }, tags: ["narrative"] },
     { slug: "how-i-met-you-ep-1", title: "How I Met You — Ep 1", client: "How I Met You", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942565" }, tags: ["narrative", "dating", "ishpreet", "tarini"] },
     { slug: "how-i-met-you-ep-2", title: "How I Met You — Ep 2", client: "How I Met You", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942386" }, tags: ["narrative", "dating", "ishpreet", "tarini"] },
     { slug: "ishi-ki-khushi-ep-5", title: "Ishi Ki Khushi — Ep 5", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942739" }, desc: "At a beach; Khushi is about to leave town.", tags: ["narrative", "beach", "khushbu", "ishpreet"] },
     { slug: "ishi-ki-khushi-ep-6", title: "Ishi Ki Khushi — Ep 6", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197942848" }, desc: "Ishpreet asks Imran Khan for advice at a café.", tags: ["narrative", "imran-khan", "cafe"] },
     { slug: "ishi-ki-khushi-ep-7", title: "Ishi Ki Khushi — Ep 7", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197947961" }, desc: "Ishpreet follows Imran's advice; chooses long-distance over breaking it off.", tags: ["narrative"] },
     { slug: "ishi-ki-khushi-ep-8", title: "Ishi Ki Khushi — Ep 8", client: "Ishi Ki Khushi", format: "Narrative series", source: "vimeo", orientation: "vertical", v: { id: "1197947863" }, desc: "Imran & Khushi meet; all three have a heartfelt conversation.", tags: ["narrative"] },
-    { slug: "ansh-x-lenskart", title: "Ansh × Lenskart", client: "Lenskart", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947258" }, tags: ["brand-collab", "ansh-dhote"] },
-    { slug: "ansh-x-navi-upi", title: "Ansh × Navi UPI", client: "Navi", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947259" }, tags: ["brand-collab", "ansh-dhote", "fintech"] },
-    { slug: "ansh-x-flo", title: "Ansh × Flo", client: "Flo", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947261" }, tags: ["brand-collab", "ansh-dhote"] },
-    { slug: "ansh-x-mudrex", title: "Ansh × Mudrex", client: "Mudrex", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947260" }, tags: ["brand-collab", "ansh-dhote", "crypto"] },
-    { slug: "ansh-x-tvs-bike", title: "Ansh × TVS", client: "TVS", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947427" }, tags: ["brand-collab", "ansh-dhote", "auto"] },
-    { slug: "ansh-x-happn", title: "Ansh × Happn", client: "Happn", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947434" }, tags: ["brand-collab", "ansh-dhote"] },
-    { slug: "ansh-x-croma", title: "Ansh × Croma", client: "Croma", format: "Short-form reel", source: "vimeo", orientation: "vertical", v: { id: "1197947479" }, tags: ["brand-collab", "ansh-dhote", "retail"] },
+    { slug: "ansh-x-lenskart", title: "Ansh × Lenskart", client: "Lenskart", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947258" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-navi-upi", title: "Ansh × Navi UPI", client: "Navi", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947259" }, tags: ["brand-collab", "ansh-dhote", "fintech"] },
+    { slug: "ansh-x-flo", title: "Ansh × Flo", client: "Flo", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947261" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-mudrex", title: "Ansh × Mudrex", client: "Mudrex", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947260" }, tags: ["brand-collab", "ansh-dhote", "crypto"] },
+    { slug: "ansh-x-tvs-bike", title: "Ansh × TVS", client: "TVS", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947427" }, tags: ["brand-collab", "ansh-dhote", "auto"] },
+    { slug: "ansh-x-happn", title: "Ansh × Happn", client: "Happn", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947434" }, tags: ["brand-collab", "ansh-dhote"] },
+    { slug: "ansh-x-croma", title: "Ansh × Croma", client: "Croma", format: "Commercial", source: "vimeo", orientation: "vertical", v: { id: "1197947479" }, tags: ["brand-collab", "ansh-dhote", "retail"] },
     { slug: "shutup-beta-logo-animation", title: "Shutup Beta — Logo animation", client: "Shutup Beta", format: "Logo animation", source: "vimeo", orientation: "horizontal", h: { id: "1172823675" }, tags: ["motion-graphics", "branding"] },
   ] as WorkSeed[]
 );
