@@ -250,7 +250,7 @@ export default function MediaLightbox({
                       isPdf
                         ? "h-[78vh] w-full"
                         : vertical
-                          ? "mx-auto aspect-[9/16] h-[58vh] max-h-[560px] lg:h-[78vh] lg:max-h-[680px]"
+                          ? "relative mx-auto aspect-[9/16] h-[58vh] max-h-[560px] overflow-hidden lg:h-[78vh] lg:max-h-[680px]"
                           : "aspect-video w-full"
                     }
                   >
@@ -278,7 +278,11 @@ export default function MediaLightbox({
                         title={item.title}
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
-                        className="h-full w-full"
+                        className={
+                          vertical
+                            ? "absolute left-0 right-0 top-[-9%] h-[118%] w-full"
+                            : "h-full w-full"
+                        }
                         onLoad={() => setIframeLoaded(true)}
                       />
                     )}

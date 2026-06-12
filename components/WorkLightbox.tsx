@@ -136,7 +136,7 @@ export default function WorkLightbox({
       <div
         className={
           vertical
-            ? "mx-auto aspect-[9/16] h-[58vh] max-h-[560px] lg:h-[78vh] lg:max-h-[660px]"
+            ? "relative mx-auto aspect-[9/16] h-[58vh] max-h-[560px] overflow-hidden lg:h-[78vh] lg:max-h-[660px]"
             : "aspect-video w-full"
         }
       >
@@ -147,7 +147,11 @@ export default function WorkLightbox({
             title={`${active.client}, ${active.format}`}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
-            className="h-full w-full"
+            className={
+              vertical
+                ? "absolute left-0 right-0 top-[-9%] h-[118%] w-full"
+                : "h-full w-full"
+            }
           />
         )}
       </div>
