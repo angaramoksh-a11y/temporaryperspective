@@ -33,7 +33,7 @@ export default async function ArchivePage() {
     <>
       <Nav />
       <main>
-        <PageHeroWord word="Archive" eyebrow="The complete library" />
+        <PageHeroWord word="Archive" eyebrow="The complete library" compact />
         <ArchiveBrowser items={items} />
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>

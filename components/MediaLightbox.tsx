@@ -58,7 +58,6 @@ export default function MediaLightbox({
   const [cut, setCut] = useState<"h" | "v">("h");
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const [escHint, setEscHint] = useState(false);
-  const [soundHint, setSoundHint] = useState(false);
   const reduce = !!useReducedMotion();
 
   useEffect(() => {
@@ -72,14 +71,6 @@ export default function MediaLightbox({
     const t = setTimeout(() => setEscHint(false), 2000);
     return () => clearTimeout(t);
   }, [open, reduce]);
-
-  // Sound hint: show for 4s when a video opens (not PDF)
-  useEffect(() => {
-    if (!item || item.media.kind === "pdf" || reduce) { setSoundHint(false); return; }
-    setSoundHint(true);
-    const t = setTimeout(() => setSoundHint(false), 4000);
-    return () => clearTimeout(t);
-  }, [item, reduce]);
 
   const go = useCallback(
     (dir: 1 | -1) => {
@@ -253,7 +244,6 @@ export default function MediaLightbox({
                 {/* ── Media area ─────────────────────────────────────────── */}
                 <div
                   className="relative flex w-full items-center justify-center bg-black"
-                  onPointerDown={() => setSoundHint(false)}
                 >
                   <div
                     className={
@@ -290,7 +280,6 @@ export default function MediaLightbox({
                         allowFullScreen
                         className="h-full w-full"
                         onLoad={() => setIframeLoaded(true)}
-                        onFocus={() => setSoundHint(false)}
                       />
                     )}
                   </div>
@@ -315,22 +304,6 @@ export default function MediaLightbox({
                     </div>
                   )}
 
-                  {/* Sound hint pill — pointer-events-none so clicks pass to iframe */}
-                  {!isPdf && (
-                    <AnimatePresence>
-                      {soundHint && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 4 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          exit={{ opacity: 0, y: 4 }}
-                          transition={{ duration: 0.3, ease }}
-                          className="pointer-events-none absolute bottom-12 left-1/2 z-20 -translate-x-1/2 rounded-full border border-line-strong bg-bg/75 px-3.5 py-1.5 text-xs text-text-muted backdrop-blur"
-                        >
-                          🔊 Tap for sound
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  )}
 
                   {/* Side arrows + page counter */}
                   {hasNav && (

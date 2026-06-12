@@ -14,17 +14,25 @@ export default function PageHeroWord({
   word,
   eyebrow,
   sub,
+  compact,
 }: {
   word: string;
   eyebrow?: string;
   sub?: string;
+  compact?: boolean;
 }) {
   const reduce = useReducedMotion();
   const glow =
     "radial-gradient(42% 56% at 50% 42%, oklch(0.86 0.02 250 / 0.16), transparent 72%)";
 
   return (
-    <section className="relative flex min-h-[52vh] items-center justify-center overflow-hidden px-6 pb-16 pt-36 text-center lg:px-10 lg:pt-44">
+    <section
+      className={`relative flex items-center justify-center overflow-hidden px-6 text-center lg:px-10 ${
+        compact
+          ? "min-h-[22vh] pb-8 pt-28 lg:pt-32"
+          : "min-h-[52vh] pb-16 pt-36 lg:pt-44"
+      }`}
+    >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"

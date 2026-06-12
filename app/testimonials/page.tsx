@@ -36,6 +36,8 @@ const ORDER = [
 
 const v = (id: string, hash?: string) =>
   ({ kind: "vimeo", h: hash ? { id, hash } : { id } }) as const;
+const vv = (id: string, hash?: string) =>
+  ({ kind: "vimeo", v: hash ? { id, hash } : { id } }) as const;
 const vh = (h: [string, string], vert: [string, string]) =>
   ({
     kind: "vimeo",
@@ -90,15 +92,15 @@ const CONFIG: Record<
       {
         heading: "How I Met You (Series)",
         items: [
-          { label: "Episode 1", media: v("1197942565") },
-          { label: "Episode 2", media: v("1197942386") },
+          { label: "Episode 1", media: vv("1197942565") },
+          { label: "Episode 2", media: vv("1197942386") },
         ],
       },
       {
         heading: "Advertisements",
         items: [
-          { label: "L'Oréal", media: v("1197941354") },
-          { label: "Google Pixel", media: v("1197941353") },
+          { label: "L'Oréal", media: vv("1197941354") },
+          { label: "Google Pixel", media: vv("1197941353") },
         ],
       },
     ],
@@ -109,20 +111,26 @@ const CONFIG: Record<
       {
         heading: "Ishi Ki Khushi (Series)",
         items: [
-          { label: "Ep 5", media: v("1197942739") },
-          { label: "Ep 6", media: v("1197942848") },
-          { label: "Ep 7", media: v("1197947961") },
-          { label: "Ep 8", media: v("1197947863") },
+          { label: "Ep 5", media: vv("1197942739") },
+          { label: "Ep 6", media: vv("1197942848") },
+          { label: "Ep 7", media: vv("1197947961") },
+          { label: "Ep 8", media: vv("1197947863") },
         ],
       },
       {
         heading: "How I Met You (Series)",
         items: [
-          { label: "Episode 1", media: v("1197942565") },
-          { label: "Episode 2", media: v("1197942386") },
+          { label: "Episode 1", media: vv("1197942565") },
+          { label: "Episode 2", media: vv("1197942386") },
         ],
       },
-      { items: [{ label: "Good Things Take Time", media: v("1197949652") }] },
+      {
+        heading: "Other Narratives",
+        items: [
+          { label: "Good Things Take Time", media: vv("1197949652") },
+          { label: "See You Online", media: vv("1197941945") },
+        ],
+      },
     ],
   },
   "1197937167": {
@@ -131,10 +139,10 @@ const CONFIG: Record<
       {
         heading: "Ishi Ki Khushi (Series)",
         items: [
-          { label: "Ep 5", media: v("1197942739") },
-          { label: "Ep 6", media: v("1197942848") },
-          { label: "Ep 7", media: v("1197947961") },
-          { label: "Ep 8", media: v("1197947863") },
+          { label: "Ep 5", media: vv("1197942739") },
+          { label: "Ep 6", media: vv("1197942848") },
+          { label: "Ep 7", media: vv("1197947961") },
+          { label: "Ep 8", media: vv("1197947863") },
         ],
       },
     ],
