@@ -94,8 +94,30 @@ function ScrollArrow({
   );
 }
 
+// A format's Vimeo gallery, flattened into lightbox items. Clips that ship both
+// a horizontal and vertical cut get the H/V toggle for free inside MediaLightbox.
+const formatGalleries: Record<string, LightboxItem[]> = Object.fromEntries(
+  c.formats
+    .filter((f) => f.gallery && f.gallery.length > 0)
+    .map((f) => [
+      f.heading,
+      f.gallery!.map((clip) => ({
+        title: clip.label,
+        client: `Bureau · ${f.heading}`,
+        orientation: clip.v && !clip.h ? ("vertical" as const) : ("horizontal" as const),
+        media: { kind: "vimeo" as const, h: clip.h, v: clip.v },
+      })),
+    ]),
+);
+
 export default function BureauCaseStudy() {
   const [lbOpen, setLbOpen] = useState(false);
+
+  // Format-card gallery lightbox: which format is open + index within it.
+  const [gallery, setGallery] = useState<{ heading: string; index: number } | null>(
+    null,
+  );
+  const galleryItems = gallery ? formatGalleries[gallery.heading] ?? [] : [];
 
   // Work scroll
   const allTiles = c.formats.flatMap((f) => f.tiles);
@@ -298,28 +320,53 @@ export default function BureauCaseStudy() {
               </ul>
             </div>
 
-            {/* Format breakdown — stacked cards */}
+            {/* Format breakdown — each card opens its Vimeo gallery */}
             <div className="flex flex-col gap-3">
-              {c.formats.map((f) => (
-                <div
-                  key={f.heading}
-                  className="glass sweep rounded-2xl px-5 py-4"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 className="font-display text-base font-medium tracking-tight text-text">
-                      {f.heading}
-                    </h3>
-                    <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
-                      {f.label}
-                    </span>
-                  </div>
-                  <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
-                    {f.body}
-                  </p>
-                </div>
-              ))}
+              {c.formats.map((f) => {
+                const count = f.gallery?.length ?? 0;
+                const open = () => count > 0 && setGallery({ heading: f.heading, index: 0 });
+                return (
+                  <button
+                    key={f.heading}
+                    type="button"
+                    onClick={open}
+                    disabled={count === 0}
+                    aria-label={`View ${f.heading} films`}
+                    className="glass sweep group rounded-2xl px-5 py-4 text-left transition-[transform,border-color] duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-0.5 disabled:pointer-events-none disabled:opacity-60"
+                  >
+                    <div className="flex items-baseline justify-between gap-3">
+                      <h3 className="font-display text-base font-medium tracking-tight text-text">
+                        {f.heading}
+                      </h3>
+                      <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
+                        {f.label}
+                      </span>
+                    </div>
+                    <p className="mt-1.5 text-sm leading-relaxed text-text-muted">
+                      {f.body}
+                    </p>
+                    {count > 0 && (
+                      <span className="mt-3 inline-flex items-center gap-2 text-xs font-medium text-text-faint transition-colors group-hover:text-text">
+                        <span className="grid h-6 w-6 place-items-center rounded-full border border-line-strong bg-white/[0.03] transition-colors group-hover:border-white/30">
+                          <svg viewBox="0 0 24 24" className="h-2.5 w-2.5 translate-x-px fill-current" aria-hidden>
+                            <path d="M8 5v14l11-7z" />
+                          </svg>
+                        </span>
+                        Watch {count} {count === 1 ? "film" : "films"}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
           </div>
+
+          <MediaLightbox
+            items={galleryItems}
+            index={gallery ? gallery.index : null}
+            onClose={() => setGallery(null)}
+            onIndex={(i) => setGallery((g) => (g ? { ...g, index: i } : g))}
+          />
         </section>
 
         {/* 4. Work showcase — scroll row */}
@@ -377,9 +424,15 @@ export default function BureauCaseStudy() {
                   />
                 </button>
                 <figcaption className="mt-3 px-0.5">
-                  <p className="text-sm font-medium leading-snug text-text">
+                  <button
+                    onClick={() => {
+                      if (drag.current.moved > 6) return;
+                      setWorkIndex(i);
+                    }}
+                    className="text-left text-sm font-medium leading-snug text-text underline decoration-line decoration-1 underline-offset-4 transition-colors hover:text-white hover:decoration-text-faint"
+                  >
                     {t.guest}
-                  </p>
+                  </button>
                 </figcaption>
               </figure>
             ))}

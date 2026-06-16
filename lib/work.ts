@@ -627,11 +627,20 @@ export type CaseContent = {
 export const caseStudyContent: Record<string, CaseContent> = {};
 
 // Bureau: bespoke, organised by production format rather than a single show.
+// A format card carries both the YouTube highlight tiles (for the scroll reel +
+// schema) and a Vimeo gallery (what opens when the card itself is clicked).
+// Gallery clips can ship both a horizontal and vertical cut for the H/V toggle.
+export type FormatClip = {
+  label: string;
+  h?: VimeoClip;
+  v?: VimeoClip;
+};
 export type FormatBlock = {
   heading: string;
   label: string;
   body: string;
   tiles: Episode[];
+  gallery?: FormatClip[];
 };
 
 export const bureauContent = {
@@ -656,18 +665,26 @@ export const bureauContent = {
         { id: "KRFL9DtVFfk", guest: "Forum sizzle reel", client: "Bureau" },
         { id: "kgOeJjDuf-w", guest: "Ranjan Reddy, Founder", client: "Bureau" },
       ],
+      gallery: [
+        { label: "Sizzle reel", h: { id: "1195301877", hash: "843cb7b206" } },
+        { label: "Sandesh", h: { id: "1195303497", hash: "5a1aae3ea4" }, v: { id: "1195303501", hash: "c81e8c9d92" } },
+        { label: "Ranjan Reddy", h: { id: "1195301878", hash: "78a173b6ee" }, v: { id: "1195303110", hash: "325b0b4083" } },
+        { label: "Deepak Sharma", h: { id: "1195301876", hash: "c6150cd478" }, v: { id: "1195301875", hash: "482906e52d" } },
+      ],
     },
     {
       heading: "Bureau Backyard",
       label: "Podcast series",
       body: "Bureau's ongoing series, podcast format. Long-form conversations with operators in the fraud-prevention space.",
       tiles: [{ id: "_RR2a1bh1T0", guest: "Ishaan", client: "Bureau" }],
+      gallery: [{ label: "Bureau Backyard Podcast", h: { id: "1198374453" } }],
     },
     {
       heading: "Testimonials",
       label: "Client work",
       body: "Client testimonial production for Bureau's customers.",
       tiles: [{ id: "KMZ_k4C8vxQ", guest: "Indmoney", client: "Bureau" }],
+      gallery: [{ label: "IndMoney Testimonial", h: { id: "1172800968" } }],
     },
   ] as FormatBlock[],
   related: [
