@@ -114,6 +114,7 @@ export type WorkItem = {
   desc?: string;
   tags?: string[]; // extra search keywords
   caseStudy?: string;
+  links?: { label: string; href: string }[]; // external context (e.g. client post)
 };
 
 // A WorkItem with its poster resolved + a stable key, ready for the client.
@@ -171,7 +172,7 @@ const vimeoSeeds: WorkSeed[] = (
     { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301878", hash: "78a173b6ee" }, v: { id: "1195303110", hash: "325b0b4083" }, desc: "Ranjan Reddy (Founder) at Bureau Fraud Forum" },
     { client: "Bureau", format: "Talking head", source: "vimeo", orientation: "horizontal", h: { id: "1195301876", hash: "c6150cd478" }, v: { id: "1195301875", hash: "482906e52d" }, desc: "Deepak Sharma (Investor) at Bureau Fraud Forum" },
 
-    { client: "Ignosis", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195304346", hash: "79f1fb2591" }, desc: "Event edit" },
+    { client: "Ignosis", format: "Event coverage / Sizzle reel", source: "vimeo", orientation: "horizontal", h: { id: "1195304346", hash: "79f1fb2591" }, desc: "Event edit", links: [{ label: "See the post on LinkedIn", href: "https://www.linkedin.com/posts/ignosi_gff2025-accountaggregator-aaintelligence-activity-7382396317081243648-6Q66" }] },
     { slug: "ignosis-saas-edit", title: "Ignosis — SaaS Edit", client: "Ignosis", format: "SaaS Edit", source: "vimeo", orientation: "horizontal", h: { id: "1200381808" }, desc: "SaaS motion graphics edit", tags: ["saas", "motion-graphics"] },
     { slug: "saas-edit-1200403846", title: "SaaS Edit", client: "SaaS Edit", format: "SaaS Edit", source: "vimeo", orientation: "horizontal", h: { id: "1200403846" }, tags: ["saas", "motion-graphics"] },
 

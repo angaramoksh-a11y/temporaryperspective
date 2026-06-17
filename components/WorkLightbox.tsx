@@ -127,6 +127,17 @@ export default function WorkLightbox({
             Case study →
           </Link>
         )}
+        {active.links?.map((l) => (
+          <a
+            key={l.href}
+            href={l.href}
+            target="_blank"
+            rel="noreferrer"
+            className="sweep inline-flex h-10 items-center rounded-full border border-line-strong px-4 text-sm font-medium transition-colors hover:bg-white/[0.04]"
+          >
+            {l.label} ↗
+          </a>
+        ))}
       </div>
     </>
   );
