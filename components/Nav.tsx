@@ -330,27 +330,23 @@ export default function Nav() {
                 );
               }
 
-              // Studio: open menu but show no content until a sub-item is hovered.
+              // Work / Studio: click-only toggle, no hover open.
               const isThis = openCat === c.label;
               return (
                 <li
                   key={c.label}
-                  onMouseEnter={() => {
-                    scheduleOpen(c.label);
-                    setHoveredTop(c.label);
-                  }}
+                  onMouseEnter={() => setHoveredTop(c.label)}
                 >
                   <div className="relative">
                     {pill}
-                    <Link
-                      href={c.href}
+                    <button
+                      type="button"
                       aria-haspopup="true"
                       aria-expanded={isThis}
-                      // Hard click navigates to the category's landing page. The
-                      // megamenu opens on hover (li onMouseEnter) and keyboard
-                      // focus; it no longer needs a click to toggle.
-                      onFocus={(e) => {
-                        if (e.currentTarget.matches(":focus-visible")) {
+                      onClick={() => {
+                        if (openCat === c.label) {
+                          open(null);
+                        } else {
                           open(c.label);
                           setHoveredTop(c.label);
                         }
@@ -370,7 +366,7 @@ export default function Nav() {
                       >
                         <path d="M6 9l6 6 6-6" />
                       </svg>
-                    </Link>
+                    </button>
                   </div>
                 </li>
               );
