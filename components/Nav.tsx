@@ -17,13 +17,15 @@ import { Magnetic, PrimaryButton } from "./ui";
 // desktop Menu toggle; mobile falls back to a hamburger accordion overlay.
 
 type Item = { label: string; href: string; desc: string };
-type Category =
-  | { label: string; items: Item[]; href?: never }
-  | { label: string; href: string; items?: never };
+// Every top-level category is a real link (hard click navigates). Categories
+// with `items` also expand a hover/focus megamenu; the label itself still
+// navigates to its landing page on click.
+type Category = { label: string; href: string; items?: Item[] };
 
 const categories: Category[] = [
   {
     label: "Work",
+    href: "/portfolio",
     items: [
       { label: "Portfolio", href: "/portfolio", desc: "The shows we produce, episode by episode." },
       { label: "Full archive", href: "/portfolio/archive", desc: "Every episode and clip. Filter by client or format." },
@@ -32,6 +34,7 @@ const categories: Category[] = [
   },
   {
     label: "Studio",
+    href: "/process",
     items: [
       { label: "Our process", href: "/process", desc: "How we run a show." },
       { label: "Remote production", href: "/virtual", desc: "When your guest's in another city." },
@@ -339,24 +342,15 @@ export default function Nav() {
                 >
                   <div className="relative">
                     {pill}
-                    <button
-                      type="button"
+                    <Link
+                      href={c.href}
                       aria-haspopup="true"
                       aria-expanded={isThis}
-                      // Click/tap toggles the menu (touch devices get no hover);
-                      // hover behavior above is unchanged.
-                      onClick={() => {
-                        if (openCat === c.label) {
-                          open(null);
-                        } else {
-                          open(c.label);
-                          setHoveredTop(c.label);
-                        }
-                      }}
-                      // Keyboard focus only — mouse/touch focus must not open the
-                      // menu, or the click toggle above would immediately undo it.
+                      // Hard click navigates to the category's landing page. The
+                      // megamenu opens on hover (li onMouseEnter) and keyboard
+                      // focus; it no longer needs a click to toggle.
                       onFocus={(e) => {
-                        if (e.target.matches(":focus-visible")) {
+                        if (e.currentTarget.matches(":focus-visible")) {
                           open(c.label);
                           setHoveredTop(c.label);
                         }
@@ -376,7 +370,7 @@ export default function Nav() {
                       >
                         <path d="M6 9l6 6 6-6" />
                       </svg>
-                    </button>
+                    </Link>
                   </div>
                 </li>
               );

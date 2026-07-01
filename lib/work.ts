@@ -685,7 +685,7 @@ export const bureauContent = {
       label: "Client work",
       body: "Client testimonial production for Bureau's customers.",
       tiles: [{ id: "KMZ_k4C8vxQ", guest: "Indmoney", client: "Bureau" }],
-      gallery: [{ label: "IndMoney Testimonial", h: { id: "1172800968" } }],
+      gallery: [{ label: "IndMoney Testimonial", h: { id: "1206094271" } }],
     },
   ] as FormatBlock[],
   related: [
