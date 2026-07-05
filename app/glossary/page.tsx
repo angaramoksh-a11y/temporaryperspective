@@ -17,6 +17,7 @@ export const metadata: Metadata = {
     url: "https://temporaryperspective.com/glossary",
     type: "website",
   },
+  alternates: { canonical: "https://temporaryperspective.com/glossary" },
   twitter: { card: "summary_large_image" },
 };
 

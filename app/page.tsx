@@ -12,13 +12,14 @@ import ClosingCTA from "@/components/ClosingCTA";
 import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Temporary Perspective — B2B podcast studio, Mumbai",
+  title: "Temporary Perspective — B2B Podcast Studio, Mumbai",
   description:
-    "A B2B podcast production studio in Mumbai. 100+ episodes shipped for India's hardest-to-book guests. Brand, shoot, edit, growth, end to end.",
+    "B2B podcast production studio in Mumbai. 100+ episodes shipped for India's hardest-to-book guests. Brand, shoot, edit, growth — end to end, in under a week.",
+  alternates: { canonical: "https://temporaryperspective.com" },
   openGraph: {
-    title: "Temporary Perspective — B2B podcast studio, Mumbai",
+    title: "Temporary Perspective — B2B Podcast Studio, Mumbai",
     description:
-      "A B2B podcast production studio in Mumbai. 100+ episodes shipped for India's hardest-to-book guests. Brand, shoot, edit, growth, end to end.",
+      "B2B podcast production studio in Mumbai. 100+ episodes shipped for India's hardest-to-book guests. Brand, shoot, edit, growth — end to end, in under a week.",
     url: "https://temporaryperspective.com",
     type: "website",
   },

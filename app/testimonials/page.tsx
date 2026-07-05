@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     url: "https://temporaryperspective.com/testimonials",
     type: "website",
   },
+  alternates: { canonical: "https://temporaryperspective.com/testimonials" },
   twitter: { card: "summary_large_image" },
 };
 

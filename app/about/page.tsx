@@ -11,12 +11,14 @@ import { EdgeDivider } from "@/components/ui";
 import { siteTestimonials, team, vimeoPoster, caseStudies, type SiteTestimonial } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "The studio — Temporary Perspective",
+  title: "About the Studio — B2B Podcast Production Team, Mumbai",
   description:
-    "A B2B podcast production studio in Mumbai. We build the studio; the show stays yours.",
+    "Meet the team behind Temporary Perspective — the B2B podcast studio in Mumbai. 100+ episodes shipped. Brand, shoot, edit, growth, all in-house.",
+  alternates: { canonical: "https://temporaryperspective.com/about" },
   openGraph: {
-    title: "The studio — Temporary Perspective",
-    description: "A B2B podcast production studio in Mumbai. We build the studio; the show stays yours.",
+    title: "About the Studio — B2B Podcast Production Team, Mumbai",
+    description:
+      "Meet the team behind Temporary Perspective — the B2B podcast studio in Mumbai. 100+ episodes shipped. Brand, shoot, edit, growth, all in-house.",
     url: "https://temporaryperspective.com/about",
     type: "website",
   },

@@ -4,13 +4,14 @@ import Footer from "@/components/Footer";
 import { CAL_LINK, contact } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Book a call — Temporary Perspective",
+  title: "Book a Call — Start Your B2B Podcast",
   description:
-    "A short call to see if we're the right studio for your show. No pitch deck, no quote on the call.",
+    "Book a 30-minute call with Temporary Perspective. Tell us about your show idea — we'll tell you if we're the right studio to build it.",
+  alternates: { canonical: "https://temporaryperspective.com/contact" },
   openGraph: {
-    title: "Book a call — Temporary Perspective",
+    title: "Book a Call — Start Your B2B Podcast",
     description:
-      "A short call to see if we're the right studio for your show. No pitch deck, no quote on the call.",
+      "Book a 30-minute call with Temporary Perspective. Tell us about your show idea — we'll tell you if we're the right studio to build it.",
     url: "https://temporaryperspective.com/contact",
     type: "website",
   },

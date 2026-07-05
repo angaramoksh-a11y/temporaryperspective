@@ -7,12 +7,14 @@ import ProcessTimeline from "@/components/ProcessTimeline";
 import ClosingCTA from "@/components/ClosingCTA";
 
 export const metadata: Metadata = {
-  title: "The process — Temporary Perspective",
+  title: "How We Produce a B2B Podcast — The Process",
   description:
-    "How we run a podcast, end to end. Branding, guest prep, production, post, and growth, with Bharatvaarta as the running example.",
+    "How Temporary Perspective runs a B2B podcast from zero: brand identity, guest prep, studio shoot, video editing, and growth. Walkthrough using Bharatvaarta as the example.",
+  alternates: { canonical: "https://temporaryperspective.com/process" },
   openGraph: {
-    title: "The process — Temporary Perspective",
-    description: "How we run a podcast, end to end. Branding, guest prep, production, post, and growth, with Bharatvaarta as the running example.",
+    title: "How We Produce a B2B Podcast — The Process",
+    description:
+      "How Temporary Perspective runs a B2B podcast from zero: brand identity, guest prep, studio shoot, video editing, and growth. Walkthrough using Bharatvaarta as the example.",
     url: "https://temporaryperspective.com/process",
     type: "website",
   },

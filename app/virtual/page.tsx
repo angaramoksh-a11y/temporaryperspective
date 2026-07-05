@@ -8,13 +8,14 @@ import { EdgeDivider } from "@/components/ui";
 import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Remote production — Temporary Perspective",
+  title: "Remote Podcast Production — Shoot From Anywhere",
   description:
-    "When your guest can't be in the room, we make it look like they were. A crew at both ends, recorded properly, cut as one conversation.",
+    "Professional remote podcast production for guests who can't travel to the studio. Crew at both ends, locally recorded, cut as one seamless conversation.",
+  alternates: { canonical: "https://temporaryperspective.com/virtual" },
   openGraph: {
-    title: "Remote production — Temporary Perspective",
+    title: "Remote Podcast Production — Shoot From Anywhere",
     description:
-      "When your guest can't be in the room, we make it look like they were. A crew at both ends, recorded properly, cut as one conversation.",
+      "Professional remote podcast production for guests who can't travel to the studio. Crew at both ends, locally recorded, cut as one seamless conversation.",
     url: "https://temporaryperspective.com/virtual",
     type: "website",
   },

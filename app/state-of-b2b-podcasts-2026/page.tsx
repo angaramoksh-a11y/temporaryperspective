@@ -12,11 +12,12 @@ const REPORT_URL = `${BASE}/state-of-b2b-podcasts-2026`;
 export const metadata: Metadata = {
   title: "State of B2B Podcasts in India 2026 — Temporary Perspective",
   description:
-    "A production and performance benchmark for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories.",
+    "Production and performance benchmarks for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories analysed.",
+  alternates: { canonical: REPORT_URL },
   openGraph: {
     title: "State of B2B Podcasts in India 2026",
     description:
-      "A production and performance benchmark for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories.",
+      "Production and performance benchmarks for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories analysed.",
     url: REPORT_URL,
     type: "article",
   },
