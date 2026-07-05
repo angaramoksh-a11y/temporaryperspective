@@ -200,7 +200,7 @@ export default function Nav() {
   };
 
   const current = categories.find((c) => c.label === openCat && c.items) as
-    | Extract<Category, { items: Item[] }>
+    | (Category & { items: Item[] })
     | undefined;
   const isOpen = !!current;
   const smooth = { duration: reduce ? 0 : 0.42, ease: [0.16, 1, 0.3, 1] as const };
