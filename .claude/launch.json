@@ -6,13 +6,20 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000,
-      "autoPort": false
+      "autoPort": true
     },
     {
       "name": "v12-static",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4178", "--directory", "out"],
       "port": 4178,
+      "autoPort": false
+    },
+    {
+      "name": "100xvc",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/100xvc", "--", "--port", "3123"],
+      "port": 3123,
       "autoPort": false
     }
   ]
