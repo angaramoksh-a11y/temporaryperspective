@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import AskAI from "./AskAI";
 import { EdgeDivider, PrimaryButton } from "./ui";
 import { CredIconSvg } from "./testimonialBits";
 import type { CredIcon } from "@/lib/work";
@@ -130,6 +131,9 @@ export default function Footer() {
             </div>
           </div>
         </div>
+
+        {/* Ask AI about us — confidence play, powered by our GEO legibility */}
+        <AskAI />
 
         {/* Lifted above the fixed Vignette (z-30) so the legal line stays crisp */}
         <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
