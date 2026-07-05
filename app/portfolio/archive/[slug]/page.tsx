@@ -20,12 +20,20 @@ export async function generateMetadata({
   const { slug } = await params;
   const it = archiveItems.find((i) => i.slug === slug);
   const name = it?.title ?? it?.desc ?? it?.client ?? "The archive";
+  const description = it
+    ? it.desc
+      ? `${it.desc}${it.client ? ` (${it.client})` : ""}`
+      : `${it.format} produced for ${it.client} by Temporary Perspective.`
+    : "Every episode, every piece. The full Temporary Perspective library.";
   return {
-    title: `${name} — Temporary Perspective`,
-    description: "Every episode, every piece. The full Temporary Perspective library.",
+    title: name,
+    description,
+    alternates: {
+      canonical: `https://temporaryperspective.com/portfolio/archive/${slug}`,
+    },
     openGraph: {
       title: `${name} — Temporary Perspective`,
-      description: "Every episode, every piece. The full Temporary Perspective library.",
+      description,
       url: `https://temporaryperspective.com/portfolio/archive/${slug}`,
       type: "website",
     },
@@ -71,6 +79,9 @@ export default async function ArchiveSlugPage({
     <>
       <Nav />
       <main>
+        <h1 className="sr-only">
+          {it?.title ?? it?.desc ?? (it ? `${it.client} — ${it.format}` : "The archive")}
+        </h1>
         <ArchiveBrowser items={items} initialSlug={slug} />
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>

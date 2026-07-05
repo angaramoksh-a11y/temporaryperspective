@@ -52,3 +52,42 @@ export function videoObjectSchema({
       : TP_ORG,
   };
 }
+
+const BASE = "https://temporaryperspective.com";
+
+// BreadcrumbList ready to embed as its own <script>. Pass the trail
+// Home → … → current page. Relative paths are resolved against the site origin.
+export function breadcrumbSchema(trail: { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: trail.map((crumb, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: crumb.name,
+      item: crumb.path.startsWith("http") ? crumb.path : `${BASE}${crumb.path}`,
+    })),
+  };
+}
+
+// OfferCatalog of Services, ready to embed as its own <script>. Used on /process
+// to make the studio authoritative for its full service list.
+export function serviceCatalogSchema(
+  services: { name: string; description: string }[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: "Podcast Production Services",
+    provider: { "@id": `${BASE}/#organization` },
+    itemListElement: services.map((s) => ({
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: s.name,
+        description: s.description,
+        provider: { "@id": `${BASE}/#organization` },
+      },
+    })),
+  };
+}

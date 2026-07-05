@@ -10,7 +10,7 @@ import { siteTestimonials, vimeoPoster } from "@/lib/work";
 import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Testimonials — Temporary Perspective",
+  title: "Testimonials",
   description:
     "In their own words: podcasters, founders, and creators on working with Temporary Perspective.",
   openGraph: {
@@ -200,7 +200,7 @@ export default async function TestimonialsPage() {
         "@type": "Review",
         author: { "@type": "Person", name: t.name, jobTitle: t.role },
         reviewBody: t.transcript.join("\n\n"),
-        itemReviewed: { "@type": "Organization", name: "Temporary Perspective" },
+        itemReviewed: { "@id": "https://temporaryperspective.com/#organization" },
         reviewRating: { "@type": "Rating", ratingValue: 5, bestRating: 5 },
       },
       videoObjectSchema({

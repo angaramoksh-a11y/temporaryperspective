@@ -7,9 +7,15 @@ import ClosingCTA from "@/components/ClosingCTA";
 import NewsletterSignup from "@/components/NewsletterSignup";
 import { EdgeDivider } from "@/components/ui";
 import { newsletterPosts } from "@/lib/work";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const newsletterBreadcrumb = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Newsletter", path: "/newsletter" },
+]);
 
 export const metadata: Metadata = {
-  title: "Newsletter — Temporary Perspective",
+  title: "Newsletter",
   description:
     "Short, occasional notes on running a podcast worth watching, from the studio behind Bharatvaarta, Bureau, and Qapita.",
   openGraph: {
@@ -103,6 +109,10 @@ export default function NewsletterPage() {
         <ClosingCTA subline="Or skip the reading and tell us about your show." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newsletterBreadcrumb) }}
+      />
     </>
   );
 }

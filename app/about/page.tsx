@@ -9,9 +9,29 @@ import ClosingCTA from "@/components/ClosingCTA";
 import Testimonials from "@/components/Testimonials";
 import { EdgeDivider } from "@/components/ui";
 import { siteTestimonials, team, vimeoPoster, caseStudies, type SiteTestimonial } from "@/lib/work";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const ORIGIN = "https://temporaryperspective.com";
+
+// Person nodes for the team, linked to the Organization node in the root layout.
+const teamLd = {
+  "@context": "https://schema.org",
+  "@graph": team.map((m) => ({
+    "@type": "Person",
+    name: m.name,
+    jobTitle: m.role,
+    ...(m.headshot ? { image: `${ORIGIN}${m.headshot}` } : {}),
+    ...(m.linkedin ? { sameAs: [m.linkedin] } : {}),
+    worksFor: { "@id": `${ORIGIN}/#organization` },
+  })),
+};
+const aboutBreadcrumb = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+]);
 
 export const metadata: Metadata = {
-  title: "About the Studio — B2B Podcast Production Team, Mumbai",
+  title: "About Our B2B Podcast Studio",
   description:
     "Meet the team behind Temporary Perspective — the B2B podcast studio in Mumbai. 100+ episodes shipped. Brand, shoot, edit, growth, all in-house.",
   alternates: { canonical: "https://temporaryperspective.com/about" },
@@ -238,6 +258,14 @@ export default async function AboutPage() {
         <ClosingCTA subline="If that sounds like how you'd want your show made, let's talk." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(teamLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(aboutBreadcrumb) }}
+      />
     </>
   );
 }

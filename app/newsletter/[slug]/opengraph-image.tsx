@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { ogCard, ogSize, ogContentType } from "@/lib/og";
 import { newsletterPosts } from "@/lib/work";
 
+export const alt = "Temporary Perspective — newsletter";
 export const size = ogSize;
 export const contentType = ogContentType;
 

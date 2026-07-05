@@ -64,8 +64,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    site: "@temporaryperspective",
-    creator: "@temporaryperspective",
   },
   robots: {
     index: true,
@@ -162,6 +160,7 @@ const siteSchema = {
       sameAs: [
         "https://www.instagram.com/temporaryperspective/",
         "https://www.linkedin.com/company/temporary-perspective/",
+        "https://www.youtube.com/@TemporaryPerspective",
       ],
       priceRange: "$$$",
       knowsAbout: [
@@ -222,6 +221,12 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full text-text">
+        {/* Warm connections to the media origins used site-wide (thumbnails +
+            hero/video embeds) so the first image/frame paints sooner. */}
+        <link rel="preconnect" href="https://i.ytimg.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://vumbnail.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://i.vimeocdn.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://player.vimeo.com" crossOrigin="anonymous" />
         <SiteBackdrop />
         {children}
         <Vignette />

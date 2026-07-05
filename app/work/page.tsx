@@ -1,25 +1,14 @@
-"use client";
+import type { Metadata } from "next";
+import ClientRedirect from "@/components/ClientRedirect";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+// /work has moved to /portfolio. Noindex the stub and canonicalize to the real
+// destination so it isn't indexed as a soft-404 homepage duplicate.
+export const metadata: Metadata = {
+  title: { absolute: "Redirecting…" },
+  robots: { index: false, follow: true },
+  alternates: { canonical: "https://temporaryperspective.com/portfolio" },
+};
 
-// /work has moved to /portfolio. Static export can't issue a server redirect,
-// so this is a client-side redirect with a no-JS link fallback.
 export default function WorkRedirect() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/portfolio");
-  }, [router]);
-  return (
-    <main className="grid min-h-svh place-items-center px-6 text-center text-text-muted">
-      <p>
-        Redirecting to{" "}
-        <Link href="/portfolio" className="text-text underline">
-          the portfolio
-        </Link>
-        …
-      </p>
-    </main>
-  );
+  return <ClientRedirect to="/portfolio" label="the portfolio" />;
 }

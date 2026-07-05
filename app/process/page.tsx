@@ -5,9 +5,19 @@ import Footer from "@/components/Footer";
 import PageHeroWord from "@/components/PageHeroWord";
 import ProcessTimeline from "@/components/ProcessTimeline";
 import ClosingCTA from "@/components/ClosingCTA";
+import { phases } from "@/lib/work";
+import { breadcrumbSchema, serviceCatalogSchema } from "@/lib/schema";
+
+const processLd = serviceCatalogSchema(
+  phases.map((p) => ({ name: p.title, description: p.detail })),
+);
+const processBreadcrumb = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Process", path: "/process" },
+]);
 
 export const metadata: Metadata = {
-  title: "How We Produce a B2B Podcast — The Process",
+  title: "How We Produce a B2B Podcast",
   description:
     "How Temporary Perspective runs a B2B podcast from zero: brand identity, guest prep, studio shoot, video editing, and growth. Walkthrough using Bharatvaarta as the example.",
   alternates: { canonical: "https://temporaryperspective.com/process" },
@@ -42,6 +52,14 @@ export default function ProcessPage() {
         <ClosingCTA subline="Tell us where your show is. We'll scope the rest." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(processLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(processBreadcrumb) }}
+      />
     </>
   );
 }

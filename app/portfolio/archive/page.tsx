@@ -5,9 +5,16 @@ import PageHeroWord from "@/components/PageHeroWord";
 import ArchiveBrowser from "@/components/ArchiveBrowser";
 import ClosingCTA from "@/components/ClosingCTA";
 import { archiveItems, resolveThumb, workItemKey } from "@/lib/work";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const archiveBreadcrumb = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Portfolio", path: "/portfolio" },
+  { name: "Archive", path: "/portfolio/archive" },
+]);
 
 export const metadata: Metadata = {
-  title: "The archive — Temporary Perspective",
+  title: "The Archive",
   description: "Every episode, every piece. The full Temporary Perspective library.",
   openGraph: {
     title: "The archive — Temporary Perspective",
@@ -38,6 +45,10 @@ export default async function ArchivePage() {
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(archiveBreadcrumb) }}
+      />
     </>
   );
 }

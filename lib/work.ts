@@ -844,6 +844,7 @@ export type NewsletterPost = {
   readingTime: string;
   date: string; // short, for cards: "May 2026"
   dateLong: string; // full, for the post header: "May 30, 2026"
+  dateISO: string; // ISO 8601 for schema/OG: "2026-05-30"
   author: string;
   videoId?: string; // youtube id, top of post — pending real uploads
   body: PostSection[];
@@ -859,6 +860,7 @@ export const newsletterPosts: NewsletterPost[] = [
     readingTime: "4 min read",
     date: "May 2026",
     dateLong: "May 24, 2026",
+    dateISO: "2026-05-24",
     author: "Moksh",
     body: [
       {
@@ -912,6 +914,7 @@ export const newsletterPosts: NewsletterPost[] = [
     readingTime: "5 min read",
     date: "May 2026",
     dateLong: "May 10, 2026",
+    dateISO: "2026-05-10",
     author: "Hatim",
     body: [
       {
@@ -964,6 +967,7 @@ export const newsletterPosts: NewsletterPost[] = [
     readingTime: "3 min read",
     date: "Apr 2026",
     dateLong: "Apr 28, 2026",
+    dateISO: "2026-04-28",
     author: "Moksh",
     body: [
       {
@@ -1073,6 +1077,10 @@ export type QA = { q: string; a: string };
 
 // Six surfaced on the home page; the full set lives on /faq.
 export const homeFaqs: QA[] = [
+  {
+    q: "What is Temporary Perspective?",
+    a: "Temporary Perspective is a B2B podcast production studio based in Mumbai, India. We produce cinema-grade podcasts end to end — brand, shoot, edit, and growth — for founders and companies across SaaS, fintech, and VC. 100+ episodes shipped, most published within a week of the shoot.",
+  },
   {
     q: "We've never run a podcast. Can you handle the whole thing?",
     a: "Yes, from format and positioning to shoot, edit, color, clips, and publishing. You show up and talk; we handle everything before and after.",

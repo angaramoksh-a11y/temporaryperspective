@@ -1,23 +1,14 @@
-"use client";
+import type { Metadata } from "next";
+import ClientRedirect from "@/components/ClientRedirect";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+// Vanity URL that redirects home. Noindex + canonical to home so the stub isn't
+// indexed as a soft-404.
+export const metadata: Metadata = {
+  title: { absolute: "Redirecting…" },
+  robots: { index: false, follow: true },
+  alternates: { canonical: "https://temporaryperspective.com" },
+};
 
 export default function GoBigRedirect() {
-  const router = useRouter();
-  useEffect(() => {
-    router.replace("/");
-  }, [router]);
-  return (
-    <main className="grid min-h-svh place-items-center px-6 text-center text-text-muted">
-      <p>
-        Redirecting to{" "}
-        <Link href="/" className="text-text underline">
-          home
-        </Link>
-        …
-      </p>
-    </main>
-  );
+  return <ClientRedirect to="/" label="home" />;
 }

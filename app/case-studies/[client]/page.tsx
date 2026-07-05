@@ -35,9 +35,9 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { client } = await params;
   const cs = find(client);
-  if (!cs) return { title: "Case study — Temporary Perspective" };
+  if (!cs) return { title: "Case Study" };
   return {
-    title: `${cs.client} — Temporary Perspective`,
+    title: cs.client,
     description: cs.result,
     openGraph: {
       title: `${cs.client} — Temporary Perspective`,

@@ -10,7 +10,7 @@ const BASE = "https://temporaryperspective.com";
 const REPORT_URL = `${BASE}/state-of-b2b-podcasts-2026`;
 
 export const metadata: Metadata = {
-  title: "State of B2B Podcasts in India 2026 — Temporary Perspective",
+  title: "State of B2B Podcasts in India 2026",
   description:
     "Production and performance benchmarks for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories analysed.",
   alternates: { canonical: REPORT_URL },
@@ -20,6 +20,8 @@ export const metadata: Metadata = {
       "Production and performance benchmarks for serious B2B podcast teams in India. 40+ shows, 600+ episodes, six categories analysed.",
     url: REPORT_URL,
     type: "article",
+    publishedTime: "2026-06-15",
+    authors: ["Temporary Perspective"],
   },
   twitter: { card: "summary_large_image" },
 };
@@ -270,14 +272,14 @@ export default function ReportPage() {
               A Temporary Perspective Report · June 2026
             </p>
 
-            <div className="font-display">
-              <p className="text-[clamp(1.75rem,4.5vw,4rem)] font-medium leading-tight tracking-[-0.02em] text-text-muted">
+            <h1 className="font-display">
+              <span className="block text-[clamp(1.75rem,4.5vw,4rem)] font-medium leading-tight tracking-[-0.02em] text-text-muted">
                 State of B2B Podcasts in India
-              </p>
-              <p className="text-metal text-[clamp(5rem,13vw,10rem)] font-semibold leading-[0.86] tracking-[-0.04em]">
+              </span>
+              <span className="text-metal block text-[clamp(5rem,13vw,10rem)] font-semibold leading-[0.86] tracking-[-0.04em]">
                 2026
-              </p>
-            </div>
+              </span>
+            </h1>
 
             <p className="mt-8 max-w-[58ch] text-[clamp(1rem,1.4vw,1.125rem)] leading-[1.72] text-text-muted">
               What separates a B2B podcast that compounds from one that stalls at episode three. A production and performance benchmark drawn from 40+ shows, 600+ episodes, and six categories across India.

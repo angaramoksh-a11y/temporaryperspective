@@ -21,15 +21,21 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const post = newsletterPosts.find((p) => p.slug === slug);
-  if (!post) return { title: "Notes — Temporary Perspective" };
+  if (!post) return { title: "Notes" };
+  const iso = post.dateISO;
   return {
-    title: `${post.title} — Temporary Perspective`,
+    title: post.title,
     description: post.excerpt,
+    alternates: {
+      canonical: `https://temporaryperspective.com/newsletter/${slug}`,
+    },
     openGraph: {
       title: `${post.title} — Temporary Perspective`,
       description: post.excerpt,
       url: `https://temporaryperspective.com/newsletter/${slug}`,
       type: "article",
+      publishedTime: iso,
+      authors: [post.author],
     },
     twitter: { card: "summary_large_image" },
   };
@@ -49,14 +55,28 @@ export default async function PostPage({
     m.name.toLowerCase().includes(post.author.toLowerCase()),
   );
 
+  const iso = post.dateISO;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: post.title,
     description: post.excerpt,
+    image: `https://temporaryperspective.com/newsletter/${slug}/opengraph-image`,
     author: { "@type": "Person", name: post.author },
-    publisher: { "@type": "Organization", name: "Temporary Perspective" },
-    datePublished: post.dateLong,
+    publisher: {
+      "@type": "Organization",
+      name: "Temporary Perspective",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://temporaryperspective.com/logo-white.svg",
+      },
+    },
+    datePublished: iso,
+    dateModified: iso,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://temporaryperspective.com/newsletter/${slug}`,
+    },
   };
   const faqSchema = {
     "@context": "https://schema.org",
@@ -275,10 +295,12 @@ export default async function PostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
-      />
+      {post.faqs.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
     </>
   );
 }

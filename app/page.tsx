@@ -12,7 +12,7 @@ import ClosingCTA from "@/components/ClosingCTA";
 import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Temporary Perspective — B2B Podcast Studio, Mumbai",
+  title: { absolute: "Temporary Perspective — B2B Podcast Studio, Mumbai" },
   description:
     "B2B podcast production studio in Mumbai. 100+ episodes shipped for India's hardest-to-book guests. Brand, shoot, edit, growth — end to end, in under a week.",
   alternates: { canonical: "https://temporaryperspective.com" },

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import { CAL_LINK, contact } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Book a Call — Start Your B2B Podcast",
+  title: "Book a Call — Start a B2B Podcast",
   description:
     "Book a 30-minute call with Temporary Perspective. Tell us about your show idea — we'll tell you if we're the right studio to build it.",
   alternates: { canonical: "https://temporaryperspective.com/contact" },

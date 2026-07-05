@@ -453,7 +453,7 @@ export default function ArchiveBrowser({
                 <button
                   key={it.key}
                   onClick={() => setActive(it)}
-                  aria-label={`Play ${it.client}, ${it.format}`}
+                  aria-label={`Play ${title} — ${it.client}, ${it.format}`}
                   className="group block text-left"
                 >
                   <div

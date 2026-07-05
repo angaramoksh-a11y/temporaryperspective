@@ -7,7 +7,7 @@ import ClosingCTA from "@/components/ClosingCTA";
 import { faqs } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Questions — Temporary Perspective",
+  title: "Questions",
   description:
     "Common questions about working with Temporary Perspective: scope, pricing, remote shoots, editing, timelines, and what we need from you.",
   openGraph: {

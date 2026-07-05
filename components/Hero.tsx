@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 import { GhostButton, Magnetic, PrimaryButton } from "./ui";
 import HeroFilm from "./HeroFilm";
 
@@ -12,6 +12,7 @@ const rise = {
 };
 
 export default function Hero() {
+  const reduce = useReducedMotion();
   return (
     <section className="relative flex flex-col overflow-hidden pb-12 pt-20 sm:pt-24 lg:min-h-[100svh] lg:justify-center lg:py-24">
       {/* Hero-local stage. A near-black veil crushes the backdrop behind the
@@ -50,9 +51,11 @@ export default function Hero() {
         {/* text column — first on mobile so the value prop is above the fold,
             beside the film on desktop */}
         <motion.div
-          initial="hidden"
+          initial={reduce ? false : "hidden"}
           animate="show"
-          transition={{ staggerChildren: 0.09, delayChildren: 0.15 }}
+          transition={
+            reduce ? { duration: 0 } : { staggerChildren: 0.09, delayChildren: 0.15 }
+          }
           className="order-1 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left"
         >
           {/* proof line */}

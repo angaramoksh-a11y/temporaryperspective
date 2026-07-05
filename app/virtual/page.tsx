@@ -8,7 +8,7 @@ import { EdgeDivider } from "@/components/ui";
 import { videoObjectSchema } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Remote Podcast Production — Shoot From Anywhere",
+  title: "Remote Podcast Production, Anywhere",
   description:
     "Professional remote podcast production for guests who can't travel to the studio. Crew at both ends, locally recorded, cut as one seamless conversation.",
   alternates: { canonical: "https://temporaryperspective.com/virtual" },

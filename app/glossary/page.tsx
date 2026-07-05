@@ -7,7 +7,7 @@ import { EdgeDivider } from "@/components/ui";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Glossary — Temporary Perspective",
+  title: "Glossary",
   description:
     "How we talk about B2B podcasts: the vocabulary of cinema-grade podcast production, defined.",
   openGraph: {

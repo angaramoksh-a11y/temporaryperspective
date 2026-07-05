@@ -134,7 +134,15 @@ export default function Footer() {
         {/* Lifted above the fixed Vignette (z-30) so the legal line stays crisp */}
         <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© Temporary Perspective LLP, {year}.</span>
-          <span>Mumbai, India</span>
+          <div className="flex items-center gap-4">
+            <a
+              href="/llms.txt"
+              className="transition-colors hover:text-text-muted"
+            >
+              llms.txt
+            </a>
+            <span>Mumbai, India</span>
+          </div>
         </div>
       </div>
     </footer>

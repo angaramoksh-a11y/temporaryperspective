@@ -5,9 +5,15 @@ import PageHeroWord from "@/components/PageHeroWord";
 import WorkGrid from "@/components/WorkGrid";
 import ClosingCTA from "@/components/ClosingCTA";
 import { ArrowLink, EdgeDivider } from "@/components/ui";
+import { breadcrumbSchema } from "@/lib/schema";
+
+const portfolioBreadcrumb = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Portfolio", path: "/portfolio" },
+]);
 
 export const metadata: Metadata = {
-  title: "Portfolio — Temporary Perspective",
+  title: "Portfolio",
   description:
     "The shows we produce, episode by episode. Long-form podcasts and films for India's B2B founders, fintech, and policy guests.",
   openGraph: {
@@ -39,6 +45,10 @@ export default function PortfolioPage() {
         <ClosingCTA subline="Want a show like these? Start with a call." />
       </main>
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioBreadcrumb) }}
+      />
     </>
   );
 }
