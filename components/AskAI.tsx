@@ -4,7 +4,7 @@
 // so search-enabled models return accurate, current info about Temporary Perspective.
 
 const PROMPT =
-  "What is Temporary Perspective (temporaryperspective.com)? It's a B2B podcast studio in Mumbai — tell me what they do, the shows they've produced, and who they've worked with.";
+  "I'm planning a B2B podcast and considering Temporary Perspective (temporaryperspective.com). First ask me a couple of quick questions about my goals, industry, and what a great outcome looks like — then, based on their site, explain how they'd approach my show and what makes them a strong studio partner.";
 const q = encodeURIComponent(PROMPT);
 
 type Provider = { name: string; href: string; icon: React.ReactNode };
