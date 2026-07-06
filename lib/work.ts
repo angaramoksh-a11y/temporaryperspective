@@ -1153,6 +1153,22 @@ export const faqs: QA[] = [
     a: "We go past delivery. Short-form clips for social, show strategy, and YouTube SEO and publishing are all part of what we do. The episode is the start, not the finish.",
   },
   {
+    q: "Do you actually grow the show, or just produce it?",
+    a: "Both — but we'll be straight with you: we're a production-led studio, not a paid-ads shop. Growth here means the episode reaching the right people — YouTube SEO and publishing, short-form clips cut for distribution, and shows built around positioning so the founders, operators, and LPs you care about actually find you. If your only goal is a raw subscriber number, we'll tell you honestly whether we're the right fit.",
+  },
+  {
+    q: "You started in 2023 — why should I trust a young studio with this?",
+    a: "Fair question, and we'd rather you ask it. We went deep on one thing: serious B2B shows. That focus is why we've shipped 100+ episodes for the likes of Bharatvaarta, Bureau, and Qapita. We're a boutique, not a factory. If you want a large agency with a deep bench and ten account managers, that isn't us. If you want the people actually making your show to be the ones in the room, it is.",
+  },
+  {
+    q: "If I sign, who runs my show day to day — is it all on the founder?",
+    a: "No. Production is owned by Manav, our Production Head; post-production by Hatim, our Post-Production Head; distribution and publishing by the growth side — with Moksh on strategy and the first and last call. The show doesn't stall if any one person is out. You always know who owns what.",
+  },
+  {
+    q: "How will I know it's working?",
+    a: "We optimize for the right people finishing your episode, not vanity views — one CFO who watches to the end beats ten thousand who bounce off a clip. We'll agree up front on what a good outcome looks like for your show, share the performance we can see, and tell you honestly what's landing and what isn't.",
+  },
+  {
     q: "Who have you worked with?",
     a: "Qapita, Bureau, Seclore, Bharatvaarta and a growing list of SaaS and fintech operators across India and Singapore.",
   },
