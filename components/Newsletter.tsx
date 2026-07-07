@@ -34,9 +34,9 @@ export default function Newsletter() {
                 <span aria-hidden>·</span>
                 <span>{post.readingTime}</span>
               </div>
-              <h4 className="mt-4 font-display text-xl font-normal leading-snug tracking-tight text-text">
+              <h3 className="mt-4 font-display text-xl font-normal leading-snug tracking-tight text-text">
                 {post.title}
-              </h4>
+              </h3>
               <p className="mt-3 flex-1 text-[0.9rem] leading-relaxed text-text-muted">
                 {post.excerpt}
               </p>

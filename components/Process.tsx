@@ -60,7 +60,7 @@ export default function Process() {
             onClick={() => setPdf(0)}
             className="group glass rim-glow relative flex flex-col rounded-2xl p-5 text-left transition-transform duration-300 ease-[var(--ease-out-quart)] hover:-translate-y-1 lg:w-[248px] lg:shrink-0"
           >
-            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-xs font-medium uppercase tracking-[0.14em] text-text">
+            <span className="inline-flex w-fit items-center rounded-full border border-accent/40 bg-accent/10 px-2.5 py-0.5 text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-text">
               Foundational
             </span>
             <h3 className="mt-4 font-display text-xl font-medium tracking-tight text-text">
@@ -80,7 +80,7 @@ export default function Process() {
           {/* repeating engine */}
           <div className="relative flex-1 rounded-2xl border border-line bg-bg-raised/20 p-5">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium uppercase tracking-[0.14em] text-text-faint">
+              <span className="text-[0.8125rem] font-medium uppercase tracking-[0.14em] text-text-faint">
                 Every episode
               </span>
               <button
@@ -88,7 +88,7 @@ export default function Process() {
                 onClick={handleRepeat}
                 disabled={running}
                 aria-label="Replay episode cycle"
-                className="group/repeat inline-flex items-center gap-1.5 text-xs text-text-faint transition-colors hover:text-text disabled:pointer-events-none"
+                className="group/repeat inline-flex items-center gap-1.5 text-[0.8125rem] text-text-faint transition-colors hover:text-text disabled:pointer-events-none"
               >
                 <motion.svg
                   viewBox="0 0 24 24"
@@ -146,7 +146,7 @@ export default function Process() {
 
             {/* Start → Day 7 meter */}
             <div className="mt-6">
-              <div className="flex items-center justify-between text-xs text-text-faint">
+              <div className="flex items-center justify-between text-[0.8125rem] text-text-faint">
                 <span>Start</span>
                 <span>Day 7</span>
               </div>
@@ -171,7 +171,7 @@ export default function Process() {
             <span className="text-metal-static font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-tight">
               &lt; 7 days
             </span>
-            <span className="mt-1.5 text-xs leading-snug text-text-muted">
+            <span className="mt-1.5 text-[0.8125rem] leading-snug text-text-muted">
               Shot to published, every episode.
             </span>
           </div>

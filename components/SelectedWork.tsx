@@ -9,6 +9,10 @@ import Lightbox from "./Lightbox";
 export default function SelectedWork() {
   const [active, setActive] = useState<Episode | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
+  // mount the preview player only once the cursor settles (imperceptible at
+  // 140ms), so skimming the rail doesn't boot a YouTube embed per card
+  const [preview, setPreview] = useState<string | null>(null);
+  const settle = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   // drag-to-scroll
   const rowRef = useRef<HTMLDivElement>(null);
@@ -65,14 +69,23 @@ export default function SelectedWork() {
     drag.current.down = false;
   };
 
-  // play the preview the moment the card is hovered, no hold on the still
-  const enter = (id: string) => setHovered(id);
-  const leave = () => setHovered(null);
+  useEffect(() => () => clearTimeout(settle.current), []);
+
+  const enter = (id: string) => {
+    setHovered(id);
+    clearTimeout(settle.current);
+    settle.current = setTimeout(() => setPreview(id), 140);
+  };
+  const leave = () => {
+    clearTimeout(settle.current);
+    setHovered(null);
+    setPreview(null);
+  };
 
   const open = (e: Episode) => {
     if (drag.current.moved > 6) return; // was a drag, not a click
     setActive(e);
-    setHovered(null);
+    leave();
   };
 
   return (
@@ -122,7 +135,7 @@ export default function SelectedWork() {
                 alt={`${ep.guest} on ${ep.client}`}
                 className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
               />
-              {hovered === ep.id && (
+              {hovered === ep.id && preview === ep.id && (
                 <iframe
                   src={embed(ep.id, true, true)}
                   title={ep.guest}

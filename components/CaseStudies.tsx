@@ -68,7 +68,7 @@ export default function CaseStudies() {
                     ▶
                   </span>
                 </span>
-                <span className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-line-strong bg-bg/60 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors group-hover:text-text">
+                <span className="pointer-events-none absolute bottom-3 left-3 rounded-full border border-line-strong bg-bg/60 px-3 py-1.5 text-[0.8125rem] text-text-muted backdrop-blur transition-colors group-hover:text-text">
                   Tap for sound
                 </span>
               </>
@@ -102,7 +102,7 @@ export default function CaseStudies() {
                         />
                       )}
                       <span
-                        className={`relative z-10 text-xs font-medium tracking-tight transition-colors duration-300 sm:text-sm ${
+                        className={`relative z-10 text-[0.8125rem] font-medium tracking-tight transition-colors duration-300 sm:text-sm ${
                           selected ? "text-text" : "text-text-muted"
                         }`}
                       >

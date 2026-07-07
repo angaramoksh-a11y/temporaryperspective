@@ -8,6 +8,7 @@ import type { CredIcon } from "@/lib/work";
 const primary = [
   { label: "Work", href: "/portfolio" },
   { label: "Process", href: "/process" },
+  { label: "Remote production", href: "/virtual" },
   { label: "Newsletter", href: "/newsletter" },
   { label: "About", href: "/about" },
   { label: "Testimonials", href: "/testimonials" },
@@ -98,7 +99,7 @@ export default function Footer() {
           {/* resources + legal */}
           <div className="flex flex-col gap-8">
             <div>
-              <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-text-faint">
+              <p className="mb-3 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                 Resources
               </p>
               <nav className="flex flex-col gap-3 text-sm">
@@ -114,7 +115,7 @@ export default function Footer() {
               </nav>
             </div>
             <div>
-              <p className="mb-3 text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-text-faint">
+              <p className="mb-3 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                 Legal
               </p>
               <nav className="flex flex-col gap-3 text-sm">
@@ -136,7 +137,7 @@ export default function Footer() {
         <AskAI />
 
         {/* Lifted above the fixed Vignette (z-30) so the legal line stays crisp */}
-        <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-xs text-text-faint sm:flex-row sm:items-center sm:justify-between">
+        <div className="relative z-40 mt-14 flex flex-col gap-3 border-t border-line pt-6 text-[0.8125rem] text-text-faint sm:flex-row sm:items-center sm:justify-between">
           <span>© Temporary Perspective LLP, {year}.</span>
           <div className="flex items-center gap-4">
             <a

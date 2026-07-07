@@ -198,9 +198,14 @@ All are pointer-events-none background/overlay layers. No flat fills.
   `--text-faint`. The one section-label component; reuse it, don't re-roll inline.
 - **Process meter:** the Start → Day-7 fill bar is **chromium/metallic glow, no
   green** (a white gradient fill with a soft chrome shadow). Label reads `Day 7`.
-- **Nav:** floating glass bar, 66px content height, 12–16px inset, pill radius
-  `--radius-btn`. Morphing megamenu on desktop; hamburger-left / logo-centre /
-  Book-a-call-right on mobile.
+- **Nav:** floating glass bar, 12–16px inset, pill radius `--radius-btn`.
+  Condenses on scroll: 66px tall and wide at rest, 58px and narrower with a
+  deeper glass tint once the page moves. Flat links (Work · Process · About ·
+  Newsletter), all real destinations; only **Work** expands a hover megamenu of
+  footage previews (pre-populated, never empty — the label still navigates on
+  click). Hamburger-left / logo-centre / Book-a-call-right on mobile, with a
+  flat overlay (primary links in display type + a quiet "More" grid), no
+  accordions.
 - **Lightbox (`MediaLightbox`):** the one shared lightbox — YouTube/Vimeo (with an
   H/V toggle for dual-cut clips) + PDF. Orientation-aware (vertical = 9:16, never
   stretched), focus-trapped, Esc + backdrop close, arrow prev/next.
