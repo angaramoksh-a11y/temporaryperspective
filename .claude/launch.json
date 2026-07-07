@@ -21,6 +21,20 @@
       "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/100xvc", "--", "--port", "3123"],
       "port": 3123,
       "autoPort": false
+    },
+    {
+      "name": "ventureast",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4507", "--directory", "/Users/angara/projects/VC - New Websites/Ventureast/site"],
+      "port": 4507,
+      "autoPort": false
+    },
+    {
+      "name": "uiv",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/VC - New Websites/uiv-website", "--", "--port", "3471"],
+      "port": 3471,
+      "autoPort": false
     }
   ]
 }
