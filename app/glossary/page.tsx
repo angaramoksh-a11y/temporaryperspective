@@ -228,7 +228,7 @@ export default function GlossaryPage() {
               ))}
             </div>
 
-            <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-20">
+            <div className="lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
               {/* Left: sticky index (desktop only) */}
               <aside className="hidden lg:block">
                 <div className="sticky top-28">
@@ -255,12 +255,17 @@ export default function GlossaryPage() {
                   <div
                     key={t.id}
                     id={t.id}
-                    className={`scroll-mt-28 ${i !== 0 ? "border-t border-line pt-12 lg:pt-16" : "pt-4"} pb-12 lg:pb-16`}
+                    className={`scroll-mt-28 ${i !== 0 ? "border-t border-line pt-10 lg:pt-12" : "pt-4"} pb-10 lg:pb-12`}
                   >
-                    <h2 className="text-metal-static font-display text-[clamp(1.5rem,2.8vw,2.25rem)] font-medium leading-[1.1] tracking-[-0.02em]">
-                      {t.term}
-                    </h2>
-                    <p className="mt-4 max-w-[60ch] text-[1.0625rem] leading-[1.75] text-text lg:text-[1.125rem]">
+                    <div className="flex items-baseline gap-3">
+                      <span className="font-mono text-[0.8125rem] text-text-faint">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <h2 className="text-metal-static font-display text-[clamp(1.5rem,2.6vw,2.125rem)] font-medium leading-[1.1] tracking-[-0.02em]">
+                        {t.term}
+                      </h2>
+                    </div>
+                    <p className="mt-3 max-w-[62ch] text-[1.0625rem] leading-[1.7] text-text-muted">
                       {t.definition}
                     </p>
                     <Link
@@ -268,7 +273,7 @@ export default function GlossaryPage() {
                       className="group mt-5 inline-flex items-center gap-1.5 text-sm text-text-faint transition-colors hover:text-text"
                     >
                       See it in
-                      <span className="text-text-muted transition-colors group-hover:text-text">
+                      <span className="font-medium text-text-muted transition-colors group-hover:text-text">
                         {t.seeInLabel}
                       </span>
                       <span
