@@ -220,25 +220,26 @@ export default function BharatvaartaCaseStudy() {
             {/* Right: compact autoplay card */}
             <div className="flex flex-col">
               <div className="overflow-hidden rounded-2xl border border-line bg-bg-raised/15">
-                <div className="relative aspect-video overflow-hidden bg-bg-sunken">
+                <button
+                  type="button"
+                  onClick={() => setLbOpen(true)}
+                  aria-label="Play with sound"
+                  className="group relative block aspect-video w-full overflow-hidden bg-bg-sunken"
+                >
                   <iframe
                     src={`https://player.vimeo.com/video/${c.testimonialVimeoId}?background=1&autoplay=1&muted=1&loop=1&byline=0&title=0&controls=0`}
-                    className="absolute inset-0 h-full w-full"
+                    className="pointer-events-none absolute inset-0 h-full w-full"
                     allow="autoplay"
                     title={c.testimonialName}
                   />
-                  <button
-                    onClick={() => setLbOpen(true)}
-                    aria-label="Play with sound"
-                    className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-bg/65 px-3 py-1.5 text-xs text-text-muted backdrop-blur transition-colors hover:border-white/35 hover:text-text"
-                  >
+                  <span className="absolute bottom-3 right-3 inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-bg/65 px-3 py-1.5 text-[0.8125rem] text-text-muted backdrop-blur transition-colors group-hover:border-white/35 group-hover:text-text">
                     <svg viewBox="0 0 24 24" className="h-3 w-3" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" aria-hidden>
                       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
                       <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
                     </svg>
                     Play with sound
-                  </button>
-                </div>
+                  </span>
+                </button>
 
                 {/* Speaker identity + LinkedIn */}
                 <div className="flex items-start justify-between gap-4 px-5 py-4">

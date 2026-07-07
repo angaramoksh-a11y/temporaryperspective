@@ -274,10 +274,14 @@ export default function Nav() {
               href="/"
               aria-label="Temporary Perspective, home"
               onMouseEnter={() => scheduleClose(160)}
-              className="hidden items-center gap-2.5 lg:flex"
+              className="hidden items-center lg:flex"
             >
               <Logo className="h-7 w-auto text-text" />
-              <span className="hidden whitespace-nowrap font-medium tracking-tight text-text xl:block">
+              <span
+                className={`hidden overflow-hidden whitespace-nowrap font-medium tracking-tight text-text transition-[max-width,opacity,margin] duration-500 ease-[var(--ease-out-quart)] xl:block ${
+                  scrolled ? "ml-0 max-w-0 opacity-0" : "ml-2.5 max-w-[240px] opacity-100"
+                }`}
+              >
                 Temporary Perspective
               </span>
             </Link>

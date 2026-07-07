@@ -221,7 +221,7 @@ export default function GlossaryPage() {
                 <a
                   key={t.id}
                   href={`#${t.id}`}
-                  className="inline-flex items-center rounded-full border border-line px-3 py-1 text-[0.75rem] font-medium text-text-faint transition-colors hover:border-line-strong hover:text-text"
+                  className="inline-flex items-center rounded-full border border-line px-3 py-1 text-[0.8125rem] font-medium text-text-faint transition-colors hover:border-line-strong hover:text-text"
                 >
                   {t.term}
                 </a>
@@ -232,7 +232,7 @@ export default function GlossaryPage() {
               {/* Left: sticky index (desktop only) */}
               <aside className="hidden lg:block">
                 <div className="sticky top-28">
-                  <p className="mb-4 text-[0.75rem] font-medium uppercase tracking-[0.16em] text-text-faint">
+                  <p className="mb-4 text-[0.8125rem] font-medium uppercase tracking-[0.18em] text-text-faint">
                     Terms
                   </p>
                   <nav className="flex flex-col gap-0.5">
