@@ -35,6 +35,27 @@
       "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/VC - New Websites/uiv-website", "--", "--port", "3471"],
       "port": 3471,
       "autoPort": false
+    },
+    {
+      "name": "1confirmation",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/VC - New Websites/1confirmation-website", "--", "--port", "3477"],
+      "port": 3477,
+      "autoPort": false
+    },
+    {
+      "name": "placeholder",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "/Users/angara/projects/VC - New Websites/placeholder-website", "--", "--port", "3481"],
+      "port": 3481,
+      "autoPort": false
+    },
+    {
+      "name": "banana-storyboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4611", "--directory", "/private/tmp/claude-501/-Users-angara-v12/4e63446f-fdf8-42f3-9730-4217c852dbf1/scratchpad"],
+      "port": 4611,
+      "autoPort": false
     }
   ]
 }

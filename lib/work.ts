@@ -61,17 +61,18 @@ export function vimeo(id: string) {
 }
 
 export const selectedWork: Episode[] = [
+  { id: "IkM1O_TwfK4", guest: "Jay Srinivasan — The Catapult Code, Ep. 1", client: "Qapita", caseStudy: "/case-studies/qapita" },
   { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "Wd5h0gl5Cj0", guest: "Saurabh Mukherjea", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "_RR2a1bh1T0", guest: "Bureau Podcast — Ishaan", client: "Bureau", caseStudy: "/case-studies/bureau" },
-  { id: "KMZ_k4C8vxQ", guest: "Indmoney testimonial", client: "Bureau", caseStudy: "/case-studies/bureau" },
   { id: "FKA-b5KXha8", guest: "Ananthan Ayyasamy", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
 ];
 
 // The full catalog for /work. Same shape as selectedWork; the home row shows a
 // curated subset, this wall shows everything.
 export const workLibrary: Episode[] = [
+  { id: "IkM1O_TwfK4", guest: "Jay Srinivasan — The Catapult Code, Ep. 1", client: "Qapita", caseStudy: "/case-studies/qapita" },
   { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "W6odY9EG6Jk", guest: "Saurabh Mukherjea", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
@@ -80,7 +81,6 @@ export const workLibrary: Episode[] = [
   { id: "qpIIH89FepQ", guest: "Aabhas Maldahiyar", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "KRFL9DtVFfk", guest: "Bureau Fraud Forum", client: "Bureau", caseStudy: "/case-studies/bureau" },
   { id: "QTH0goRHdn0", guest: "Medha Bhaskaran", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
-  { id: "KMZ_k4C8vxQ", guest: "Indmoney testimonial", client: "Bureau", caseStudy: "/case-studies/bureau" },
   { id: "SwF6KbsbITc", guest: "Ami Ganatra — 1 God or 33 Crore", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "ZDDBFbaSxoY", guest: "Neelkanth Podcast", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "b4l3-RO4A9c", guest: "Nilesh Oak", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
@@ -604,8 +604,8 @@ export const caseStudies: CaseStudy[] = [
     vimeoId: "1196195127",
     tag: "Founder stories",
     result:
-      "A founder podcast for the messy middle of building a company, filmed across Mumbai and the US.",
-    status: "In production",
+      "A founder podcast for the messy middle of building a company, filmed across Mumbai and the US. Now live, opening with three-time founder Jay Srinivasan.",
+    status: "Now live",
   },
 ];
 
@@ -680,36 +680,39 @@ export const bureauContent = {
       tiles: [{ id: "_RR2a1bh1T0", guest: "Ishaan", client: "Bureau" }],
       gallery: [{ label: "Bureau Backyard Podcast", h: { id: "1198374453" } }],
     },
-    {
-      heading: "Testimonials",
-      label: "Client work",
-      body: "Client testimonial production for Bureau's customers.",
-      tiles: [{ id: "KMZ_k4C8vxQ", guest: "Indmoney", client: "Bureau" }],
-      gallery: [{ label: "IndMoney Testimonial", h: { id: "1206094271" } }],
-    },
   ] as FormatBlock[],
   related: [
     { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },
-    { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
+    { client: "Qapita", tag: "Founder stories · Now live", href: "/case-studies/qapita" },
   ],
 };
 
-// Qapita / The Catapult Code: title differs from the client; show is pre-launch.
+// Qapita / The Catapult Code: title differs from the client; the show is live.
 export const qapitaContent = {
   title: "The Catapult Code",
   producedWith: "Produced for Qapita",
-  tagline: "Founder stories · In production",
+  tagline: "Founder stories · Now live",
   testimonialVimeoId: "1196195127",
   testimonialName: "Brendan Marshall · The Catapult Code",
+  channelHref: "https://www.youtube.com/@qapita8969",
   aboutShow: [
-    "The Catapult Code is a founder podcast from Qapita, hosted by Brendan Marshall (StartX, Stanford) and Ravi Ravulaparthi (CEO, Qapita). It's built for the messy middle: founders past early traction, scaling toward the next level.",
+    "The Catapult Code is a founder podcast from Qapita, hosted by Brendan Marshall (StartX, Stanford) and Ravi Ravulaparthi (CEO, Qapita). Most founder content lives at the extremes — the getting-started story, the unicorn headline. This show is built for the part in between: founders past early traction, scaling toward the next level, from both Silicon Valley and India.",
+    "Episode one is out: Jay Srinivasan — three startups, two exits (to Google and Okta), now building Stitchflow — on why he keeps coming back to zero to one.",
+  ],
+  // Everything live on the channel so far: the launch episode plus the two
+  // launch films. All three are our production end to end.
+  episodes: [
+    { id: "IkM1O_TwfK4", title: "Ep. 1 — Jay Srinivasan, Stitchflow", desc: "3 startups, 2 exits, 1 passion: the zero-to-one challenge" },
+    { id: "bEwn9iTP6e8", title: "The trailer", desc: "The season ahead, in two minutes" },
+    { id: "Sx7yjRsh64I", title: "The teaser", desc: "Why the show exists, from the hosts" },
   ],
   ourRole: [
-    "We're producing the series end to end. Three episodes shot in Mumbai, with more in production across the US. We consult and edit those, and finish all nine in house. Full production ownership.",
+    "We produced the series end to end. Three episodes shot in Mumbai, more filmed across the US — we consult and edit those, and finish all nine in house. Full production ownership.",
+    "The teaser, the trailer, and the launch episode on this page are all our work: shoot, edit, grade, and sound.",
   ],
   status: {
-    label: "In production.",
-    sub: "First episodes launching soon.",
+    label: "Live.",
+    sub: "Episode one is out. The rest of the season is in post.",
   },
   related: [
     { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },
@@ -774,7 +777,7 @@ export const bharatvaartaContent = {
   ] as ShowcaseTile[],
   related: [
     { client: "Bureau", tag: "Fintech · Fraud Prevention", href: "/case-studies/bureau" },
-    { client: "Qapita", tag: "Founder stories · In production", href: "/case-studies/qapita" },
+    { client: "Qapita", tag: "Founder stories · Now live", href: "/case-studies/qapita" },
   ],
 };
 

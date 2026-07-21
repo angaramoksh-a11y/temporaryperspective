@@ -218,7 +218,29 @@ If you do nothing else on this list, do this.
 
 ---
 
-## 10. Post-Launch (do these the day you go live)
+## 10. Legal & Compliance
+
+- [ ] **Privacy Policy page exists** at `/privacy` (or `/privacy-policy`). Must cover: what
+      data you collect, how you use it, third-party services (analytics, video embeds, email
+      providers), cookie usage, and user rights. Link it from the footer on every page.
+- [ ] **Terms of Service / Terms of Use** page exists. Covers liability, IP ownership,
+      acceptable use. Especially important if the site has forms, accounts, or paid services.
+- [ ] **Cookie consent banner** if you use analytics, tracking pixels, or any non-essential
+      cookies. Required by GDPR (EU visitors), recommended everywhere. Must allow opt-out
+      before non-essential cookies fire.
+- [ ] **Contact information is real and reachable.** A working email or form, not a dead
+      `mailto:` or broken form endpoint. If you show a physical address, confirm it's current.
+- [ ] **Copyright notice in footer** with the correct entity name and year.
+- [ ] **GDPR / CCPA compliance** if applicable: data deletion request flow, "Do Not Sell"
+      link (California), clear data-retention policy.
+- [ ] **Accessibility statement** (optional but recommended): declares WCAG conformance
+      target and provides a contact for accessibility issues.
+- [ ] **Third-party embeds disclosed.** If you embed YouTube, Vimeo, analytics, or social
+      widgets, the privacy policy must name them — they set their own cookies/trackers.
+
+---
+
+## 11. Post-Launch (do these the day you go live)
 
 - [ ] **Google Search Console:** add property, verify, submit `sitemap.xml`, Request
       Indexing on the top pages.
@@ -251,8 +273,8 @@ Before announcing launch, confirm out loud:
 
 > "I ran `npm run build` and it passed. I loaded a brand-new URL on the **live** domain
 > and it served. robots.txt, sitemap, canonicals, schema, `www`/HTTPS/HSTS, security
-> headers, images, OG tags, and the **Ask-AI footer** are all verified live. Search
-> Console + Bing have the sitemap."
+> headers, images, OG tags, privacy policy, cookie consent, and the **Ask-AI footer** are
+> all verified live. Search Console + Bing have the sitemap."
 
 If you can't say all of that, it's not launched — it's just pushed.
 
