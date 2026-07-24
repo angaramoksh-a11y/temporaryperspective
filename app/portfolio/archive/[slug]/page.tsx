@@ -3,8 +3,31 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ArchiveBrowser from "@/components/ArchiveBrowser";
 import ClosingCTA from "@/components/ClosingCTA";
-import { archiveItems, resolveThumb, workItemKey, primaryClip } from "@/lib/work";
+import {
+  archiveItems,
+  resolveThumb,
+  workItemKey,
+  primaryClip,
+  slugify,
+} from "@/lib/work";
 import { videoObjectSchema } from "@/lib/schema";
+
+// Descriptions must be unique per page (identical metas read as duplicate
+// content). The slug is the only guaranteed-unique field, so items whose desc
+// collides with a sibling's get the humanized slug tail worked in.
+function archiveDescription(it: (typeof archiveItems)[number]): string {
+  const clientSlug = slugify(it.client);
+  let tail = it.slug.startsWith(`${clientSlug}-`)
+    ? it.slug.slice(clientSlug.length + 1)
+    : it.slug;
+  tail = tail.replace(/-/g, " ");
+  const desc = it.desc ?? it.title;
+  const lead =
+    desc && desc.toLowerCase() !== tail.toLowerCase()
+      ? `${desc} (${tail})`
+      : tail.charAt(0).toUpperCase() + tail.slice(1);
+  return `${lead} — ${it.format.toLowerCase()} produced for ${it.client} by Temporary Perspective.`;
+}
 
 // One static page per archive slug so /portfolio/archive/<slug> deep-links open
 // the lightbox over the grid (and are shareable) under static export.
@@ -21,9 +44,7 @@ export async function generateMetadata({
   const it = archiveItems.find((i) => i.slug === slug);
   const name = it?.title ?? it?.desc ?? it?.client ?? "The archive";
   const description = it
-    ? it.desc
-      ? `${it.desc}${it.client ? ` (${it.client})` : ""}`
-      : `${it.format} produced for ${it.client} by Temporary Perspective.`
+    ? archiveDescription(it)
     : "Every episode, every piece. The full Temporary Perspective library.";
   return {
     title: name,
