@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Vignette from "@/components/Vignette";
 import BottomBlur from "@/components/BottomBlur";
 import SiteBackdrop from "@/components/SiteBackdrop";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -228,7 +229,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://i.vimeocdn.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://player.vimeo.com" crossOrigin="anonymous" />
         <SiteBackdrop />
-        {children}
+        <MotionProvider>{children}</MotionProvider>
         <Vignette />
         <BottomBlur />
         <script
