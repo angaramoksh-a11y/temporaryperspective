@@ -39,6 +39,9 @@ export async function generateMetadata({
   return {
     title: cs.client,
     description: cs.result,
+    alternates: {
+      canonical: `https://temporaryperspective.com/case-studies/${client}`,
+    },
     openGraph: {
       title: `${cs.client} — Temporary Perspective`,
       description: cs.result,

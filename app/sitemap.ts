@@ -7,7 +7,7 @@ const BASE = "https://temporaryperspective.com";
 
 // Real dates — update the relevant entry whenever that page's content changes.
 const DATES = {
-  home:         new Date("2026-07-06"),
+  home:         new Date("2026-07-24"),
   portfolio:    new Date("2026-07-06"),
   archive:      new Date("2026-07-06"),
   process:      new Date("2026-07-06"),
@@ -20,7 +20,7 @@ const DATES = {
   report:       new Date("2026-05-01"),
   contact:      new Date("2026-04-01"),
   legal:        new Date("2026-01-01"),
-  caseStudies:  new Date("2026-06-01"),
+  caseStudies:  new Date("2026-07-24"),
   archiveItems: new Date("2026-06-17"),
   newsletter_posts: new Date("2026-07-06"),
 };

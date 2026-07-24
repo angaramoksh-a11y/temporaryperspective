@@ -35,7 +35,7 @@ const qapitaLd = [
         "Three startups, two exits, one passion: the zero-to-one challenge. Jay Srinivasan on The Catapult Code, produced by Temporary Perspective for Qapita.",
       source: "youtube",
       embedId: c.episodes[0].id,
-      uploadDate: "2026-07-01",
+      uploadDate: "2026-07-16",
       publisherName: "Qapita",
       publisherUrl: "https://www.qapita.com",
     }),

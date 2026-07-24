@@ -2,9 +2,12 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Terms and conditions — Temporary Perspective",
+  title: "Terms and conditions",
   description:
     "The terms that govern your use of the Temporary Perspective website and the work we do together.",
+  alternates: {
+    canonical: "https://temporaryperspective.com/terms-and-conditions",
+  },
 };
 
 const sections: LegalSection[] = [

@@ -5,7 +5,7 @@ import { GhostButton } from "@/components/ui";
 import { CAL_LINK } from "@/lib/work";
 
 export const metadata: Metadata = {
-  title: "Not found — Temporary Perspective",
+  title: "Not found",
 };
 
 const routes = [

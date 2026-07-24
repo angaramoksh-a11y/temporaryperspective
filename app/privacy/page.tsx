@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import LegalPage, { type LegalSection } from "@/components/LegalPage";
 
 export const metadata: Metadata = {
-  title: "Privacy — Temporary Perspective",
+  title: "Privacy",
   description:
     "How Temporary Perspective collects, uses, and protects your information, under the DPDP Act 2023 and GDPR.",
+  alternates: { canonical: "https://temporaryperspective.com/privacy" },
 };
 
 const sections: LegalSection[] = [

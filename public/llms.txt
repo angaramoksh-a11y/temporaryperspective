@@ -58,7 +58,7 @@ B2B, SaaS, fintech, policy and politics, fraud prevention, founder stories, cont
 
 - **Bharatvaarta** — Politics, policy, and culture channel. 100+ episodes. Guests include Vikram Sood, Saurabh Mukherjea, Manish Sabharwal.
 - **Bureau** — Fintech and fraud prevention. Event films, podcast series, customer testimonials.
-- **Qapita** — Founder podcast for the messy middle of building a company. Filmed across Mumbai and the US.
+- **Qapita** — The Catapult Code, a founder podcast for the messy middle of building a company, hosted by Brendan Marshall and Ravi Ravulaparthi. Filmed across Mumbai and the US; now live on YouTube, opening with three-time founder Jay Srinivasan of Stitchflow.
 - **Seclore** — Enterprise security software.
 - **Ettara** — D2C brand; website content and brand films.
 
@@ -78,10 +78,9 @@ Mumbai, Bangalore, Delhi, Chennai, Hyderabad (India); San Francisco, New York (U
 - [Home](https://temporaryperspective.com/) — Studio overview, selected work, process summary, case studies
 - [Portfolio](https://temporaryperspective.com/portfolio) — Active shows and curated work
 - [Full Archive](https://temporaryperspective.com/portfolio/archive) — Every episode and film we have shipped
-- [Case Studies](https://temporaryperspective.com/case-studies) — Deep-dives into how shows were built
 - [Bharatvaarta Case Study](https://temporaryperspective.com/case-studies/bharatvaarta) — India's politics and policy podcast
 - [Bureau Case Study](https://temporaryperspective.com/case-studies/bureau) — Fintech fraud-prevention content
-- [Qapita Case Study](https://temporaryperspective.com/case-studies/qapita) — Founder podcast, in production
+- [Qapita Case Study](https://temporaryperspective.com/case-studies/qapita) — The Catapult Code founder podcast, now live
 - [The Process](https://temporaryperspective.com/process) — End-to-end workflow: Branding → Guest Prep → Production → Post → Growth
 - [Remote Production](https://temporaryperspective.com/virtual) — How we shoot when the guest can't be in the room
 - [Testimonials](https://temporaryperspective.com/testimonials) — Video testimonials from clients and creators
