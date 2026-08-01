@@ -65,7 +65,7 @@ function TimelineNode({ phase, index }: { phase: Phase; index: number }) {
         initial={reduce ? false : { opacity: 0, y: 36, scale: 0.985 }}
         animate={inView ? { opacity: 1, y: 0, scale: 1 } : undefined}
         transition={{ duration: 0.7, ease }}
-        className="glass sweep group overflow-hidden rounded-3xl p-6 lg:p-9"
+        className="glass group overflow-hidden rounded-3xl p-6 lg:p-9"
       >
         <div
           className={
