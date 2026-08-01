@@ -211,6 +211,10 @@ If you do nothing else on this list, do this.
 - [ ] **Security headers present:** `X-Content-Type-Options: nosniff`,
       `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`. On Cloudflare static
       assets, a `public/_headers` file works (it's copied into the build output).
+      ⚠️ Use `X-Frame-Options: SAMEORIGIN`, **not `DENY`** — DENY also blocks the
+      site's *own* iframes (e.g. a PDF viewer embedding `/assets/*.pdf` renders as a
+      silent black panel). After adding the header, click through anything on the site
+      that frames same-origin content.
       ```bash
       curl -sI https://example.com | grep -iE "x-content-type|x-frame|referrer-policy"
       ```
@@ -264,6 +268,7 @@ If you do nothing else on this list, do this.
 | 7 | ~69 dynamic pages shared **one identical meta description** | Derive per-item descriptions |
 | 8 | Redirect stubs were **indexable soft-404s** canonicalizing to the homepage | Server component + `robots: noindex` + correct canonical |
 | 9 | Guessed a `twitter:site` handle that **didn't exist** | Only reference real, verified profiles |
+| 10 | `X-Frame-Options: DENY` **blocked our own PDF lightbox** — brand book showed a silent black panel | Use `SAMEORIGIN`; test same-origin iframes after adding security headers |
 
 ---
 
