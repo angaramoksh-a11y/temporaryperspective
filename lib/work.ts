@@ -62,6 +62,7 @@ export function vimeo(id: string) {
 
 export const selectedWork: Episode[] = [
   { id: "IkM1O_TwfK4", guest: "Jay Srinivasan — The Catapult Code, Ep. 1", client: "Qapita", caseStudy: "/case-studies/qapita" },
+  { id: "braQZIfOiKA", guest: "Adeyemi Ajao, Base10 — The Catapult Code, Ep. 2", client: "Qapita", caseStudy: "/case-studies/qapita" },
   { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "Wd5h0gl5Cj0", guest: "Saurabh Mukherjea", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
@@ -73,6 +74,8 @@ export const selectedWork: Episode[] = [
 // curated subset, this wall shows everything.
 export const workLibrary: Episode[] = [
   { id: "IkM1O_TwfK4", guest: "Jay Srinivasan — The Catapult Code, Ep. 1", client: "Qapita", caseStudy: "/case-studies/qapita" },
+  { id: "braQZIfOiKA", guest: "Adeyemi Ajao, Base10 — The Catapult Code, Ep. 2", client: "Qapita", caseStudy: "/case-studies/qapita" },
+  { id: "TDxR9sLYhIQ", guest: "Anjali Bansal & Sandeep Singhal — The Catapult Code, Ep. 3", client: "Qapita", caseStudy: "/case-studies/qapita" },
   { id: "TomnFVq3Bt4", guest: "Vikram Sood", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "W6odY9EG6Jk", guest: "Saurabh Mukherjea", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
   { id: "f1hRTb6MIZ8", guest: "Manish Sabharwal", client: "Bharatvaarta", caseStudy: "/case-studies/bharatvaarta" },
@@ -697,22 +700,24 @@ export const qapitaContent = {
   channelHref: "https://www.youtube.com/@qapita8969",
   aboutShow: [
     "The Catapult Code is a founder podcast from Qapita, hosted by Brendan Marshall (StartX, Stanford) and Ravi Ravulaparthi (CEO, Qapita). Most founder content lives at the extremes — the getting-started story, the unicorn headline. This show is built for the part in between: founders past early traction, scaling toward the next level, from both Silicon Valley and India.",
-    "Episode one is out: Jay Srinivasan — three startups, two exits (to Google and Okta), now building Stitchflow — on why he keeps coming back to zero to one.",
+    "Three episodes are live so far — opening with Jay Srinivasan (three startups, two exits to Google and Okta, now building Stitchflow), then Adeyemi Ajao of Base10 in the US, and the couple who helped build Indian venture capital.",
   ],
-  // Everything live on the channel so far: the launch episode plus the two
-  // launch films. All three are our production end to end.
+  // Everything live on the channel so far: three episodes plus the two launch
+  // films. Episode one is ours end to end; the US episodes we consult and edit.
   episodes: [
-    { id: "IkM1O_TwfK4", title: "Ep. 1 — Jay Srinivasan, Stitchflow", desc: "3 startups, 2 exits, 1 passion: the zero-to-one challenge" },
-    { id: "bEwn9iTP6e8", title: "The trailer", desc: "The season ahead, in two minutes" },
-    { id: "Sx7yjRsh64I", title: "The teaser", desc: "Why the show exists, from the hosts" },
+    { id: "IkM1O_TwfK4", title: "Ep. 1 — Jay Srinivasan, Stitchflow", desc: "3 startups, 2 exits, 1 passion: the zero-to-one challenge", tag: "Full production" },
+    { id: "braQZIfOiKA", title: "Ep. 2 — Adeyemi Ajao, Base10", desc: "From a Spanish Facebook to a $2.6B fund: an AI bet on the real economy", tag: "Consult + edit" },
+    { id: "TDxR9sLYhIQ", title: "Ep. 3 — Anjali Bansal & Sandeep Singhal", desc: "The couple who helped build Indian venture capital — Avaana & Nexus", tag: "Consult + edit" },
+    { id: "bEwn9iTP6e8", title: "The trailer", desc: "The season ahead, in two minutes", tag: "Launch film" },
+    { id: "Sx7yjRsh64I", title: "The teaser", desc: "Why the show exists, from the hosts", tag: "Launch film" },
   ],
   ourRole: [
-    "We produced the series end to end. Three episodes shot in Mumbai, more filmed across the US — we consult and edit those, and finish all nine in house. Full production ownership.",
-    "The teaser, the trailer, and the launch episode on this page are all our work: shoot, edit, grade, and sound.",
+    "We produced the series end to end. Episode one shot in Mumbai; the US episodes we consult and edit, and finish all nine in house. Full post-production ownership.",
+    "Episode one and the launch films on this page are ours end to end — shoot, edit, grade, and sound. The US episodes (two and three) we consult on and edit.",
   ],
   status: {
     label: "Live.",
-    sub: "Episode one is out. The rest of the season is in post.",
+    sub: "Three episodes are out. The rest of the season is in post.",
   },
   related: [
     { client: "Bharatvaarta", tag: "Politics · Policy · Culture", href: "/case-studies/bharatvaarta" },

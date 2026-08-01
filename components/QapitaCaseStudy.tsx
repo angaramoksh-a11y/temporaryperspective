@@ -40,6 +40,32 @@ const qapitaLd = [
       publisherUrl: "https://www.qapita.com",
     }),
   },
+  {
+    "@context": "https://schema.org",
+    ...videoObjectSchema({
+      name: "The Catapult Code, Ep. 2 — Adeyemi Ajao, Base10",
+      description:
+        "From a Spanish Facebook to a $2.6B fund: Adeyemi Ajao of Base10 on an AI bet on the real economy. The Catapult Code, produced for Qapita by Temporary Perspective.",
+      source: "youtube",
+      embedId: c.episodes[1].id,
+      uploadDate: "2026-07-30",
+      publisherName: "Qapita",
+      publisherUrl: "https://www.qapita.com",
+    }),
+  },
+  {
+    "@context": "https://schema.org",
+    ...videoObjectSchema({
+      name: "The Catapult Code, Ep. 3 — Anjali Bansal & Sandeep Singhal",
+      description:
+        "Anjali Bansal (Avaana Capital) and Sandeep Singhal (Nexus Venture Partners) — the couple who helped build Indian venture capital. The Catapult Code, produced for Qapita by Temporary Perspective.",
+      source: "youtube",
+      embedId: c.episodes[2].id,
+      uploadDate: "2026-07-30",
+      publisherName: "Qapita",
+      publisherUrl: "https://www.qapita.com",
+    }),
+  },
 ];
 
 const BRENDAN_LINKEDIN = "https://www.linkedin.com/in/brendantmarshall/";
@@ -224,7 +250,7 @@ export default function QapitaCaseStudy() {
           />
         </section>
 
-        {/* 3. Watch the show — the launch episode plus the two launch films */}
+        {/* 3. Watch the show — three episodes plus the two launch films */}
         <section className="relative py-14 lg:py-20">
           <div className="mx-auto w-full max-w-[1400px] px-6 lg:w-[86%] lg:px-0">
             <div className="flex flex-wrap items-end justify-between gap-6">
@@ -233,8 +259,8 @@ export default function QapitaCaseStudy() {
                   The show is live.
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-text-muted">
-                  The teaser, the trailer, and episode one — all our
-                  production, end to end.
+                  Three episodes and the launch films. Episode one is ours end
+                  to end; the US episodes we consult on and edit.
                 </p>
               </div>
               <a
@@ -248,8 +274,8 @@ export default function QapitaCaseStudy() {
               </a>
             </div>
 
-            <div className="mt-10 grid gap-5 lg:grid-cols-[1.6fr_1fr]">
-              {/* Featured: episode one */}
+            {/* Featured: episode one — full ownership */}
+            <div className="mt-10">
               <figure>
                 <button
                   type="button"
@@ -262,6 +288,11 @@ export default function QapitaCaseStudy() {
                     alt={c.episodes[0].title}
                     className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
                   />
+                  {c.episodes[0].tag && (
+                    <span className="absolute left-3 top-3 rounded-full border border-white/20 bg-bg/65 px-2.5 py-1 text-[0.6875rem] font-medium uppercase tracking-[0.1em] text-text-muted backdrop-blur">
+                      {c.episodes[0].tag}
+                    </span>
+                  )}
                   <span className="absolute inset-0 grid place-items-center">
                     <span className="grid h-14 w-14 place-items-center rounded-full border border-white/25 bg-bg/40 text-lg backdrop-blur transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-110">
                       ▶
@@ -277,32 +308,42 @@ export default function QapitaCaseStudy() {
                   </p>
                 </figcaption>
               </figure>
+            </div>
 
-              {/* Trailer + teaser, stacked */}
-              <div className="flex flex-col gap-5">
-                {c.episodes.slice(1).map((ep, i) => (
-                  <figure key={ep.id}>
-                    <button
-                      type="button"
-                      onClick={() => setEpIndex(i + 1)}
-                      aria-label={`Play ${ep.title}`}
-                      className="group relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
-                    >
-                      <Thumb
-                        id={ep.id}
-                        alt={ep.title}
-                        className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
-                      />
-                    </button>
-                    <figcaption className="mt-3 px-0.5">
-                      <p className="text-sm font-medium leading-snug text-text">
-                        {ep.title}
-                      </p>
-                      <p className="mt-0.5 text-xs text-text-faint">{ep.desc}</p>
-                    </figcaption>
-                  </figure>
-                ))}
-              </div>
+            {/* The rest: episodes two & three, plus the launch films */}
+            <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {c.episodes.slice(1).map((ep, i) => (
+                <figure key={ep.id}>
+                  <button
+                    type="button"
+                    onClick={() => setEpIndex(i + 1)}
+                    aria-label={`Play ${ep.title}`}
+                    className="group relative block aspect-video w-full overflow-hidden rounded-xl border border-line"
+                  >
+                    <Thumb
+                      id={ep.id}
+                      alt={ep.title}
+                      className="opacity-90 brightness-[0.8] transition-[filter,opacity,transform] duration-300 ease-[var(--ease-out-quart)] group-hover:scale-[1.02] group-hover:opacity-100 group-hover:brightness-100"
+                    />
+                    {ep.tag && (
+                      <span className="absolute left-2.5 top-2.5 rounded-full border border-white/20 bg-bg/65 px-2 py-0.5 text-[0.625rem] font-medium uppercase tracking-[0.08em] text-text-muted backdrop-blur">
+                        {ep.tag}
+                      </span>
+                    )}
+                    <span className="absolute inset-0 grid place-items-center">
+                      <span className="grid h-11 w-11 place-items-center rounded-full border border-white/25 bg-bg/40 backdrop-blur transition-transform duration-300 ease-[var(--ease-out-quart)] group-hover:scale-110">
+                        ▶
+                      </span>
+                    </span>
+                  </button>
+                  <figcaption className="mt-3 px-0.5">
+                    <p className="text-sm font-medium leading-snug text-text">
+                      {ep.title}
+                    </p>
+                    <p className="mt-0.5 text-xs text-text-faint">{ep.desc}</p>
+                  </figcaption>
+                </figure>
+              ))}
             </div>
           </div>
 
