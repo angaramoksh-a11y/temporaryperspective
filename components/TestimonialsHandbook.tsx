@@ -13,6 +13,63 @@ import { CredChips } from "./testimonialBits";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
+// Readable, shareable anchor per person, e.g. "ishpreet-balbir".
+const slugify = (s: string) =>
+  s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
+
+// Per-card share control. Uses the native share sheet where available
+// (phones), otherwise copies the deep link to the clipboard.
+function ShareButton({ slug, name }: { slug: string; name: string }) {
+  const [copied, setCopied] = useState(false);
+  const share = async () => {
+    const url = `${window.location.origin}/testimonials#${slug}`;
+    const title = `${name} on Temporary Perspective`;
+    if (typeof navigator !== "undefined" && navigator.share) {
+      try {
+        await navigator.share({ title, url });
+        return;
+      } catch {
+        // user dismissed or unsupported — fall through to copy
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      // clipboard blocked — nothing we can do silently
+    }
+  };
+  return (
+    <button
+      type="button"
+      onClick={share}
+      aria-label={`Share ${name}'s testimonial`}
+      className="mt-4 inline-flex w-fit items-center gap-1.5 text-[0.8125rem] text-text-faint underline-offset-4 transition-colors hover:text-text"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        className="h-3.5 w-3.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={1.7}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden
+      >
+        <circle cx="18" cy="5" r="3" />
+        <circle cx="6" cy="12" r="3" />
+        <circle cx="18" cy="19" r="3" />
+        <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98" />
+      </svg>
+      {copied ? "Link copied" : "Share"}
+    </button>
+  );
+}
+
 export type PItem = {
   label: string;
   media?: LightboxMedia;
@@ -168,11 +225,12 @@ function TestimonialCard({
   const [transcriptOpen, setTranscriptOpen] = useState(false);
   const clientCreds = row.credentials.filter((c) => c.side === "client");
   const speakerCreds = row.credentials.filter((c) => c.side === "speaker");
+  const slug = slugify(row.client);
 
   return (
     <article
-      id={row.vimeoId}
-      className="rounded-2xl border border-line bg-bg-raised/15 p-6 lg:p-8"
+      id={slug}
+      className="scroll-mt-28 rounded-2xl border border-line bg-bg-raised/15 p-6 lg:p-8"
     >
       <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[2fr_3fr] lg:items-center lg:gap-12">
         {/* ── Left: title card (client side) ───────────────────────────── */}
@@ -198,6 +256,9 @@ function TestimonialCard({
               <CredChips items={[...clientCreds, ...speakerCreds]} />
             </div>
           )}
+
+          {/* share this person's testimonial */}
+          <ShareButton slug={slug} name={row.name} />
 
           {/* work links — grouped, clean text list */}
           {row.groups.length > 0 && (
@@ -332,6 +393,19 @@ export default function TestimonialsHandbook({ rows }: { rows: HandbookRow[] }) 
   const [lb, setLb] = useState<{ items: LightboxItem[]; index: number } | null>(
     null,
   );
+
+  // Cards mount and reveal on scroll, so the browser's native #hash jump fires
+  // too early. Re-run it after mount once layout has settled.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.replace(/^#/, ""));
+    if (!id) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    const t = setTimeout(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 250);
+    return () => clearTimeout(t);
+  }, []);
 
   const openCover = (row: HandbookRow) => {
     // Build readable social links for the lightbox footer.
